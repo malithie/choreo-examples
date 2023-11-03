@@ -6,7 +6,7 @@ choreoUserInfo:UserInfoResolver userInfoResolver = new;
 
 # A service representing a network-accessible API
 # bound to port `9090`.
-service / on new http:Listener(9090) {
+service / on new http:Listener(9092) {
 
     # Get all pets
     # + return - List of pets or error
