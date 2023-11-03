@@ -108,7 +108,7 @@ export default function EditGroupComponent(prop: EditGroupComponentProps) {
     };
 
     const onSubmit = async (values: Record<string, string>, form): Promise<void> => {
-        const name = "DEFAULT/"+ values.groupName;
+        const name = "PRIMARY/"+ values.groupName;
 
         setLoadingDisplay(LOADING_DISPLAY_BLOCK);
         controllerDecodePatchGroupName(session, group.id, PatchMethod.REPLACE, "displayName", name)
@@ -206,7 +206,7 @@ function getMembers(fullUserList: InternalUser[], checkedUsers: string): sendMem
     for (const user of fullUserList) {
         if (usernames.includes(user.email)) {
             members.push({
-                display: "DEFAULT/" + user.email,
+                display: "PRIMARY/" + user.email,
                 value: user.id
             });
         }
