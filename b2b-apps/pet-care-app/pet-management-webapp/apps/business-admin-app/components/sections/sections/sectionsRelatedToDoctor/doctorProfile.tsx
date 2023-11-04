@@ -54,7 +54,7 @@ export default function DoctorProfileSection(props: DoctorProfileSectionProps) {
     async function getProfileInfo() {
         const accessToken = session.accessToken;
 
-        getProfile(accessToken)
+        getProfile(accessToken, session.orgId, session.user.emails[0])
             .then(async (res) => {
                 if (res.data) {
                     setDoctor(res.data);

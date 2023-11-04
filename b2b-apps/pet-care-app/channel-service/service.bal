@@ -162,15 +162,9 @@ service / on new http:Listener(9091) {
 
     # Get doctor's details
     # + return - Doctor details or not found 
-    resource function get org/[string orgId]/me(http:Headers headers) returns Doctor|http:NotFound|error? {
-
-        UserInfo|error userInfo = retrieveUserInfo(headers);
-        if userInfo is error {
-            return userInfo;
-        }
+    resource function get org/[string orgId]/me/[string email](http:Headers headers) returns Doctor|http:NotFound|error? {
 
         string org = orgId;
-        string email = <string>userInfo.emailAddress;
 
         Doctor|()|error result = getDoctorByOrgAndEmail(org, email);
         if result is () {
@@ -323,15 +317,10 @@ function retrieveUserInfo(http:Headers headers) returns UserInfo|error {
     }
 
     [jwt:Header, jwt:Payload] [_, payload] = check jwt:decode(jwtHeader.substring(7));
-    log:printInfo("payload: " + payload.toString());
     string org = getOrgFromPayload(payload);
-    log:printInfo("Org: " + org);
     string user = getUserFromPayload(payload);
-    log:printInfo("user: " + user);
     string email = getEmail(payload);
-    log:printInfo("email: " + email);
     string[] groups = getGroups(payload);
-    log:printInfo("groups: " + groups.length().toBalString());
 
     UserInfo userInfo = {
         organization: org,

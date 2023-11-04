@@ -56,7 +56,7 @@ export default function GetStartedSectionComponentForDoctor(props: GetStartedSec
     async function getBookings(): Promise<void> {
         const accessToken = session?.accessToken;
 
-        getProfile(accessToken)
+        getProfile(accessToken, session.orgId, session.user.emails[0])
             .then(async (res) => {
                 if (res.data) {
                     setDoctor(res.data);
