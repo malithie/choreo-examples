@@ -13,32 +13,29 @@ service / on new http:Listener(9092) {
 
     # Get all pets
     # + return - List of pets or error
-    resource function get pets(http:Headers headers) returns Pet[]|error? {
+    resource function get org/[string orgId]/user/[string userId]/pets(http:Headers headers) returns Pet[]|error? {
 
-        choreoUserInfo:UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
-        if userInfo is error {
-            return userInfo;
-        }
-
-        string org = userInfo.organization;
-        string owner = userInfo.userId;
+        string org = orgId;
+        string owner = userId;
 
         return getPets(org, owner);
     }
 
     # Create a new pet
-    # + newPet - Basic pet details
+    # + createPet - Basic pet create details
     # + return - Created pet record or error
-    resource function post pets(http:Headers headers, @http:Payload PetItem newPet) returns Pet|error? {
+    resource function post pets(http:Headers headers, @http:Payload PetCreateItem createPet) returns Pet|error? {
 
-        choreoUserInfo:UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
-        if userInfo is error {
-            return userInfo;
-        }
+        PetItem newPet = {
+            name: createPet.name,
+            breed: createPet.breed,
+            dateOfBirth: createPet.dateOfBirth,
+            vaccinations: createPet?.vaccinations
+        };
 
-        string org = userInfo.organization;
-        string owner = userInfo.userId;
-        string email = <string>userInfo.emailAddress;
+        string org = createPet.orgId;
+        string owner = createPet.userId;
+        string email = createPet.email;
 
         Pet|error pet = addPet(newPet, org, owner, email);
         return pet;

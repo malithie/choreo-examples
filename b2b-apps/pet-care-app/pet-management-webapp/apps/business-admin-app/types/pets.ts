@@ -42,6 +42,9 @@ export interface VaccineInfo {
   }
 
 export interface updatePetInfo {
+    userId: string;
+    orgId: string;
+    email: string;
     name: string;
     breed: string;
     dateOfBirth: string;
