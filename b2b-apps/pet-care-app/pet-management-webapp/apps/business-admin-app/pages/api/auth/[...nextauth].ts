@@ -21,8 +21,9 @@ import { controllerDecodeSwitchOrg }
 import { getConfig } from "@pet-management-webapp/business-admin-app/util/util-application-config-util";
 import { getLoggedUserFromProfile, getLoggedUserId, getOrgId, getOrgName } from
     "@pet-management-webapp/shared/util/util-authorization-config-util";
+import { jwtDecode } from "jwt-decode";
 import { NextApiRequest, NextApiResponse } from "next";
-import NextAuth from "next-auth";
+import NextAuth, { Profile } from "next-auth";
 
 /**
  * 
@@ -62,6 +63,8 @@ const wso2ISProvider = (req: NextApiRequest, res: NextApiResponse) => NextAuth(r
                 session.expires = true;
             }
             else {
+                const profile: Profile = jwtDecode(orgSession.id_token.toString());
+
                 session.accessToken = token.accessToken as string;
                 session.adminAccessToken = orgSession.access_token;
                 session.idToken = orgSession.id_token;
@@ -69,12 +72,12 @@ const wso2ISProvider = (req: NextApiRequest, res: NextApiResponse) => NextAuth(r
                 session.refreshToken = orgSession.refresh_token;
                 session.expires = false;
                 session.userId = getLoggedUserId(session.idToken);
-                session.user = getLoggedUserFromProfile(token.user);
+                session.user = getLoggedUserFromProfile(profile);
                 session.orgId = getOrgId(session.idToken);
                 session.orgName = getOrgName(session.idToken);
                 session.orginalIdToken = orgSession.id_token.toString();
 
-                const groupsList = token.user.groups;
+                const groupsList = session.user.groups as string[];
 
                 if (groupsList == null) {
                     session.group = "petOwner";
