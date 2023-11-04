@@ -27,8 +27,9 @@ import config from "../../../../../../config.json";
  * @returns `true` if the user is an administrator, else `false`
  */
 export function checkAdmin(scopes: string[]): boolean {
-    const adminScopes = [ "email", "internal_login", "internal_user_mgt_create", "internal_user_mgt_delete",
-        "internal_user_mgt_list", "internal_user_mgt_update", "internal_user_mgt_view", "openid", "profile" ];
+    const adminScopes = [ "email", "internal_login", "internal_org_user_mgt_create", "internal_org_user_mgt_delete",
+        "internal_org_user_mgt_list", "internal_org_user_mgt_update", "internal_org_user_mgt_view", "openid", 
+        "profile" ];
 
     for (let i = 0; i < adminScopes.length; i++) {
         if (!scopes.includes(adminScopes[i])) {
@@ -48,9 +49,7 @@ export function checkAdmin(scopes: string[]): boolean {
  */
 export function getOrgUrl(orgId: string): string {
 
-    const managementAPIServerBaseUrl = getManagementAPIServerBaseUrl();
-
-    return `${managementAPIServerBaseUrl}/o/${orgId}`;
+    return `${config.CommonConfig.AuthorizationConfig.BaseOrganizationUrl}/o`;
 }
 
 /**
