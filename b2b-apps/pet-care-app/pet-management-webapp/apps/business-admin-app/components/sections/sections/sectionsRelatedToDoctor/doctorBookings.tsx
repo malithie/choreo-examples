@@ -63,7 +63,7 @@ export default function DoctorBookingsSection(props: DoctorBookingsSectionProps)
                 if (res.data) {
                     setDoctor(res.data);
                 }
-                const response = await getDoctorBookings(accessToken, res.data.id);
+                const response = await getDoctorBookings(accessToken, session.orgId, res.data.id);
 
                 if (response.data instanceof Array) {
                     setBookingList(response.data);
@@ -92,7 +92,7 @@ export default function DoctorBookingsSection(props: DoctorBookingsSectionProps)
     async function getBookingsPerDay(date: string) {
         const accessToken = session?.accessToken;
 
-        getDoctorBookingsPerDay(accessToken, doctor?.id, date )
+        getDoctorBookingsPerDay(accessToken, session.orgId, doctor?.id, date )
             .then(async (response) => {
                 if (response.data instanceof Array) {
                     setBookingListPerDay(response.data);

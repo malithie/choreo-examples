@@ -132,7 +132,7 @@ export default function EditDoctorProfile(props: EditDoctorProfileProps) {
                 specialty: docSpecialty
             };
 
-            putDoctor(accessToken, doctor.id, payload);
+            putDoctor(accessToken, session.orgId, doctor.id, payload);
         }
         updateDoctor();
         setAvailabilityInfo([]);

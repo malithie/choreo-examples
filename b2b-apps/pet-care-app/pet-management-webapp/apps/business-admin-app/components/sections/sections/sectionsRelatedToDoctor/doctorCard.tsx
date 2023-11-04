@@ -45,7 +45,7 @@ function DoctorCard(props: DoctorCardProps) {
         const accessToken = session.accessToken;
 
         if (doctor) {
-            getDocThumbnail(accessToken, doctor.id)
+            getDocThumbnail(accessToken, session.orgId, doctor.id)
                 .then((res) => {
                     if (res.data.size > 0) {
                         const imageUrl = URL.createObjectURL(res.data);

@@ -20,9 +20,9 @@ import { UpdateOrgInfo } from "../../types/doctor";
 import createHeaders from "../createHeaders";
 import { getDoctorInstance } from "../getDoctors/doctorInstance";
 
-export async function putOrgInfo(accessToken: string, payload?: UpdateOrgInfo) {
+export async function putOrgInfo(accessToken: string, orgId: string, payload?: UpdateOrgInfo) {
     const headers = createHeaders(accessToken);
-    const response = await getDoctorInstance().put("/org-info" , payload, {
+    const response = await getDoctorInstance().put(`org/${orgId}/orginfo` , payload, {
         headers: headers
     });
 

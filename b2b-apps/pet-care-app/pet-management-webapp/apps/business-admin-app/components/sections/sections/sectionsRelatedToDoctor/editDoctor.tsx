@@ -90,7 +90,6 @@ export default function EditDoctor(props: EditDoctorProps) {
         }
 
         if (url !== null && url !== "") {
-            console.log("url: "+ url);
             // Start loading
             setIsLoading(true);
       
@@ -156,7 +155,7 @@ export default function EditDoctor(props: EditDoctorProps) {
                 specialty: docSpecialty
             };
 
-            putDoctor(accessToken, doctor.id, payload);
+            putDoctor(accessToken, session.orgId, doctor.id, payload);
         }
         updateDoctor();
         setAvailabilityInfo([]);
