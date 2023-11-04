@@ -49,7 +49,7 @@ export function checkAdmin(scopes: string[]): boolean {
  */
 export function getOrgUrl(orgId: string): string {
 
-    return `${config.CommonConfig.AuthorizationConfig.BaseOrganizationUrl}/o`;
+    return `${getConfig().CommonConfig.AuthorizationConfig.BaseOrganizationUrl}/o`;
 }
 
 /**
