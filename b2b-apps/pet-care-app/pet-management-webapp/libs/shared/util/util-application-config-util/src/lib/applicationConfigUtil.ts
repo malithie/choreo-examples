@@ -17,7 +17,6 @@
  */
 
 import { getConfig } from "@pet-management-webapp/business-admin-app/util/util-application-config-util";
-import config from "../../../../../../config.json";
 
 /**
  * check if the user is an administrator of the logged in identity server
