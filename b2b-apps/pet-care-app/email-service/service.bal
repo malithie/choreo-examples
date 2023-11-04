@@ -12,8 +12,11 @@ const string vaccinationAlertEmailTemplate = "/home/ballerina/resources/email-te
 
 map<string> emailTemplates = {};
 
-# A service representing a network-accessible API
-# bound to port `9090`.
+@http:ServiceConfig {
+    cors: {
+        allowOrigins: ["*"]
+    }
+}
 service / on new http:Listener(9090) {
 
     # Send an email
