@@ -29,6 +29,7 @@ export interface User extends ControllerCallReturn, ControllerDecodeReturn {
     name: Name,
     emails: string[] | undefined,
     userName: string | undefined,
+    groups: string[] | undefined,
     [key: string]: unknown
 }
 
