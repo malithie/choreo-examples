@@ -62,7 +62,7 @@ export default function PetOverview(props: PetOverviewProps) {
         const accessToken = session.accessToken;
 
         if (pet) {
-            getThumbnail(accessToken, pet?.id)
+            getThumbnail(accessToken, session.orgId, session.userId, pet?.id)
                 .then((res) => {
                     if (res.data.size > 0) {
                         const imageUrl = URL.createObjectURL(res.data);
@@ -119,7 +119,7 @@ export default function PetOverview(props: PetOverviewProps) {
     const handleDelete = () => {
         async function deletePets() {
             const accessToken = session.accessToken;
-            const response = await deletePet(accessToken, pet.id);
+            const response = await deletePet(accessToken, session.orgId, session.user.id, pet.id);
 
             setIsOpen(false);
         }

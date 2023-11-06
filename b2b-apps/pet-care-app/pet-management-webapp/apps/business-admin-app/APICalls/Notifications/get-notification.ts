@@ -19,11 +19,12 @@
 import createHeaders from "../createHeaders";
 import { getPetInstance } from "../CreatePet/instance";
 
-export async function getNotification(accessToken: string) {
+export async function getNotification(accessToken: string, orgId: string, userId: string, email: string) {
     const headers = createHeaders(accessToken);
-    const response = await getPetInstance().get("/settings", {
-        headers: headers
-    });
+    const response = await getPetInstance().get(
+        `/org/${orgId}/user/${userId}/settings?email=${encodeURIComponent(email)}`, {
+            headers: headers
+        });
 
     return response;
 }

@@ -175,7 +175,7 @@ service / on new http:Listener(9091) {
 
     # Get all bookings
     # + return - List of bookings or error
-    resource function get org/[string orgId]/bookings(http:Headers headers) returns Booking[]|error? {
+    resource function get org/[string orgId]/user/[string userEmail]/bookings(http:Headers headers) returns Booking[]|error? {
 
         UserInfo|error userInfo = retrieveUserInfo(headers);
         if userInfo is error {
@@ -183,7 +183,7 @@ service / on new http:Listener(9091) {
         }
 
         string org = orgId;
-        string email = <string>userInfo.emailAddress;
+        string email = userEmail;
 
         return getBookingsByOrgAndEmail(org, email);
     }
@@ -193,13 +193,8 @@ service / on new http:Listener(9091) {
     # + return - created booking record or error
     resource function post org/[string orgId]/bookings(http:Headers headers, @http:Payload BookingItem newBooking) returns Booking|error? {
 
-        UserInfo|error userInfo = retrieveUserInfo(headers);
-        if userInfo is error {
-            return userInfo;
-        }
-
         string org = orgId;
-        string email = <string>userInfo.emailAddress;
+        string email = newBooking.email;
 
         Booking|error booking = addBooking(newBooking, org, email);
         if booking is error {
@@ -235,7 +230,7 @@ service / on new http:Listener(9091) {
     # + bookingId - ID of the booking
     # + updatedBookingItem - updated booking details
     # + return - Booking details or not found 
-    resource function put org/[string orgId]/bookings/[string bookingId](http:Headers headers, @http:Payload BookingItemUpdated updatedBookingItem)
+    resource function put org/[string orgId]/bookings/[string bookingId](@http:Payload BookingItemUpdated updatedBookingItem)
     returns Booking|http:NotFound|error? {
 
         Booking|()|error result = updateBookingById(orgId, bookingId, updatedBookingItem);

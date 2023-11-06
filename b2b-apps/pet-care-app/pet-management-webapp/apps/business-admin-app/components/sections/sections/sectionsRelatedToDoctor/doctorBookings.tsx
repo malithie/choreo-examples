@@ -106,7 +106,7 @@ export default function DoctorBookingsSection(props: DoctorBookingsSectionProps)
 
 
 
-    const handleClick = (booking:Booking) => {
+    const handleClick = (booking: Booking) => {
         router.push({
             pathname: "/bookingDetails",
             query: { 
@@ -116,6 +116,7 @@ export default function DoctorBookingsSection(props: DoctorBookingsSectionProps)
                 emailAddress: booking.emailAddress,
                 id: booking.id,
                 mobileNumber: booking.mobileNumber,
+                orgId: session.orgId,
                 petId: booking.petId, 
                 petOwnerName: booking.petOwnerName,
                 sessionEndTime: booking.sessionEndTime,
@@ -146,6 +147,8 @@ export default function DoctorBookingsSection(props: DoctorBookingsSectionProps)
             </LocalizationProvider>
         );
     };
+
+    console.log("booking list per day: " + JSON.stringify(bookingListPerDay));
 
     return (
         <div

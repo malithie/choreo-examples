@@ -57,7 +57,7 @@ export default function SettingsSection(props: SettingsSectionProps) {
     const getSettings = () => {
         async function getNotifications() {
             const accessToken = session.accessToken;
-            const response = await getNotification(accessToken);
+            const response = await getNotification(accessToken, session.orgId, session.userId, session.user.emails[0]);
 
             if (response) {
                 setEnabled(response.data.notifications.enabled);
@@ -84,7 +84,7 @@ export default function SettingsSection(props: SettingsSectionProps) {
                     emailAddress: email
                 }
             };
-            const response = await postNotification(accessToken, payload);
+            const response = await postNotification(accessToken, session.orgId, session.user.id, payload);
         }
         setNotification();
     };

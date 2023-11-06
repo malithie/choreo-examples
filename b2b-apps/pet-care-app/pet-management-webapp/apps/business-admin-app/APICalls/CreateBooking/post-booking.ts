@@ -20,9 +20,9 @@ import { BookingInfo } from "apps/business-admin-app/types/booking";
 import createHeaders from "../createHeaders";
 import { getDoctorInstance } from "../getDoctors/doctorInstance";
 
-export async function postBooking(accessToken: string, payload?: BookingInfo) {
+export async function postBooking(accessToken: string, orgId: string, payload?: BookingInfo) {
     const headers = createHeaders(accessToken);
-    const response = await getDoctorInstance().post("/bookings", payload, {
+    const response = await getDoctorInstance().post(`/org/${orgId}/bookings`, payload, {
         headers: headers
     });
 

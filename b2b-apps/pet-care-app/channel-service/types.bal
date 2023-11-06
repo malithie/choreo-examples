@@ -57,6 +57,7 @@ type BookingItem record {|
     string petName;
     string petType;
     string petDoB;
+    string email;
     *AppointmentItem;
 |};
 

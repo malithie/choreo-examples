@@ -21,9 +21,9 @@ import { Notifications } from "apps/business-admin-app/types/pets";
 import createHeaders from "../createHeaders";
 import { getPetInstance } from "../CreatePet/instance";
 
-export async function postNotification(accessToken: string, payload?: Notifications) {
+export async function postNotification(accessToken: string, orgId:string, userId: string, payload?: Notifications) {
     const headers = createHeaders(accessToken);
-    const response = await getPetInstance().put("/settings", payload, {
+    const response = await getPetInstance().put(`/org/${orgId}/user/${userId}/settings`, payload, {
         headers: headers
     });
 

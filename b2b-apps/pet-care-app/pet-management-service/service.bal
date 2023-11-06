@@ -55,20 +55,22 @@ service / on new http:Listener(9092) {
 
     # Update a pet
     # + petId - ID of the pet
-    # + updatedPetItem - Updated pet details
+    # + updatePetItem - Updated pet details
     # + return - Pet details or not found
-    resource function put pets/[string petId](http:Headers headers, @http:Payload PetItem updatedPetItem) returns Pet|http:NotFound|error? {
+    resource function put pets/[string petId](http:Headers headers, @http:Payload PetUpdateItem updatePetItem) returns Pet|http:NotFound|error? {
 
-        choreoUserInfo:UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
-        if userInfo is error {
-            return userInfo;
-        }
+        PetItem updatePet = {
+            name: updatePetItem.name,
+            breed: updatePetItem.breed,
+            dateOfBirth: updatePetItem.dateOfBirth,
+            vaccinations: updatePetItem?.vaccinations
+        };
 
-        string org = userInfo.organization;
-        string owner = userInfo.userId;
-        string email = <string>userInfo.emailAddress;
+        string org = updatePetItem.orgId;
+        string owner = updatePetItem.userId;
+        string email = updatePetItem.email;
 
-        Pet|()|error result = updatePetById(org, owner, email, petId, updatedPetItem);
+        Pet|()|error result = updatePetById(org, owner, email, petId, updatePet);
         if result is () {
             return http:NOT_FOUND;
         }
@@ -78,15 +80,10 @@ service / on new http:Listener(9092) {
     # Delete a pet
     # + petId - ID of the pet
     # + return - No Content response or error
-    resource function delete pets/[string petId](http:Headers headers) returns http:NoContent|http:NotFound|error? {
+    resource function delete org/[string orgId]/user/[string userId]/pets/[string petId](http:Headers headers) returns http:NoContent|http:NotFound|error? {
 
-        choreoUserInfo:UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
-        if userInfo is error {
-            return userInfo;
-        }
-
-        string org = userInfo.organization;
-        string owner = userInfo.userId;
+        string org = orgId;
+        string owner = userId;
 
         string|()|error result = deletePetById(org, owner, petId);
         if result is () {
@@ -100,16 +97,11 @@ service / on new http:Listener(9092) {
     # Update thumbnail for the pet
     # + petId - ID of the pet
     # + return - Ok response or error
-    resource function put pets/[string petId]/thumbnail(http:Request request, http:Headers headers)
+    resource function put org/[string orgId]/user/[string userId]/pets/[string petId]/thumbnail(http:Request request, http:Headers headers)
     returns http:Ok|http:NotFound|http:BadRequest|error {
 
-        choreoUserInfo:UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
-        if userInfo is error {
-            return userInfo;
-        }
-
-        string org = userInfo.organization;
-        string owner = userInfo.userId;
+        string org = orgId;
+        string owner = userId;
 
         var bodyParts = check request.getBodyParts();
         Thumbnail thumbnail;
@@ -137,15 +129,10 @@ service / on new http:Listener(9092) {
     # Get thumbnail for the pet
     # + petId - ID of the pet
     # + return - Ok response or error
-    resource function get pets/[string petId]/thumbnail(http:Headers headers) returns http:Response|http:NotFound|error {
+    resource function get org/[string orgId]/user/[string userId]/pets/[string petId]/thumbnail(http:Headers headers) returns http:Response|http:NotFound|error {
 
-        choreoUserInfo:UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
-        if userInfo is error {
-            return userInfo;
-        }
-
-        string org = userInfo.organization;
-        string owner = userInfo.userId;
+        string org = orgId;
+        string owner = userId;
 
         Thumbnail|()|string|error thumbnail = getThumbnailByPetId(org, owner, petId);
         http:Response response = new;
@@ -244,16 +231,10 @@ service / on new http:Listener(9092) {
 
     # Get settings for the user
     # + return - Settings response or error
-    resource function get settings(http:Headers headers) returns Settings|error {
+    resource function get org/[string orgId]/user/[string userId]/settings(string email) returns Settings|error {
 
-        choreoUserInfo:UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
-        if userInfo is error {
-            return userInfo;
-        }
-
-        string org = userInfo.organization;
-        string owner = userInfo.userId;
-        string email = <string>userInfo.emailAddress;
+        string org = orgId;
+        string owner = userId;
 
         Settings|error settings = getSettings(org, owner, email);
 
@@ -267,15 +248,10 @@ service / on new http:Listener(9092) {
     # Updated settings for the user
     # + settings - Settings details
     # + return - OK response or error
-    resource function put settings(http:Headers headers, @http:Payload Settings settings) returns http:Ok|error {
+    resource function put org/[string orgId]/user/[string userId]/settings(http:Headers headers, @http:Payload Settings settings) returns http:Ok|error {
 
-        choreoUserInfo:UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
-        if userInfo is error {
-            return userInfo;
-        }
-
-        string org = userInfo.organization;
-        string owner = userInfo.userId;
+        string org = orgId;
+        string owner = userId;
 
         SettingsRecord settingsRecord = {org: org, owner: owner, ...settings};
         string|error result = updateSettings(settingsRecord);

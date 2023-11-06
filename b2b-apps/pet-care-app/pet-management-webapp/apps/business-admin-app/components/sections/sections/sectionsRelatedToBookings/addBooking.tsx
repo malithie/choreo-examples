@@ -149,6 +149,7 @@ export default function AddBookings(props: AddBookingsProps) {
             const payload: BookingInfo = {
                 date: availabilityInfo.date,
                 doctorId: doctor.id,
+                email: session.user.emails[0],
                 mobileNumber: mobileNumber,
                 petDoB: pet.dateOfBirth,
                 petId: pet.id,
@@ -159,7 +160,7 @@ export default function AddBookings(props: AddBookingsProps) {
                 sessionStartTime: availabilityInfo.timeSlots[0].startTime
             };
 
-            postBooking(accessToken, payload);
+            postBooking(accessToken, session.orgId, payload);
         }
         addBooking();
         await timeout(150);

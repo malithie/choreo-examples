@@ -42,7 +42,7 @@ function PetCard(props: PetCardProps) {
     async function getThumbnails() {
         const accessToken = session.accessToken;
     
-        getThumbnail(accessToken, petId)
+        getThumbnail(accessToken, session.orgId, session.user.id, petId)
             .then((res) => {
                 if (res.data.size > 0) {
                     const imageUrl = URL.createObjectURL(res.data);
