@@ -21,14 +21,12 @@ import createHeaders from "../createHeaders";
 import { getDoctorInstance } from "../getDoctors/doctorInstance";
 
 export async function updateBooking(accessToken: string, orgId: string, bookingId: string, payload?: BookingInfo) {
-    console.log("bookingId", bookingId);
     const headers = createHeaders(accessToken);
     const path = `/org/${orgId}/bookings/` + bookingId;
     const response = await getDoctorInstance().put(path, payload, {
         headers: headers
     });
 
-    console.log("6 response", response);
     return response;
 
 }

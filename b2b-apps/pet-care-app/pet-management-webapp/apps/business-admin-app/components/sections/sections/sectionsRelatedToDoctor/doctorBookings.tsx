@@ -148,8 +148,6 @@ export default function DoctorBookingsSection(props: DoctorBookingsSectionProps)
         );
     };
 
-    console.log("booking list per day: " + JSON.stringify(bookingListPerDay));
-
     return (
         <div
             className={ styles.tableMainPanelDivDoc }
