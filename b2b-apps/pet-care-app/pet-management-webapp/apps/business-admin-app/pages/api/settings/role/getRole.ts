@@ -19,6 +19,7 @@
 import { requestOptions } from "@pet-management-webapp/business-admin-app/data-access/data-access-common-api-util";
 import { dataNotRecievedError, notPostError } 
     from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
+import { getOrgUrl } from "@pet-management-webapp/shared/util/util-application-config-util";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function getRole(req: NextApiRequest, res: NextApiResponse) {
@@ -28,11 +29,12 @@ export default async function getRole(req: NextApiRequest, res: NextApiResponse)
 
     const body = JSON.parse(req.body);
     const session = body.session;
-    const roleUri: URL = new URL(req.query.roleUri.toString());
+    const orgId: string = req.query.orgId.toString();
+    const roleId: string = req.query.roleId.toString();
 
     try {
         const fetchData = await fetch(
-            roleUri,
+            `${getOrgUrl(orgId)}/scim2/v2/Roles/${roleId}`,
             requestOptions(session)
         );
         const data = await fetchData.json();

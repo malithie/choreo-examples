@@ -28,9 +28,9 @@ import { controllerCallGetRole } from "./controllerCallGetRole";
  * 
  * @returns - details of the role
  */
-export async function controllerDecodeGetRole(session: Session, roleUri: string): Promise<Role | null> {
+export async function controllerDecodeGetRole(session: Session, roleId: string): Promise<Role | null> {
 
-    const res = (await commonControllerDecode(() => controllerCallGetRole(session, roleUri), null) as Role | null);
+    const res = (await commonControllerDecode(() => controllerCallGetRole(session, roleId), null) as Role | null);
 
     return res;
 

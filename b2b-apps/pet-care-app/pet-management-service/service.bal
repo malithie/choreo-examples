@@ -13,6 +13,11 @@ service / on new http:Listener(9092) {
 
     # Get all pets
     # + return - List of pets or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "list_pets"
+        }
+    }
     resource function get org/[string orgId]/user/[string userId]/pets(http:Headers headers) returns Pet[]|error? {
 
         string org = orgId;
@@ -24,6 +29,11 @@ service / on new http:Listener(9092) {
     # Create a new pet
     # + createPet - Basic pet create details
     # + return - Created pet record or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "create_pet"
+        }
+    }
     resource function post pets(http:Headers headers, @http:Payload PetCreateItem createPet) returns Pet|error? {
 
         PetItem newPet = {
@@ -44,6 +54,11 @@ service / on new http:Listener(9092) {
     # Get a pet by ID
     # + petId - ID of the pet
     # + return - Pet details or not found 
+    @http:ResourceConfig {
+        auth: {
+            scopes: "view_pet"
+        }
+    }
     resource function get pets/[string petId](http:Headers headers) returns Pet|http:NotFound|error? {
 
         Pet|() result = getPetById(petId);
@@ -57,6 +72,11 @@ service / on new http:Listener(9092) {
     # + petId - ID of the pet
     # + updatePetItem - Updated pet details
     # + return - Pet details or not found
+    @http:ResourceConfig {
+        auth: {
+            scopes: "update_pet"
+        }
+    }
     resource function put pets/[string petId](http:Headers headers, @http:Payload PetUpdateItem updatePetItem) returns Pet|http:NotFound|error? {
 
         PetItem updatePet = {
@@ -80,6 +100,11 @@ service / on new http:Listener(9092) {
     # Delete a pet
     # + petId - ID of the pet
     # + return - No Content response or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "delete_pet"
+        }
+    }
     resource function delete org/[string orgId]/user/[string userId]/pets/[string petId](http:Headers headers) returns http:NoContent|http:NotFound|error? {
 
         string org = orgId;
@@ -97,6 +122,11 @@ service / on new http:Listener(9092) {
     # Update thumbnail for the pet
     # + petId - ID of the pet
     # + return - Ok response or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "update_pet"
+        }
+    }
     resource function put org/[string orgId]/user/[string userId]/pets/[string petId]/thumbnail(http:Request request, http:Headers headers)
     returns http:Ok|http:NotFound|http:BadRequest|error {
 
@@ -129,6 +159,11 @@ service / on new http:Listener(9092) {
     # Get thumbnail for the pet
     # + petId - ID of the pet
     # + return - Ok response or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "view_pet"
+        }
+    }
     resource function get org/[string orgId]/user/[string userId]/pets/[string petId]/thumbnail(http:Headers headers) returns http:Response|http:NotFound|error {
 
         string org = orgId;
@@ -160,6 +195,11 @@ service / on new http:Listener(9092) {
     # Get medical reports of the pet
     # + petId - ID of the pet
     # + return - Medical report record or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "view_pet"
+        }
+    }
     resource function get pets/[string petId]/medical\-reports(http:Headers headers) returns MedicalReport[]|error? {
 
         return getMedicalReportsByPetId(petId);
@@ -168,6 +208,11 @@ service / on new http:Listener(9092) {
     # Create a new medical report
     # + medicalReportItem - Medical report details
     # + return - Created medical report record or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "update_pet"
+        }
+    }
     resource function post pets/[string petId]/medical\-reports(http:Headers headers,
             @http:Payload MedicalReportItem medicalReportItem) returns MedicalReport|http:NotFound|error? {
 
@@ -183,6 +228,11 @@ service / on new http:Listener(9092) {
     # + petId - ID of the pet
     # + reportId - ID of the report
     # + return - Medical report record or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "view_pet"
+        }
+    }
     resource function get pets/[string petId]/medical\-reports/[string reportId](http:Headers headers) returns MedicalReport|
     http:NotFound|error? {
 
@@ -199,6 +249,11 @@ service / on new http:Listener(9092) {
     # + reportId - ID of the report
     # + updatedMedicalReportItem - Updated medical report details
     # + return - Medical report record or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "update_pet"
+        }
+    }
     resource function put pets/[string petId]/medical\-reports/[string reportId](http:Headers headers,
             @http:Payload MedicalReportItem updatedMedicalReportItem) returns http:Ok|http:NotFound|error? {
 
@@ -216,6 +271,11 @@ service / on new http:Listener(9092) {
     # + petId - ID of the pet
     # + reportId - ID of the report
     # + return - No Content response or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "delete_pet"
+        }
+    }
     resource function delete pets/[string petId]/medical\-reports/[string reportId](http:Headers headers) returns
     http:NoContent|http:NotFound|error? {
 
@@ -231,6 +291,11 @@ service / on new http:Listener(9092) {
 
     # Get settings for the user
     # + return - Settings response or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "view_user_settings"
+        }
+    }
     resource function get org/[string orgId]/user/[string userId]/settings(string email) returns Settings|error {
 
         string org = orgId;
@@ -248,6 +313,11 @@ service / on new http:Listener(9092) {
     # Updated settings for the user
     # + settings - Settings details
     # + return - OK response or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "update_user_settings"
+        }
+    }
     resource function put org/[string orgId]/user/[string userId]/settings(http:Headers headers, @http:Payload Settings settings) returns http:Ok|error {
 
         string org = orgId;

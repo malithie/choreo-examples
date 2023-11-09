@@ -49,8 +49,7 @@ export default function RolesList(props: RolesListProps) {
                         <RoleItem
                             key={ role.id }
                             session={ session }
-                            id={ role.id }
-                            roleUri={ role.meta.location } />
+                            id={ role.id } />
                     )) }
                 </PanelGroup>
             </div>

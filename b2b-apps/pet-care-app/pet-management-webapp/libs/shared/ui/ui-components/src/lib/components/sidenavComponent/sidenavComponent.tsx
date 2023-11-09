@@ -81,7 +81,11 @@ export function SidenavComponent(prop: SidenavComponentProps) {
                                             key={ item.eventKey }
                                             eventKey={ item.eventKey }
                                             icon={ getIconFromString(item.icon) }
-                                            onSelect={ (eventKey) => activeKeySideNavSelect(eventKey) }>
+                                            onSelect={ (eventKey) => activeKeySideNavSelect(eventKey) }
+                                            style={ item.hideBasedOnScope
+                                                ? hideBasedOnScopes(scope, item.type, item.items, item.scopes)
+                                                : {} }
+                                        >
                                             <Stack spacing={ 10 }>
                                                 { item.title }
                                                 { item.new

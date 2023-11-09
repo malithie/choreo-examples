@@ -35,8 +35,7 @@ interface RoleItemNavProps {
 
 interface RoleItemProps {
     session: Session,
-    id: string,
-    roleUri: string
+    id: string
 }
 
 /**
@@ -47,16 +46,16 @@ interface RoleItemProps {
  */
 export default function RoleItem(props: RoleItemProps) {
 
-    const { session, id, roleUri } = props;
+    const { session, id } = props;
 
     const [ roleDetails, setRoleDetails ] = useState<Role>(null);
     const [ activeKeyNav, setActiveKeyNav ] = useState<string>("1");
 
     const fetchData = useCallback(async () => {
-        const res = await controllerDecodeGetRole(session, roleUri);
+        const res = await controllerDecodeGetRole(session, id);
 
         setRoleDetails(res);
-    }, [ session, roleUri ]);
+    }, [ session, id ]);
 
     useEffect(() => {
         fetchData();

@@ -28,9 +28,12 @@ import { Session } from "next-auth";
  * 
  * @returns - role details, if the call failed `null`
  */
-export async function controllerCallGetRole(session: Session, roleUri: string): Promise<Role | null> {
+export async function controllerCallGetRole(session: Session, roleId: string): Promise<Role | null> {
 
-    const data = (await commonControllerCall(`/api/settings/role/getRole?roleUri=${roleUri}`, session) as Role | null);
+    const data = (await commonControllerCall(
+        `/api/settings/role/getRole?roleId=${roleId}&orgId=${session.orgId}`, 
+        session
+    ) as Role | null);
 
     return data;
 }

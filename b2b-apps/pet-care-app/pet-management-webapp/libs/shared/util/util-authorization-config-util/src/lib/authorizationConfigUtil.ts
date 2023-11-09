@@ -158,7 +158,6 @@ function getLoggedUserFromProfile(profile: Profile): User | null {
 
         const user: User = {
             emails: [ profile.email ],
-            groups: profile.groups ? profile.groups : [],
             id: profile.sub,
             name: {
                 familyName: profile.family_name ? profile.family_name : "-",

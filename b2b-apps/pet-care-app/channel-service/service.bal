@@ -19,6 +19,11 @@ service / on new http:Listener(9091) {
 
     # Get all doctors
     # + return - List of doctors or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "list_doctors"
+        }
+    }
     resource function get org/[string orgId]/doctors(http:Headers headers) returns Doctor[]|error? {
 
         return getDoctors(orgId);
@@ -27,6 +32,11 @@ service / on new http:Listener(9091) {
     # Create a new doctor
     # + newDoctor - basic doctor details
     # + return - created doctor record or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "create_doctor"
+        }
+    }
     resource function post org/[string orgId]/doctors(http:Headers headers, @http:Payload DoctorItem newDoctor) returns Doctor|error? {
 
         Doctor|error doctor = addDoctor(newDoctor, orgId);
@@ -36,6 +46,11 @@ service / on new http:Listener(9091) {
     # Get a doctor by ID
     # + doctorId - ID of the doctor
     # + return - Doctor details or not found 
+    @http:ResourceConfig {
+        auth: {
+            scopes: "view_doctor"
+        }
+    }
     resource function get org/[string orgId]/doctors/[string doctorId](http:Headers headers) returns Doctor|http:NotFound|error? {
 
         Doctor|()|error result = getDoctorByIdAndOrg(orgId, doctorId);
@@ -49,6 +64,11 @@ service / on new http:Listener(9091) {
     # + doctorId - ID of the doctor
     # + updatedDoctorItem - updated doctor details
     # + return - Doctor details or not found 
+    @http:ResourceConfig {
+        auth: {
+            scopes: "update_doctor"
+        }
+    }
     resource function put org/[string orgId]/doctors/[string doctorId](http:Headers headers, @http:Payload DoctorItem updatedDoctorItem) returns Doctor|http:NotFound|error? {
 
         Doctor|()|error result = updateDoctorById(orgId, doctorId, updatedDoctorItem);
@@ -61,6 +81,11 @@ service / on new http:Listener(9091) {
     # Delete a doctor
     # + doctorId - ID of the doctor
     # + return - Ok response or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "delete_doctor"
+        }
+    }
     resource function delete org/[string orgId]/doctors/[string doctorId](http:Headers headers) returns http:NoContent|http:NotFound|error? {
 
         string|()|error result = deleteDoctorById(orgId, doctorId);
@@ -75,6 +100,11 @@ service / on new http:Listener(9091) {
     # Update the thumbnail image of a doctor
     # + doctorId - ID of the doctor
     # + return - Ok response or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "update_doctor"
+        }
+    }
     resource function put org/[string orgId]/doctors/[string doctorId]/thumbnail(http:Request request, http:Headers headers)
     returns http:Ok|http:NotFound|http:BadRequest|error {
 
@@ -104,6 +134,11 @@ service / on new http:Listener(9091) {
     # Get the thumbnail image of a doctor
     # + doctorId - ID of the doctor
     # + return - Return the thumbnail image or not found
+    @http:ResourceConfig {
+        auth: {
+            scopes: "view_doctor"
+        }
+    }
     resource function get org/[string orgId]/doctors/[string doctorId]/thumbnail(http:Headers headers) returns http:Response|http:NotFound|error {
 
         Thumbnail|()|string|error thumbnail = getThumbnailByDoctorId(orgId, doctorId);
@@ -133,6 +168,11 @@ service / on new http:Listener(9091) {
     # + doctorId - ID of the doctor
     # + date - Date of the boookings (Format: yyyy-MM-dd)
     # + return - List of bookings or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "list_bookings"
+        }
+    }
     resource function get org/[string orgId]/doctors/[string doctorId]/bookings(http:Headers headers, string? date) returns Booking[]|error? {
 
         string dateValue = "";
@@ -148,6 +188,11 @@ service / on new http:Listener(9091) {
     # + sessionStartTime - Start time of the session (Format: HH:mm AM/PM)
     # + sessionEndTime - End time of the session (Format: HH:mm AM/PM)
     # + return - List of bookings or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "view_appointment"
+        }
+    }
     resource function get org/[string orgId]/doctors/[string doctorId]/next\-appointment\-number(http:Headers headers, string date,
             string sessionStartTime, string sessionEndTime) returns NextAppointment|http:NotFound|error? {
 
@@ -162,6 +207,11 @@ service / on new http:Listener(9091) {
 
     # Get doctor's details
     # + return - Doctor details or not found 
+    @http:ResourceConfig {
+        auth: {
+            scopes: "view_profile"
+        }
+    }
     resource function get org/[string orgId]/me/[string email](http:Headers headers) returns Doctor|http:NotFound|error? {
 
         string org = orgId;
@@ -175,6 +225,11 @@ service / on new http:Listener(9091) {
 
     # Get all bookings
     # + return - List of bookings or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "list_bookings"
+        }
+    }
     resource function get org/[string orgId]/user/[string userEmail]/bookings(http:Headers headers) returns Booking[]|error? {
 
         UserInfo|error userInfo = retrieveUserInfo(headers);
@@ -191,6 +246,11 @@ service / on new http:Listener(9091) {
     # Create a new booking
     # + newBooking - basic booking details
     # + return - created booking record or error
+        @http:ResourceConfig {
+        auth: {
+            scopes: "create_bookings"
+        }
+    }
     resource function post org/[string orgId]/bookings(http:Headers headers, @http:Payload BookingItem newBooking) returns Booking|error? {
 
         string org = orgId;
@@ -217,6 +277,11 @@ service / on new http:Listener(9091) {
     # Get a booking by ID
     # + bookingId - ID of the booking
     # + return - Booking details or not found 
+        @http:ResourceConfig {
+        auth: {
+            scopes: "view_booking"
+        }
+    }
     resource function get org/[string orgId]/bookings/[string bookingId](http:Headers headers) returns Booking|http:NotFound|error? {
 
         Booking|()|error result = getBookingByIdAndOrg(orgId, bookingId);
@@ -230,6 +295,11 @@ service / on new http:Listener(9091) {
     # + bookingId - ID of the booking
     # + updatedBookingItem - updated booking details
     # + return - Booking details or not found 
+    @http:ResourceConfig {
+        auth: {
+            scopes: "update_booking"
+        }
+    }
     resource function put org/[string orgId]/bookings/[string bookingId](@http:Payload BookingItemUpdated updatedBookingItem)
     returns Booking|http:NotFound|error? {
 
@@ -243,6 +313,11 @@ service / on new http:Listener(9091) {
     # Delete a booking
     # + bookingId - ID of the booking
     # + return - Ok response or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "delete_booking"
+        }
+    }
     resource function delete org/[string orgId]/bookings/[string bookingId](http:Headers headers) returns http:NoContent|http:NotFound|error? {
 
         string|()|error result = deleteBookingById(orgId, bookingId);
@@ -256,6 +331,11 @@ service / on new http:Listener(9091) {
 
     # Get information about the organization
     # + return - Organization information or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "view_org_info"
+        }
+    }
     resource function get org/[string orgId]/orginfo(http:Headers headers) returns OrgInfo|http:NotFound|error? {
 
         OrgInfo|()|error orgInfo = getOrgInfo(orgId);
@@ -271,6 +351,11 @@ service / on new http:Listener(9091) {
     # Update organization information
     # + updatedOrgInfo - updated organization details
     # + return - Organization information or error
+    @http:ResourceConfig {
+        auth: {
+            scopes: "update_org_info"
+        }
+    }
     resource function put org/[string orgId]/orginfo(http:Headers headers, @http:Payload OrgInfoItem updatedOrgInfo) returns OrgInfo|error? {
 
         return updateOrgInfo(orgId, updatedOrgInfo);
