@@ -130,11 +130,11 @@ function RoleItemNav(props: RoleItemNavProps) {
                     General
                 </Nav.Item>
 
-                {/* <Nav.Item
+                <Nav.Item
                     eventKey="2"
                     onSelect={ (eventKey) => activeKeyNavSelect(eventKey) }>
                     Permissions
-                </Nav.Item> */}
+                </Nav.Item>
 
                 <Nav.Item
                     eventKey="3"

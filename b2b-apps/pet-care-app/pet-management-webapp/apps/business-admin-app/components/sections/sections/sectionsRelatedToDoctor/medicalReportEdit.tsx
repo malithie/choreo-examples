@@ -103,7 +103,6 @@ export default function MedicalReportEdit(props: MedicalReportEdit) {
             setDrugName("");
             setDosage("");
             setDuration("");
-            console.log(medicineInfo);
         }
     };
 
