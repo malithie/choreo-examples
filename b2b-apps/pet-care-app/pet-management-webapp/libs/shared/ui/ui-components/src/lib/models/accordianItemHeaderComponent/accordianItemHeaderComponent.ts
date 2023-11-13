@@ -19,5 +19,6 @@
 export interface AccordianItemHeaderComponentProps {
     title : string,
     description : string,
-    imageSrc? : string
+    imageSrc? : string,
+    avatarSize? : string
 }

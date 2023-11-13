@@ -164,19 +164,27 @@ export default function DoctorProfileSection(props: DoctorProfileSectionProps) {
                                     <p className={ styles.docProfileFont }>{ doctor?.registrationNumber }</p>
                                 </Typography>
                                 <Typography className="typography-style-doc-overview">
-                                    <p className={ styles.docProfileFont }>{ doctor?.specialty }</p>
+                                    <p className={ styles.docProfileFont }>
+                                        { doctor?.specialty? doctor.specialty : "N/A" }
+                                    </p>
                                 </Typography>
                                 <Typography className="typography-style-doc-overview">
                                     <p className={ styles.docProfileFont }>{ doctor?.emailAddress }</p>
                                 </Typography>
                                 <Typography className="typography-style-doc-overview">
-                                    <p className={ styles.docProfileFont }>{ doctor?.gender }</p>
+                                    <p className={ styles.docProfileFont }>
+                                        { doctor?.gender? doctor.gender : "N/A" }
+                                    </p>
                                 </Typography>
                                 <Typography className="typography-style-doc-overview">
-                                    <p className={ styles.docProfileFont }>{ doctor?.dateOfBirth }</p>
+                                    <p className={ styles.docProfileFont }>
+                                        { doctor?.dateOfBirth? doctor.dateOfBirth : "N/A" }
+                                    </p>
                                 </Typography>
                                 <Typography className="typography-style-doc-overview">
-                                    <p className={ styles.docProfileFont }>{ doctor?.address }</p>
+                                    <p className={ styles.docProfileFont }>
+                                        { doctor?.address? doctor.address : "N/A" }
+                                    </p>
                                 </Typography>
                                 <Typography className="typography-style-doc-overview">
                                     <p className={ styles.docProfileFont }>{ stringDate }</p>

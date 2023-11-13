@@ -153,6 +153,7 @@
                     "type": "item",
                     "icon": "ManageUserIcon",
                     "scopes": [
+                        "create_pet",
                         "list_pets",
                         "list_doctors",
                         "view_doctor",
@@ -165,6 +166,7 @@
                     "eventKey": "7-2",
                     "type": "item",
                     "scopes": [
+                        "create_pet",
                         "list_bookings"
                     ]
                 }

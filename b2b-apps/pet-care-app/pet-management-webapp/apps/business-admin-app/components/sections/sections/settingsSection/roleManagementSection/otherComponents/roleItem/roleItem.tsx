@@ -90,7 +90,8 @@ export default function RoleItem(props: RoleItemProps) {
                 header={
                     (<AccordianItemHeaderComponent
                         title={ roleDetails.displayName }
-                        description={ `Organization role ${roleDetails.displayName} details` } />)
+                        description={ "Role" } 
+                        avatarSize={ "sm" } />)
                 }
                 eventKey={ id }
                 id={ id }>
