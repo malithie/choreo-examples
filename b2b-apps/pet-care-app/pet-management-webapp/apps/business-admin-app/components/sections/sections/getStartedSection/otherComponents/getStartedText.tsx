@@ -39,9 +39,10 @@ export default function GetStartedText() {
                     </Stack>
 
                     <p className={ styles.getStartedSectionComponentGetStartedTextP }>
-                        Guardio Insurance administrator application is the application that provides capabilities to
-                        manage users, create roles, assign roles and setup an identity provider for 
-                        the Guardio Insurance business application.
+                    Welcome to Pet Care – the ultimate companion for every pet owner! 
+                    Our app is designed with a deep understanding of the unique bond between you and 
+                    your furry friends. Whether you have a playful pup, a curious cat, or any other beloved pet, 
+                    Pet Care is here to simplify and enhance every aspect of pet ownership.
                     </p>
 
                     <Stack direction="column" spacing={ 20 } justifyContent="center">
