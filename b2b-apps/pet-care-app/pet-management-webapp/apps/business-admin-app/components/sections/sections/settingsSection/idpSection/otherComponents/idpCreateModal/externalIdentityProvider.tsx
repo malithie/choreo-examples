@@ -16,18 +16,24 @@
  * under the License.
  */
 
-import { IdentityProvider, IdentityProviderConfigureType, IdentityProviderTemplate } from
-    "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
-import { controllerDecodeCreateIdentityProvider } from
-    "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
+import { 
+    Application, ApplicationList, 
+    IdentityProvider, IdentityProviderConfigureType, 
+    IdentityProviderTemplate, PatchApplicationAuthMethod 
+} from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
+import { 
+    controllerDecodeCreateIdentityProvider, controllerDecodeGetApplication, 
+    controllerDecodeListCurrentApplication, controllerDecodePatchApplicationAuthSteps 
+} from "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
 import { FormButtonToolbar, FormField } from "@pet-management-webapp/shared/ui/ui-basic-components";
+import { errorTypeDialog, successTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
 import { checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
 import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE, fieldValidate } from
     "@pet-management-webapp/shared/util/util-front-end-util";
 import { Session } from "next-auth";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Form } from "react-final-form";
-import { Loader, Radio, RadioGroup } from "rsuite";
+import { Loader, Radio, RadioGroup, Toaster, useToaster } from "rsuite";
 import FormSuite from "rsuite/Form";
 import styles from "../../../../../../../styles/Settings.module.css";
 
@@ -51,6 +57,33 @@ export default function ExternalIdentityProvider(prop: ExternalIdentityProviderP
     const [ loadingDisplay, setLoadingDisplay ] = useState(LOADING_DISPLAY_NONE);
     const [ configureType, setConfigureType ]
         = useState<IdentityProviderConfigureType>(IdentityProviderConfigureType.AUTO);
+    const toaster: Toaster = useToaster();
+
+    const [ allApplications, setAllApplications ] = useState<ApplicationList>(null);
+    const [ applicationDetail, setApplicationDetail ] = useState<Application>(null);
+
+    const fetchData = useCallback(async () => {
+        const res : ApplicationList = ( await controllerDecodeListCurrentApplication(session) as ApplicationList );
+        
+        await setAllApplications(res);
+    }, [ session ]);
+
+    const fetchApplicatioDetails = useCallback(async () => {
+        if (!checkIfJSONisEmpty(allApplications) && allApplications.totalResults !== 0) {
+            const res : Application = ( 
+                await controllerDecodeGetApplication(session, allApplications.applications[0].id) as Application );
+                      
+            await setApplicationDetail(res);
+        }
+    }, [ session, allApplications ]);
+
+    useEffect(() => {
+        fetchData();
+    }, [ fetchData ]);
+
+    useEffect(() => {
+        fetchApplicatioDetails();
+    }, [ fetchApplicatioDetails ]);
 
     const validate = (values: Record<string, string>): Record<string, string> => {
         let errors: Record<string, string> = {};
@@ -79,10 +112,26 @@ export default function ExternalIdentityProvider(prop: ExternalIdentityProviderP
         setConfigureType(value);
     };
 
+    const onIdpAddToLoginFlow = (response: boolean): void => {
+        if (response) {
+            successTypeDialog(toaster, "Success", "Identity Provider Add to the Login Flow Successfully.");
+        } else {
+            errorTypeDialog(toaster, "Error Occured", "Error occured while adding the the identity provider.");
+        }
+    };
+
     const onUpdate = async (values: Record<string, string>): Promise<void> => {
         setLoadingDisplay(LOADING_DISPLAY_BLOCK);
         controllerDecodeCreateIdentityProvider(session, template, values, configureType)
-            .then((response) => onIdpCreate(response))
+            .then((response) => {
+                onIdpCreate(response)
+                const idpDetails = response as IdentityProvider;
+                
+                controllerDecodePatchApplicationAuthSteps(session, applicationDetail, idpDetails,
+                    PatchApplicationAuthMethod.ADD)
+                    .then((response) => onIdpAddToLoginFlow(response))
+                    .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
+            })
             .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
     };
 

@@ -20,6 +20,7 @@ import { requestOptionsWithBody }
     from "@pet-management-webapp/business-admin-app/data-access/data-access-common-api-util";
 import { RequestMethod, dataNotRecievedError, notPostError } from
     "@pet-management-webapp/shared/data-access/data-access-common-api-util";
+import { getOrgUrl } from "@pet-management-webapp/shared/util/util-application-config-util";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function patchRole(req: NextApiRequest, res: NextApiResponse) {
@@ -30,11 +31,12 @@ export default async function patchRole(req: NextApiRequest, res: NextApiRespons
     const body = JSON.parse(req.body);
     const session = body.session;
     const patchBody = body.param;
-    const roleUri = new URL(req.query.roleUri.toString());
+    const roleId = req.query.roleId;
+    const orgId = "";
 
     try {
         const fetchData = await fetch(
-            roleUri,
+            `${getOrgUrl(orgId)}/scim2/v2/Roles/${roleId}`,
             requestOptionsWithBody(session, RequestMethod.PATCH, patchBody)
         );
 

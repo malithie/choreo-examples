@@ -95,19 +95,19 @@ export default function ManageDoctorsSection(props: ManageDoctorsSectionProps) {
                     <h2>{ "Manage Doctors" }</h2>
                     <p>{ "Manage doctors in the organization" }</p>
                 </Stack>
-                <Button
+                {/* <Button
                     appearance="primary"
                     size="lg"
                     onClick={ onAddDoctorClick }
                 >
                         Add Doctor
-                </Button>
+                </Button> */}
             </Stack>
 
-            <AddDoctorComponent
+            {/* <AddDoctorComponent
                 session={ session }
                 open={ isAddDoctorOpen }
-                onClose={ closeAddDoctorDialog } />
+                onClose={ closeAddDoctorDialog } /> */}
 
             <div>
                 <Grid container spacing={ 2 }>

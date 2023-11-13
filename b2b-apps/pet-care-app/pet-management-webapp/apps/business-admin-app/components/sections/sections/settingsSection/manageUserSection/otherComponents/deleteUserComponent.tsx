@@ -17,12 +17,13 @@
  */
 
 import {
-    controllerDecodeDeleteGroup, controllerDecodeDeleteUser
+    controllerDecodeDeleteUser
 } from "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
-import { InternalGroup, InternalUser } from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
+import { InternalUser } from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
 import { FormButtonToolbar, ModelHeaderComponent } from "@pet-management-webapp/shared/ui/ui-basic-components";
 import { errorTypeDialog, successTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
 import { LOADING_DISPLAY_NONE } from "@pet-management-webapp/shared/util/util-front-end-util";
+import { deleteDoctor } from "apps/business-admin-app/APICalls/DeleteDoctor/delete-doctor";
 import { Session } from "next-auth";
 import { useState } from "react";
 import { Form } from "react-final-form";
@@ -49,7 +50,7 @@ export default function DeleteUserComponent(prop: DeleteUserComponentProps) {
     const [ loadingDisplay, setLoadingDisplay ] = useState(LOADING_DISPLAY_NONE);
     const toaster = useToaster();
 
-    const onGroupDelete = (response: boolean): void => {
+    const onUserDelete = (response: boolean): void => {
         if (response) {
             successTypeDialog(toaster, "Success", "User Deleted Successfully");
         } else {
@@ -57,9 +58,16 @@ export default function DeleteUserComponent(prop: DeleteUserComponentProps) {
         }
     };
 
-    const onSubmit = (): void => {
+    const onSubmit = (): void => { 
+
+        deleteDoctor(session.accessToken, session.orgId, user.email)
+            .catch((e) => {
+                //
+            })
+            .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
+
         controllerDecodeDeleteUser(session, user?.id)
-            .then((response) => onGroupDelete(response))
+            .then((response) => onUserDelete(response))
             .finally(() => {
                 getUsers().finally();
             });

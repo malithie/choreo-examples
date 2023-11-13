@@ -30,10 +30,10 @@ import { Session } from "next-auth";
  * 
  * @returns patched role, if the call failed `null`
  */
-export async function controllerCallPatchRole(session: Session, roleUri: string, patchBody: PatchBody)
+export async function controllerCallPatchRole(session: Session, roleId: string, patchBody: PatchBody)
     : Promise<Role | null> {
 
-    const data = (await commonControllerCall(`/api/settings/role/patchRole?roleUri=${roleUri}`, session, patchBody) as
+    const data = (await commonControllerCall(`/api/settings/role/patchRole?roleId=${roleId}`, session, patchBody) as
         Role | null);
         
     return data;

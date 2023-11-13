@@ -23,6 +23,7 @@ interface ConfigObject {
   CommonConfig: {
     AuthorizationConfig: {
       BaseOrganizationUrl: string;
+      ClientId: string;
     };
     ApplicationConfig: {
       SampleOrganization: {
@@ -62,11 +63,12 @@ export function getConfig(): ConfigObject {
 
     const configObj = {
         CommonConfig: {
-            AuthorizationConfig: {
-                BaseOrganizationUrl: publicRuntimeConfig.baseOrgUrl
-            },
             ApplicationConfig: {
                 SampleOrganization: config.CommonConfig.ApplicationConfig.SampleOrganization
+            },
+            AuthorizationConfig: {
+                BaseOrganizationUrl: publicRuntimeConfig.baseOrgUrl,
+                ClientId: publicRuntimeConfig.clientId
             }
         },
         // eslint-disable-next-line sort-keys

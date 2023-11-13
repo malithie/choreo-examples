@@ -173,19 +173,27 @@ export default function DoctorOverview(props: DoctorOverviewProps) {
                                     <p className={ styles.docOverviewFont }>{ doctor?.registrationNumber }</p>
                                 </Typography>
                                 <Typography className="typography-style-doc-overview">
-                                    <p className={ styles.docOverviewFont }>{ doctor?.specialty }</p>
+                                    <p className={ styles.docOverviewFont }>
+                                        { doctor?.specialty ? doctor.specialty : "N/A" }
+                                    </p>
                                 </Typography>
                                 <Typography className="typography-style-doc-overview">
                                     <p className={ styles.docOverviewFont }>{ doctor?.emailAddress }</p>
                                 </Typography>
                                 <Typography className="typography-style-doc-overview">
-                                    <p className={ styles.docOverviewFont }>{ doctor?.gender }</p>
+                                    <p className={ styles.docOverviewFont }>
+                                        { doctor?.gender ? doctor.gender : "N/A" }
+                                    </p>
                                 </Typography>
                                 <Typography className="typography-style-doc-overview">
-                                    <p className={ styles.docOverviewFont }>{ doctor?.dateOfBirth }</p>
+                                    <p className={ styles.docOverviewFont }>
+                                        { doctor?.dateOfBirth ? doctor.dateOfBirth : "N/A" }
+                                    </p>
                                 </Typography>
                                 <Typography className="typography-style-doc-overview">
-                                    <p className={ styles.docOverviewFont }>{ doctor?.address }</p>
+                                    <p className={ styles.docOverviewFont }>
+                                        { doctor?.address ? doctor.address : "N/A" }
+                                    </p>
                                 </Typography>
                                 <Typography className="typography-style-doc-overview">
                                     <p className={ styles.docOverviewFont }>{ stringDate }</p>
@@ -284,8 +292,8 @@ export default function DoctorOverview(props: DoctorOverviewProps) {
                             ) : (
                                 <Image
                                     style={ { borderRadius: "10%", height: "100%", width: "100%" } }
-                                    src={ doctor?.gender.toLowerCase() === "male" ?
-                                        male_doc_thumbnail : female_doc_thumbnail }
+                                    src={ doctor?.gender?.toLowerCase() === "male" ?
+                                        male_doc_thumbnail : male_doc_thumbnail }
                                     alt="doc-thumbnail" />
 
                             ) }

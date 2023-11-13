@@ -431,8 +431,8 @@ export default function EditDoctor(props: EditDoctorProps) {
                                 <Image
                                     style={ { borderRadius: "10%", height: "100%",  width: "100%" } }
                                     src={ 
-                                        doctor?.gender.toLowerCase() === "male" ? 
-                                            male_doc_thumbnail : female_doc_thumbnail }
+                                        doctor?.gender?.toLowerCase() === "male" ? 
+                                            male_doc_thumbnail : male_doc_thumbnail }
                                     alt="doc-thumbnail"
                                 />
 

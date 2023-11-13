@@ -42,8 +42,9 @@ const nextConfig = withNx({
     publicRuntimeConfig: {
         baseOrgUrl: process.env.BASE_ORG_URL,
         channellingServiceUrl: process.env.CHANNELLING_SERVICE_URL,
-        petManagementServiceUrl: process.env.PET_MANAGEMENT_SERVICE_URL,
+        clientId: process.env.CLIENT_ID,
         hostedUrl: process.env.HOSTED_URL,
+        petManagementServiceUrl: process.env.PET_MANAGEMENT_SERVICE_URL,
         sharedAppName: process.env.SHARED_APP_NAME
     },
     ...lessConfig

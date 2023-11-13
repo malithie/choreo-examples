@@ -26,10 +26,13 @@ import { checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-comm
 import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE, fieldValidate } 
     from "@pet-management-webapp/shared/util/util-front-end-util";
 import EmailFillIcon from "@rsuite/icons/EmailFill";
+import { postDoctor } from "apps/business-admin-app/APICalls/CreateDoctor/post-doc";
+import { Doctor, DoctorInfo } from "apps/business-admin-app/types/doctor";
+import { AxiosResponse } from "axios";
 import { Session } from "next-auth";
 import { useState } from "react";
 import { Form } from "react-final-form";
-import { Divider, Loader, Modal, Panel, Radio, RadioGroup, Stack, useToaster } from "rsuite";
+import { Divider, Loader, Modal, Panel, Radio, RadioGroup, SelectPicker, Stack, useToaster } from "rsuite";
 import FormSuite from "rsuite/Form";
 import styles from "../../../../../../styles/Settings.module.css";
 
@@ -52,6 +55,7 @@ export default function AddUserComponent(props: AddUserComponentProps) {
 
     const [ loadingDisplay, setLoadingDisplay ] = useState(LOADING_DISPLAY_NONE);
     const [ inviteSelect, serInviteSelect ] = useState<InviteConst>(InviteConst.INVITE);
+    const [ userTypeSelect, setUserTypeSelect ] = useState<string>("PET_OWNER");
     const [ inviteShow, setInviteShow ] = useState(LOADING_DISPLAY_BLOCK);
     const [ passwordShow, setPasswordShow ] = useState(LOADING_DISPLAY_NONE);
 
@@ -87,9 +91,28 @@ export default function AddUserComponent(props: AddUserComponentProps) {
         }
     };
 
-    const onDataSubmit = (response: boolean | User, form): void => {
+    const userTypeList: {[key: string]: string}[] = [
+        {
+            label: "Pet Owner",
+            value: "PET_OWNER"
+        },
+        {
+            label: "Doctor",
+            value: "DOCTOR"
+        },
+        {
+            label: "Admin",
+            value: "ADMIN"
+        }
+    ];
+
+    const userTypeSelectOnChange = (eventKey: any): void => {
+        setUserTypeSelect(eventKey);
+    };
+
+    const onUserSubmit = (response: boolean | User, form): void => {
         if (response) {
-            successTypeDialog(toaster, "Changes Saved Successfully", "User add to the organization successfully.");
+            successTypeDialog(toaster, "Changes Saved Successfully", "User added to the organization successfully.");
             form.restart();
             onClose();
         } else {
@@ -97,12 +120,36 @@ export default function AddUserComponent(props: AddUserComponentProps) {
         }
     };
 
+    const onDoctorSubmit = (response: AxiosResponse<Doctor>, form): void => {
+        if (response) {
+            successTypeDialog(toaster, "Changes Saved Successfully", "Doctor add to the organization successfully.");
+            form.restart();
+            onClose();
+        } else {
+            errorTypeDialog(toaster, "Error Occured", "Error occured while adding the doctor. Try again.");
+        }
+    };
+
     const onSubmit = async (values: Record<string, string>, form): Promise<void> => {
         setLoadingDisplay(LOADING_DISPLAY_BLOCK);
         controllerDecodeAddUser(session, inviteSelect, values.firstName, values.familyName, values.email,
             values.password)
-            .then((response) => onDataSubmit(response, form))
+            .then((response) => onUserSubmit(response, form))
             .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
+
+        if (userTypeSelect === "DOCTOR") {
+            const payload: DoctorInfo = {
+                availability: [],
+                emailAddress: values.email,
+                name: values.firstName + " " + values.familyName,
+                registrationNumber: values.RegistrationNumber
+            };
+            
+            postDoctor(session.accessToken, session.orgId, payload)
+                .then((response) => onDoctorSubmit(response, form))
+                .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
+        }
+
     };
 
     return (
@@ -123,6 +170,33 @@ export default function AddUserComponent(props: AddUserComponentProps) {
                                 layout="vertical"
                                 onSubmit={ () => { handleSubmit().then(form.restart); } }
                                 fluid>
+
+                                <FormField
+                                    name="userType"
+                                    label="Type of User"
+                                    needErrorMessage={ true }
+                                >
+                                    <SelectPicker 
+                                        data={ userTypeList }
+                                        value= { userTypeSelect }
+                                        searchable={ false }
+                                        defaultValue={ "PET_OWNER" } 
+                                        onSelect={ userTypeSelectOnChange }
+                                        block
+                                    />
+                                </FormField>
+                                {
+                                    userTypeSelect === "DOCTOR" 
+                                        ? (<FormField
+                                            name="RegistrationNumber"
+                                            label="Registration Number"
+                                            helperText="Registration Number of the doctor."
+                                            needErrorMessage={ true }
+                                        >
+                                            <FormSuite.Control name="input" />
+                                        </FormField>) 
+                                        : null
+                                }
 
                                 <FormField
                                     name="firstName"

@@ -32,7 +32,6 @@
             "hideBasedOnScope": true,
             "scopes": [
                 "create_pet",
-                "list_bookings",
                 "list_bookings"
             ]
         },
@@ -55,7 +54,6 @@
             "scopes": [
                 "view_profile",
                 "view_doctor",
-                "update_doctor",
                 "update_doctor"
             ]
         },

@@ -181,7 +181,7 @@ function deleteDoctorById(string org, string doctorId) returns string|()|error {
 
 function addDoctor(DoctorItem doctorItem, string org) returns Doctor|error {
 
-    string docId = uuid:createType1AsString();
+    string docId = doctorItem.emailAddress;
     time:Utc currentUtc = time:utcNow();
     time:Civil currentTime = time:utcToCivil(currentUtc);
     string timeString = civilToIso8601(currentTime);
@@ -541,7 +541,7 @@ function sendEmail(Booking booking, Doctor doctor) returns error? {
         addProperty("petType", booking.petType),
         addProperty("petDoB", booking.petDoB),
         addProperty("doctorName", doctor.name),
-        addProperty("doctorSpecialty", doctor.specialty),
+        addProperty("doctorSpecialty", doctor?.specialty),
         addProperty("hospitalName", "Hospital Name"),
         addProperty("hospitalAddress", "Hospital Address"),
         addProperty("hospitalTelephone", "Hospital Telephone")
@@ -566,7 +566,7 @@ function sendEmail(Booking booking, Doctor doctor) returns error? {
     }
 }
 
-function addProperty(string name, string value) returns Property {
+function addProperty(string name, string? value) returns Property {
     Property prop = {name: name, value: value};
     return prop;
 }
