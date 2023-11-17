@@ -27,6 +27,7 @@ import AddDoctorComponent from "./addDoctorComponent";
 import DoctorCard from "./doctorCard";
 import DoctorOverview from "./doctorOverview";
 import styles from "../../../../styles/doctor.module.css";
+import AddUserComponent from "../settingsSection/manageUserSection/otherComponents/addUserComponent";
 
 interface ManageDoctorsSectionProps {
     session: Session
@@ -95,19 +96,25 @@ export default function ManageDoctorsSection(props: ManageDoctorsSectionProps) {
                     <h2>{ "Manage Doctors" }</h2>
                     <p>{ "Manage doctors in the organization" }</p>
                 </Stack>
-                {/* <Button
+                <Button
                     appearance="primary"
                     size="lg"
                     onClick={ onAddDoctorClick }
                 >
                         Add Doctor
-                </Button> */}
+                </Button>
             </Stack>
 
             {/* <AddDoctorComponent
                 session={ session }
                 open={ isAddDoctorOpen }
                 onClose={ closeAddDoctorDialog } /> */}
+
+            <AddUserComponent
+                session={ session }
+                open={ isAddDoctorOpen }
+                onClose={ closeAddDoctorDialog }
+                isDoctor={ true } />
 
             <div>
                 <Grid container spacing={ 2 }>
