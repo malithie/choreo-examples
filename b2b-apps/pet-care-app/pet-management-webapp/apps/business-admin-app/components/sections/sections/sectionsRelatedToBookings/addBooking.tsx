@@ -36,7 +36,7 @@ interface buttonProps {
 }
 
 const Button = styled.button<buttonProps>`
-background-color: #4e40ed;
+background-color: var(--primary-color);
 color: #ffffff;
 border: none;
 width: 7vw;
@@ -44,7 +44,7 @@ height: 5vh;
 border-radius: 5px;
 font-size: 2vh;
 color: ${props => props.isDisabled ? "#727372" : "#ffffff"};
-background-color: ${props => props.isDisabled ? "#cacccb" : "#4e40ed"};
+background-color: ${props => props.isDisabled ? "#cacccb" : "var(--primary-color)"};
 `;
 
 const CancelButton = styled.button`

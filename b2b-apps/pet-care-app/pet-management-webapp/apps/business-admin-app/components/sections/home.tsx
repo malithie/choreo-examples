@@ -37,6 +37,8 @@ import ManageDoctorsSection from "./sections/sectionsRelatedToDoctor/manageDocto
 import IdpSectionComponent from "./sections/settingsSection/idpSection/idpSectionComponent";
 import ManageGroupSectionComponent from "./sections/settingsSection/manageGroupSection/manageGroupSectionComponent";
 import ManageUserSectionComponent from "./sections/settingsSection/manageUserSection/manageUserSectionComponent";
+import PersonalizationSectionComponent 
+    from "./sections/settingsSection/personalizationSection/personalizationSectionComponent";
 import RoleManagementSectionComponent from
     "./sections/settingsSection/roleManagementSection/roleManagementSectionComponent";
 import sideNavDataForAdmin
@@ -111,7 +113,10 @@ export default function Home(props: HomeProps): JSX.Element {
                 return <GetStartedSectionComponentForAdmin  session={ session } />;
             case "11":
 
-                return <GetStartedSectionComponentForPetOwner  session={ session } />;          
+                return <GetStartedSectionComponentForPetOwner  session={ session } />;     
+            case "12":
+
+                return <PersonalizationSectionComponent  session={ session } />;      
         }
     };
 

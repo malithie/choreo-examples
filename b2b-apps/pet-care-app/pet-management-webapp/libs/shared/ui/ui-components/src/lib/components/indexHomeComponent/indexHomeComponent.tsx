@@ -39,7 +39,7 @@ export function IndexHomeComponent(prop: IndexHomeComponentProps) {
             { isLoading && (
                 <div className={ styles["main"] }>
                     <div className={ styles["loader"] }>
-                        <ThreeDots color="#4e40ed" height={ 200 } width={ 200 } />
+                        <ThreeDots color="var(--primary-color)" height={ 200 } width={ 200 } />
                     </div>
                 </div> ) }
 

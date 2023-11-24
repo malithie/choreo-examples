@@ -17,7 +17,10 @@
  */
 
 import {
-    EnterpriseIdentityProvider, GoogleIdentityProvider, IdentityProvider, IdentityProviderTemplate
+    IdentityProvider, 
+    IdentityProviderTemplate,
+    StandardBasedOidcIdentityProvider,
+    StandardBasedSAMLIdentityProvider
 } from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
 import {
     controllerDecodeListAllIdentityProviders
@@ -54,8 +57,8 @@ export default function IdpSectionComponent(props: IdpSectionComponentProps) {
     const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplate>(undefined);
 
     const templates: IdentityProviderTemplate[] = [
-        EnterpriseIdentityProvider,
-        GoogleIdentityProvider
+        StandardBasedOidcIdentityProvider,
+        StandardBasedSAMLIdentityProvider
     ];
 
     const fetchAllIdPs = useCallback(async () => {

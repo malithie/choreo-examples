@@ -16,10 +16,12 @@
  * under the License.
  */
 
-import { ENTERPRISE_ID, GOOGLE_ID } from "@pet-management-webapp/shared/util/util-common";
+import { OIDC_IDP, SAML_IDP } from "@pet-management-webapp/shared/util/util-common";
 import Application from "./application";
-import enterpriseFederatedAuthenticators from "../identityProvider/data/templates/enterprise-identity-provider.json";
-import googleFederatedAuthenticators from "../identityProvider/data/templates/google.json";
+import enterpriseOIDCFederatedAuthenticators 
+    from "../identityProvider/data/templates/standard-based-oidc-identity-provider.json";
+import enterpriseSAMLFederatedAuthenticators 
+    from "../identityProvider/data/templates/standard-based-saml-identity-provider.json";
 import IdentityProviderTemplateModel from "../identityProvider/identityProviderTemplateModel";
 
 /**
@@ -31,14 +33,11 @@ import IdentityProviderTemplateModel from "../identityProvider/identityProviderT
 
 export function selectedTemplateBaesedonTemplateId(templateId: string): IdentityProviderTemplateModel | null {
     switch (templateId) {
-        case GOOGLE_ID:
-
-            return googleFederatedAuthenticators;
-        case ENTERPRISE_ID:
-
-            return enterpriseFederatedAuthenticators;
+        case OIDC_IDP:
+            return enterpriseOIDCFederatedAuthenticators;
+        case SAML_IDP:
+            return enterpriseSAMLFederatedAuthenticators;
         default:
-
             return null;
     }
 }

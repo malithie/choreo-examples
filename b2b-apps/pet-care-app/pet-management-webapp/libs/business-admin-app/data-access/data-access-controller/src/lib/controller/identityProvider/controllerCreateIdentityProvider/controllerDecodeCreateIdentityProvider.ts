@@ -22,6 +22,7 @@ import {
 } from
     "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
 import { commonControllerDecode } from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
+import { OIDC_IDP, SAML_IDP } from "@pet-management-webapp/shared/util/util-common";
 import { Session } from "next-auth";
 import { controllerCallCreateIdentityProvider } from "./controllerCallCreateIdentityProvider";
 import controllerDecodeGetDiscoveryUrl from "../controllerGetDiscoveryUrl/controllerDecodeGetDiscoveryUrl";
@@ -52,7 +53,11 @@ export async function controllerDecodeCreateIdentityProvider(session: Session, t
 
     let model: IdentityProviderTemplateModel = JSON.parse(JSON.stringify(template.idp));
 
-    if (configureType) {
+    if (template.id === SAML_IDP) {
+        model = setIdpTemplate(model, (template.templateId as string), formValues, (session.orgId as string));
+    }
+    
+    if (template.id === OIDC_IDP && configureType) {
         switch (configureType) {
             case IdentityProviderConfigureType.AUTO: {
                 const identityProviderDiscoveryUrl: IdentityProviderDiscoveryUrl | null

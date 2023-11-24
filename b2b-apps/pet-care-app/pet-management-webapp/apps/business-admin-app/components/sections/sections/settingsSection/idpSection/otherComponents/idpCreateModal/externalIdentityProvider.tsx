@@ -124,12 +124,14 @@ export default function ExternalIdentityProvider(prop: ExternalIdentityProviderP
         setLoadingDisplay(LOADING_DISPLAY_BLOCK);
         controllerDecodeCreateIdentityProvider(session, template, values, configureType)
             .then((response) => {
-                onIdpCreate(response)
+                onIdpCreate(response);
                 const idpDetails = response as IdentityProvider;
-                
+
                 controllerDecodePatchApplicationAuthSteps(session, applicationDetail, idpDetails,
                     PatchApplicationAuthMethod.ADD)
-                    .then((response) => onIdpAddToLoginFlow(response))
+                    .then((response) => {
+                        onIdpAddToLoginFlow(response);
+                    })
                     .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
             })
             .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));

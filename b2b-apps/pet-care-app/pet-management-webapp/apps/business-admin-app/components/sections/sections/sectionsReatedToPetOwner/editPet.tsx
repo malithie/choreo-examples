@@ -334,7 +334,7 @@ export default function EditPetComponent(props: EditPetComponentProps) {
                     <br /><br />
                     <div className={ styles.docImageStyle }>
                         { isLoading ? (
-                            <TailSpin color="#4e40ed" height={ 100 } width={ 100 } />
+                            <TailSpin color="var(--primary-color)" height={ 100 } width={ 100 } />
                         ) : (
                             <div>
                                 { imageUrl ? (

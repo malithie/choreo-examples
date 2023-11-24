@@ -22,7 +22,7 @@ import {
 } from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
 import { commonControllerDecode } from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
 import {
-    BASIC_AUTHENTICATOR_ID, BASIC_ID, ENTERPRISE_AUTHENTICATOR_ID, ENTERPRISE_ID, GOOGLE_AUTHENTICATOR_ID, GOOGLE_ID
+    BASIC_ID, OIDC_AUTHENTICATOR_ID, OIDC_IDP, SAML_AUTHENTICATOR_ID, SAML_IDP
 } from "@pet-management-webapp/shared/util/util-common";
 import { Session } from "next-auth";
 import { controllerCallPatchApplicationAuthSteps } from "./controllerCallPatchApplicationAuthSteps";
@@ -43,23 +43,17 @@ function getAuthenticationSequenceModel(template: Application): AuthenticationSe
 }
 /**
  * 
- * @param templateId - GOOGLE_ID, ENTERPRISE_ID, BASIC_ID
+ * @param templateId - OIDC_AUTHENTICATOR_ID, SAML_IDP
  * 
  * @returns get authenticator id for the given template id
  */
 function getAuthenticatorId(templateId: string): string | null {
     switch (templateId) {
-        case GOOGLE_ID:
-
-            return GOOGLE_AUTHENTICATOR_ID;
-        case ENTERPRISE_ID:
-
-            return ENTERPRISE_AUTHENTICATOR_ID;
-        case BASIC_ID:
-
-            return BASIC_AUTHENTICATOR_ID;
+        case OIDC_IDP:
+            return OIDC_AUTHENTICATOR_ID;
+        case SAML_IDP:
+            return SAML_AUTHENTICATOR_ID;
         default:
-
             return null;
     }
 }
@@ -112,11 +106,11 @@ function addRemoveAuthSequence(template: Application, idpTempleteId: string, idp
             for (let i = 0; i < step.options.length; i++) {
                 if (step.options[i].idp === idpName) {
                     step.options.splice(i, 1);
+                    i--;
                     if (step.options.length === 0) {
                         authenticationSequenceModel.steps.splice(j, 1);
                     }
 
-                    break;
                 } else if (step.options[i].authenticator === "BasicAuthenticator") {
                     basicCheck = true;
                 }

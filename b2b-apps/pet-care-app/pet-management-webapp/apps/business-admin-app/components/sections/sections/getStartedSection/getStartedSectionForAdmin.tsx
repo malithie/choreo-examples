@@ -246,15 +246,17 @@ export default function GetStartedSectionComponentForAdmin(props: GetStartedSect
                     { edit? (
                         <div className={ styles.buttonContainer }>
                             <button className={ styles.closeEditOrgDetailBtn } onClick={ () => { handleCancel(); } }>
-                                <CloseOutlineIcon style={ { width: "100%", height: "100%", color: "#4e40ed" } } />
+                                <CloseOutlineIcon 
+                                    style={ { width: "100%", height: "100%", color: "var(--primary-color)" } } />
                             </button>
                             <button className={ styles.saveEditOrgDetailBtn } onClick={ () => { handleSave(); } }>
-                                <CheckOutlineIcon style={ { width: "100%", height: "100%", color: "#4e40ed" } } />
+                                <CheckOutlineIcon 
+                                    style={ { width: "100%", height: "100%", color: "var(--primary-color)" } } />
                             </button>
                         </div>
                     ):(
                         <button className={ styles.editOrgDetailBtn } onClick={ () => {handleEdit(); } }>
-                            <EditIcon style={ { width: "100%", height: "100%", color: "#4e40ed" } }/>
+                            <EditIcon style={ { width: "100%", height: "100%", color: "var(--primary-color)" } }/>
                         </button>
                     ) }
                     <div className={ styles.orgInfoGrid }>

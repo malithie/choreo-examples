@@ -69,7 +69,7 @@ function PetCard(props: PetCardProps) {
             <CardContent>
                 { isLoading ? (
                     <div className={ styles.tailSpinDiv }>
-                        <TailSpin color="#4e40ed" height={ 80 } width={ 80 } />
+                        <TailSpin color="var(--primary-color)" height={ 80 } width={ 80 } />
                     </div>
                 ) : (
                     <>

@@ -51,6 +51,11 @@ export function getOrgUrl(orgId: string): string {
     return `${getConfig().CommonConfig.AuthorizationConfig.BaseOrganizationUrl}/o`;
 }
 
+export function getBaseUrl(orgId: string): string {
+
+    return `${getConfig().CommonConfig.AuthorizationConfig.BaseUrl}/o`;
+}
+
 /**
  * URL extracted from the `config.AuthorizationConfig.BaseOrganizationUrl`
  * 

@@ -37,7 +37,7 @@ function BookingCard(props: BookingCardProps) {
             <Card className={ styles.bookingCard }>
                 <CardContent>
                     <div className={ styles.bookingIcon }>
-                        <CalendarMonthIcon style={ { width: "100%", height: "100%", color: "#4e40ed" } } />
+                        <CalendarMonthIcon style={ { width: "100%", height: "100%", color: "var(--primary-color)" } } />
                     </div>
                     <div className={ styles.bookingSummary }>
                         <Grid container spacing={ 2 }>

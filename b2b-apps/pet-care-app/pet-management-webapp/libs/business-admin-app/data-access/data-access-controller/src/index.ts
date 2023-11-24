@@ -56,3 +56,5 @@ export * from "./lib/controller/group/controllerPatchGroupName/controllerDecodeP
 export * from "./lib/controller/group/controllerPatchGroupMembers/controllerDecodePatchGroupMembers";
 export * from "./lib/controller/group/controllerDeleteGroup/controllerDecodeDeleteGroup";
 export * from "./lib/controller/user/controllerDeleteUser/controllerDecodeDeleteUser";
+export * from "./lib/controller/branding/controllerDecodeGetBrandingPreference";
+export * from "./lib/controller/branding/controllerDecodeUpdateBrandingPreference";

@@ -181,6 +181,16 @@
             "scopes": [
                 "create_pet"
             ]
+        },
+        {
+            "title": "Personalization",
+            "eventKey": "12",
+            "icon": "BrandingIcon",
+            "type": "item",
+            "hideBasedOnScope": true,
+            "scopes": [
+                "internal_org_branding_preference_update"
+            ]
         }
     ]
 }

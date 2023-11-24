@@ -277,7 +277,7 @@ export default function DoctorOverview(props: DoctorOverviewProps) {
                     <br /><br />
                     { isLoading ? (
                         <div className={ styles.docImageStyle }>
-                            <TailSpin color="#4e40ed" height={ 100 } width={ 100 } />
+                            <TailSpin color="var(--primary-color)" height={ 100 } width={ 100 } />
                         </div>
                     ) : (
                         <div className={ styles.docImageStyle }>

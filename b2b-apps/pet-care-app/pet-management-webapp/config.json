@@ -1,7 +1,8 @@
 {
     "CommonConfig": {
         "AuthorizationConfig": {
-            "BaseOrganizationUrl": "<PARENT ORGANIZATION URL> ex: https://api.asgardeo.io/t/guardio"
+            "BaseOrganizationUrl": "<PARENT ORGANIZATION URL> ex: https://api.asgardeo.io/t/guardio",
+            "BaseUrl": "https://localhost:9443"
         },
         "ApplicationConfig": {
             "SampleOrganization": [
@@ -48,6 +49,7 @@
                 "internal_org_group_mgt_create",
                 "internal_org_role_mgt_view",
                 "internal_org_role_mgt_update",
+                "internal_org_branding_preference_update",
                 "list_doctors",
                 "create_doctor",
                 "view_doctor",
@@ -67,7 +69,9 @@
                 "view_pet",
                 "update_pet",
                 "view_user_settings",
-                "update_user_settings"
+                "update_user_settings",
+                "view_personalization",
+                "update_personalization"
             ],
             "Branding": {
                 "name": "Pet Care App",
@@ -76,7 +80,8 @@
         },
         "resourceServerURLs": {
             "channellingService": "<CHANNELLING_SERVICE_URL>",
-            "petManagementService": "<PET_MANAGEMENT_SERVICE_URL>"
+            "petManagementService": "<PET_MANAGEMENT_SERVICE_URL>",
+            "personalizationService": "<PERSONALIZATION_SERVICE_URL>"
         },
         "ManagementAPIConfig": {
             "SharedApplicationName": "<SHARED APPLICATION NAME FOR BUSINESS APP> ex: guardio-app",

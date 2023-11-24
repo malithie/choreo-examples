@@ -44,13 +44,13 @@ export default function SettingsSection(props: SettingsSectionProps) {
 
     const CustomSwitch = styled(Switch)(({ theme }) => ({
         "& .MuiSwitch-switchBase.Mui-checked": {
-            color: "#4e40ed",
+            color: "var(--primary-color)",
             "&:hover": {
-                backgroundColor: alpha("#4e40ed", theme.palette.action.hoverOpacity)
+                backgroundColor: alpha("var(--primary-color)", theme.palette.action.hoverOpacity)
             }
         },
         "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-            backgroundColor: "#4e40ed"
+            backgroundColor: "var(--primary-color)"
         }
     }));
 
