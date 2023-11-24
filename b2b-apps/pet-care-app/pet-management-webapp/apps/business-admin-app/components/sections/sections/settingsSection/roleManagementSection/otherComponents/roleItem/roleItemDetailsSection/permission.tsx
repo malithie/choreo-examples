@@ -26,7 +26,7 @@ import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } from "@pet-management-web
 import { Session } from "next-auth";
 import { useCallback, useEffect, useState } from "react";
 import { Form } from "react-final-form";
-import { CheckTree, Loader, Toaster, useToaster } from "rsuite";
+import { CheckTree, List, Loader, Panel, Toaster, useToaster } from "rsuite";
 import FormSuite from "rsuite/Form";
 import styles from "../../../../../../../../styles/Settings.module.css";
 import orgRolesData from "../../../data/orgRolesData.json";
@@ -72,57 +72,25 @@ export default function Permission(props: PermissionProps) {
         }
     };
 
-    const onUpdate = async (values: Record<string, string[]>, form) => {
-
-        setLoadingDisplay(LOADING_DISPLAY_BLOCK);
-        controllerDecodePatchRole(
-            session, roleDetails.meta.location, PatchMethod.REPLACE, "permissions", values.permissions)
-            .then((response) => onDataSubmit(response, form))
-            .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
-    };
-
     return (
         <div className={ styles.addUserMainDiv }>
 
             <div>
                 {
                     selectedPermissions
-                        ? (<Form
-                            onSubmit={ onUpdate }
-                            initialValues={ {
-                                permissions: selectedPermissions
-                            } }
-                            render={ ({ handleSubmit, form, submitting, pristine }) => (
-                                <FormSuite
-                                    layout="vertical"
-                                    className={ styles.addUserForm }
-                                    onSubmit={ () => { handleSubmit().then(form.restart); } }
-                                    fluid>
-
-                                    <FormField
-                                        name="permissions"
-                                        label=""
-                                        helperText="Assign permission for the role"
-                                        needErrorMessage={ false }
-                                    >
-                                        <FormSuite.Control
-                                            name="checkbox"
-                                            accepter={ CheckTree }
-                                            data={ orgRolesData }
-                                            defaultExpandItemValues={ [ "/permission" ] }
-                                            cascade
-                                        />
-                                    </FormField>
-
-                                    <FormButtonToolbar
-                                        submitButtonText="Update"
-                                        submitButtonDisabled={ submitting || pristine }
-                                        needCancel={ false }
-                                    />
-
-                                </FormSuite>
-                            ) }
-                        />)
+                        ? (
+                            <List size="sm" bordered={ true }>
+                                {
+                                    selectedPermissions.map((permission) => { 
+                                        return (
+                                            <List.Item key={ permission.value }>
+                                                { permission.value }
+                                            </List.Item>
+                                        );
+                                    })
+                                }
+                            </List>
+                        )
                         : null
                 }
 

@@ -16,28 +16,33 @@
  * under the License.
  */
 
-import { InviteConst, controllerDecodeAddUser } 
+import { InviteConst, controllerDecodeAddUser, controllerDecodeListAllRoles, controllerDecodePatchRole } 
     from "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
 import { User } from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
 import { FormButtonToolbar, FormField, ModelHeaderComponent } 
     from "@pet-management-webapp/shared/ui/ui-basic-components";
 import { errorTypeDialog, successTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
-import { checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
+import { PatchMethod, checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
 import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE, fieldValidate } 
     from "@pet-management-webapp/shared/util/util-front-end-util";
 import EmailFillIcon from "@rsuite/icons/EmailFill";
+import { postDoctor } from "apps/business-admin-app/APICalls/CreateDoctor/post-doc";
+import { Doctor, DoctorInfo } from "apps/business-admin-app/types/doctor";
+import { AxiosResponse } from "axios";
 import { Session } from "next-auth";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Form } from "react-final-form";
-import { Divider, Loader, Modal, Panel, Radio, RadioGroup, Stack, useToaster } from "rsuite";
+import { Divider, Loader, Modal, Panel, Radio, RadioGroup, SelectPicker, Stack, useToaster } from "rsuite";
 import FormSuite from "rsuite/Form";
 import styles from "../../../../../../styles/Settings.module.css";
+import { Role } from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
 
 
 interface AddUserComponentProps {
     session: Session
     open: boolean
     onClose: () => void
+    isDoctor: boolean
 }
 
 /**
@@ -48,12 +53,14 @@ interface AddUserComponentProps {
  */
 export default function AddUserComponent(props: AddUserComponentProps) {
 
-    const { session, open, onClose } = props;
+    const { session, open, onClose, isDoctor } = props;
 
     const [ loadingDisplay, setLoadingDisplay ] = useState(LOADING_DISPLAY_NONE);
     const [ inviteSelect, serInviteSelect ] = useState<InviteConst>(InviteConst.INVITE);
+    const [ userTypeSelect, setUserTypeSelect ] = useState<string>(isDoctor? "DOCTOR" : "PET_OWNER");
     const [ inviteShow, setInviteShow ] = useState(LOADING_DISPLAY_BLOCK);
     const [ passwordShow, setPasswordShow ] = useState(LOADING_DISPLAY_NONE);
+    const [ rolesList, setRolesList ] = useState<Role[]>([]);
 
     const toaster = useToaster();
 
@@ -87,9 +94,44 @@ export default function AddUserComponent(props: AddUserComponentProps) {
         }
     };
 
-    const onDataSubmit = (response: boolean | User, form): void => {
+    const userTypeList: {[key: string]: string}[] = [
+        {
+            label: "Pet Owner",
+            value: "PET_OWNER"
+        },
+        {
+            label: "Doctor",
+            value: "DOCTOR"
+        },
+        {
+            label: "Admin",
+            value: "ADMIN"
+        }
+    ];
+
+    const fetchAllRoles = useCallback(async () => {
+
+        const res = await controllerDecodeListAllRoles(session);
+
+        if (res) {
+            setRolesList(res);
+        } else {
+            setRolesList([]);
+        }
+
+    }, [ session ]);
+
+    useEffect(() => {
+        fetchAllRoles();
+    }, [ fetchAllRoles ]);
+
+    const userTypeSelectOnChange = (eventKey: any): void => {
+        setUserTypeSelect(eventKey);
+    };
+
+    const onUserSubmit = (response: boolean | User, form): void => {
         if (response) {
-            successTypeDialog(toaster, "Changes Saved Successfully", "User add to the organization successfully.");
+            successTypeDialog(toaster, "Changes Saved Successfully", "User added to the organization successfully.");
             form.restart();
             onClose();
         } else {
@@ -97,20 +139,84 @@ export default function AddUserComponent(props: AddUserComponentProps) {
         }
     };
 
+    const onDoctorSubmit = (response: AxiosResponse<Doctor>, form): void => {
+        if (response) {
+            successTypeDialog(toaster, "Changes Saved Successfully", "Doctor add to the organization successfully.");
+            form.restart();
+            onClose();
+        } else {
+            errorTypeDialog(toaster, "Error Occured", "Error occured while adding the doctor. Try again.");
+        }
+    };
+
+    const onRoleSubmit = (response) => {
+        if (response) {
+            successTypeDialog(toaster, "Changes Saved Successfully", "Role updated successfully.");
+        } else {
+            errorTypeDialog(toaster, "Error Occured", "Error occured while updating the role. Try again.");
+        }
+    };
+
     const onSubmit = async (values: Record<string, string>, form): Promise<void> => {
         setLoadingDisplay(LOADING_DISPLAY_BLOCK);
         controllerDecodeAddUser(session, inviteSelect, values.firstName, values.familyName, values.email,
             values.password)
-            .then((response) => onDataSubmit(response, form))
+            .then((response1) => {
+                onUserSubmit(response1, form);
+                let roleDetails: Role;
+                
+                if (userTypeSelect === "DOCTOR") {
+                    const payload: DoctorInfo = {
+                        availability: [],
+                        emailAddress: values.email,
+                        name: values.firstName + " " + values.familyName,
+                        registrationNumber: values.RegistrationNumber
+                    };
+                    
+                    postDoctor(session.accessToken, session.orgId, payload)
+                        .then((response) => onDoctorSubmit(response, form));
+        
+                    roleDetails = rolesList.find((role) => role.displayName === "pet-care-doctor");
+
+                    controllerDecodePatchRole(session, roleDetails.id, PatchMethod.ADD, "users", response1.id)
+                        .then((response) => onRoleSubmit(response))
+                        .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
+                }
+
+                if (userTypeSelect === "ADMIN") {
+                    roleDetails = rolesList.find((role) => role.displayName === "pet-care-admin");
+                    console.log(roleDetails);
+                    controllerDecodePatchRole(session, roleDetails.id, PatchMethod.ADD, "users", response1.id)
+                        .then((response) => onRoleSubmit(response))
+                        .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
+                }
+
+                if (userTypeSelect === "PET_OWNER") {
+                    roleDetails = rolesList.find((role) => role.displayName === "pet-care-pet-owner");
+
+                    controllerDecodePatchRole(session, roleDetails.id, PatchMethod.ADD, "users", response1.id)
+                        .then((response) => onRoleSubmit(response))
+                        .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
+                }
+            })
             .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
+
+        
+
     };
 
     return (
         <Modal backdrop="static" role="alertdialog" open={ open } onClose={ onClose } size="sm">
 
-            <Modal.Header>
-                <ModelHeaderComponent title="Add User" subTitle="Add a New User to the Organization" />
-            </Modal.Header>
+            {
+                isDoctor 
+                    ? (<Modal.Header>
+                        <ModelHeaderComponent title="Add Doctor" subTitle="Add a New Doctor to the Organization" />
+                    </Modal.Header>) 
+                    : (<Modal.Header>
+                        <ModelHeaderComponent title="Add User" subTitle="Add a New User to the Organization" />
+                    </Modal.Header>)
+            }
 
             <Modal.Body>
                 <div className={ styles.addUserMainDiv }>
@@ -123,6 +229,36 @@ export default function AddUserComponent(props: AddUserComponentProps) {
                                 layout="vertical"
                                 onSubmit={ () => { handleSubmit().then(form.restart); } }
                                 fluid>
+                                {
+                                    !isDoctor && (
+                                        <FormField
+                                            name="userType"
+                                            label="Type of User"
+                                            needErrorMessage={ true }
+                                        >
+                                            <SelectPicker 
+                                                data={ userTypeList }
+                                                value= { userTypeSelect }
+                                                searchable={ false }
+                                                defaultValue={ "PET_OWNER" } 
+                                                onSelect={ userTypeSelectOnChange }
+                                                block
+                                            />
+                                        </FormField>
+                                    )
+                                }
+                                {
+                                    userTypeSelect === "DOCTOR" 
+                                        ? (<FormField
+                                            name="RegistrationNumber"
+                                            label="Registration Number"
+                                            helperText="Registration Number of the doctor."
+                                            needErrorMessage={ true }
+                                        >
+                                            <FormSuite.Control name="input" />
+                                        </FormField>) 
+                                        : null
+                                }
 
                                 <FormField
                                     name="firstName"

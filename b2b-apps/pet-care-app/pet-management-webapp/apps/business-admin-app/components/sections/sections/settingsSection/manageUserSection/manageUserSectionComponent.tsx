@@ -125,7 +125,8 @@ export default function ManageUserSectionComponent(props: ManageUserSectionCompo
             <AddUserComponent
                 session={ session }
                 open={ addUserOpen }
-                onClose={ closeAddUserDialog } />
+                onClose={ closeAddUserDialog } 
+                isDoctor={ false } />
 
             <SettingsTitleComponent
                 title="Manage Users"

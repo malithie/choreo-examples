@@ -47,7 +47,7 @@ export default function BookingsInPetOwnerSection(props: BookingsInPetOwnerSecti
     async function getBookingsList() {
         const accessToken = session.accessToken;
 
-        getBookings(accessToken)
+        getBookings(accessToken, session.orgId, session.user.emails[0])
             .then((res) => {
                 if (res.data instanceof Array) {
                     setBookingList(res.data);

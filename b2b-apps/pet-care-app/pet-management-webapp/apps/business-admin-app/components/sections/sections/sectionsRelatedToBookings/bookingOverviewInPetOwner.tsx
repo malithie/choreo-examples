@@ -153,7 +153,7 @@ export default function BookingOverviewInPetOwnerView(props: BookingOverviewInPe
                         </Grid>
                     </div>
                     <div className={ styles.bookingIconInOverview }>
-                        <CalendarMonthIcon style={ { width: "100%", height: "100%", color: "#4e40ed" } }/>
+                        <CalendarMonthIcon style={ { width: "100%", height: "100%", color: "var(--primary-color)" } }/>
                     </div>
                 </div>
             </Modal.Body>

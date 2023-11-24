@@ -178,12 +178,12 @@ export default function AddGroupComponent(props: AddGroupComponentProps) {
 
 function getSendGroupData(users: InternalUser[], groupName: string) {
     const members: Member[] = users.map((user) => ({
-        display: "DEFAULT/" + user.email,
+        display: "PRIMARY/" + user.email,
         value: user.id
     }));
 
     const sendData: SendGroup = {
-        displayName: "DEFAULT/" + groupName,
+        displayName: "PRIMARY/" + groupName,
         members: members,
         schemas: [ "urn:ietf:params:scim:schemas:core:2.0:Group" ]
     };

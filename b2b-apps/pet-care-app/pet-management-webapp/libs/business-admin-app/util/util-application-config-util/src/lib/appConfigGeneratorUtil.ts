@@ -22,7 +22,9 @@ import config from "../../../../../../config.json";
 interface ConfigObject {
   CommonConfig: {
     AuthorizationConfig: {
+      BaseUrl: string;
       BaseOrganizationUrl: string;
+      ClientId: string;
     };
     ApplicationConfig: {
       SampleOrganization: {
@@ -43,6 +45,7 @@ interface ConfigObject {
     resourceServerURLs: {
       channellingService?: string;
       petManagementService?: string;
+      personalizationService?: string;
     };
     ManagementAPIConfig: {
       SharedApplicationName: string,
@@ -62,11 +65,13 @@ export function getConfig(): ConfigObject {
 
     const configObj = {
         CommonConfig: {
-            AuthorizationConfig: {
-                BaseOrganizationUrl: publicRuntimeConfig.baseOrgUrl
-            },
             ApplicationConfig: {
                 SampleOrganization: config.CommonConfig.ApplicationConfig.SampleOrganization
+            },
+            AuthorizationConfig: {
+                BaseOrganizationUrl: publicRuntimeConfig.baseOrgUrl,
+                BaseUrl: publicRuntimeConfig.baseUrl,
+                ClientId: publicRuntimeConfig.clientId
             }
         },
         // eslint-disable-next-line sort-keys
@@ -82,13 +87,14 @@ export function getConfig(): ConfigObject {
                     tag: config.BusinessAdminAppConfig.ApplicationConfig.Branding.tag
                 }
             },
-            resourceServerURLs: {
-                channellingService: publicRuntimeConfig.channellingServiceUrl,
-                petManagementService: publicRuntimeConfig.petManagementServiceUrl
-            },
             ManagementAPIConfig: {
                 SharedApplicationName: publicRuntimeConfig.sharedAppName,
                 UserStore: config.BusinessAdminAppConfig.ManagementAPIConfig.UserStore
+            },
+            resourceServerURLs: {
+                channellingService: publicRuntimeConfig.channellingServiceUrl,
+                personalizationService: publicRuntimeConfig.personalizationServiceUrl,
+                petManagementService: publicRuntimeConfig.petManagementServiceUrl
             }
         }
     };

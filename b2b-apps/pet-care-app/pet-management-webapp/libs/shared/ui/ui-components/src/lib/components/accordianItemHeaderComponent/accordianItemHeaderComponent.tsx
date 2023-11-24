@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { random_rgba } from "@pet-management-webapp/shared/util/util-common";
 import Image from "next/image";
 import { Avatar, Stack } from "rsuite";
+import { TypeAttributes } from "rsuite/esm/@types/common";
 import { AccordianItemHeaderComponentProps } from
     "../../models/accordianItemHeaderComponent/accordianItemHeaderComponent";
 
@@ -30,29 +30,23 @@ import { AccordianItemHeaderComponentProps } from
  */
 export function AccordianItemHeaderComponent(prop: AccordianItemHeaderComponentProps) {
 
-    const { title, description, imageSrc } = prop;
+    const { title, description, imageSrc, avatarSize = "lg" } = prop;
 
     return (
         <Stack>
             <Stack spacing={ 20 }>
                 <Avatar
-                    size="lg"
+                    size={ avatarSize as TypeAttributes.Size } 
                     alt="IDP image"
-                    style={ imageSrc ? { background: "rgba(255,0,0,0)" } : { background: `${random_rgba()}` } }
+                    style={ imageSrc ? { background: "rgba(255,0,0,0)" } : { background: "rgba(125,125,125,255)" } }
                 >
-                    <>
-                        { imageSrc 
-                            ?(<Image
-                                src={ imageSrc }
-                                alt="idp image"
-                                width={ 50 } />)
-                            : null 
-                        }
-                        { title 
-                            ? title.charAt(0) 
-                            : null 
-                        }
-                    </>
+                    { imageSrc 
+                        ?(<Image
+                            src={ imageSrc }
+                            alt="idp image"
+                            width={ 50 } />)
+                        : null 
+                    }
                 </Avatar>
                 <Stack direction="column" justifyContent="flex-start" alignItems="stretch">
                     <h5>{ title }</h5>

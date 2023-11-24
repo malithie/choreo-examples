@@ -65,7 +65,7 @@ export default function DoctorOverview(props: DoctorOverviewProps) {
         const accessToken = session.accessToken;
 
         if (doctor) {
-            getDocThumbnail(accessToken, doctor.id)
+            getDocThumbnail(accessToken, session.orgId, doctor.id)
                 .then((res) => {
                     if (res.data.size > 0) {
                         const imageUrl = URL.createObjectURL(res.data);
@@ -173,19 +173,27 @@ export default function DoctorOverview(props: DoctorOverviewProps) {
                                     <p className={ styles.docOverviewFont }>{ doctor?.registrationNumber }</p>
                                 </Typography>
                                 <Typography className="typography-style-doc-overview">
-                                    <p className={ styles.docOverviewFont }>{ doctor?.specialty }</p>
+                                    <p className={ styles.docOverviewFont }>
+                                        { doctor?.specialty ? doctor.specialty : "N/A" }
+                                    </p>
                                 </Typography>
                                 <Typography className="typography-style-doc-overview">
                                     <p className={ styles.docOverviewFont }>{ doctor?.emailAddress }</p>
                                 </Typography>
                                 <Typography className="typography-style-doc-overview">
-                                    <p className={ styles.docOverviewFont }>{ doctor?.gender }</p>
+                                    <p className={ styles.docOverviewFont }>
+                                        { doctor?.gender ? doctor.gender : "N/A" }
+                                    </p>
                                 </Typography>
                                 <Typography className="typography-style-doc-overview">
-                                    <p className={ styles.docOverviewFont }>{ doctor?.dateOfBirth }</p>
+                                    <p className={ styles.docOverviewFont }>
+                                        { doctor?.dateOfBirth ? doctor.dateOfBirth : "N/A" }
+                                    </p>
                                 </Typography>
                                 <Typography className="typography-style-doc-overview">
-                                    <p className={ styles.docOverviewFont }>{ doctor?.address }</p>
+                                    <p className={ styles.docOverviewFont }>
+                                        { doctor?.address ? doctor.address : "N/A" }
+                                    </p>
                                 </Typography>
                                 <Typography className="typography-style-doc-overview">
                                     <p className={ styles.docOverviewFont }>{ stringDate }</p>
@@ -269,7 +277,7 @@ export default function DoctorOverview(props: DoctorOverviewProps) {
                     <br /><br />
                     { isLoading ? (
                         <div className={ styles.docImageStyle }>
-                            <TailSpin color="#4e40ed" height={ 100 } width={ 100 } />
+                            <TailSpin color="var(--primary-color)" height={ 100 } width={ 100 } />
                         </div>
                     ) : (
                         <div className={ styles.docImageStyle }>
@@ -284,8 +292,8 @@ export default function DoctorOverview(props: DoctorOverviewProps) {
                             ) : (
                                 <Image
                                     style={ { borderRadius: "10%", height: "100%", width: "100%" } }
-                                    src={ doctor?.gender.toLowerCase() === "male" ?
-                                        male_doc_thumbnail : female_doc_thumbnail }
+                                    src={ doctor?.gender?.toLowerCase() === "male" ?
+                                        male_doc_thumbnail : male_doc_thumbnail }
                                     alt="doc-thumbnail" />
 
                             ) }

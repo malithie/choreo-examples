@@ -54,7 +54,7 @@ export default function ChannelDoctorSection(props: ChannelDoctorSectionProps) {
     async function getDoctorList() {
         const accessToken = session.accessToken;
 
-        getDoctors(accessToken)
+        getDoctors(accessToken, session.orgId)
             .then((res) => {
                 if (res.data instanceof Array) {
                     setDoctorList(res.data);
@@ -69,7 +69,7 @@ export default function ChannelDoctorSection(props: ChannelDoctorSectionProps) {
     async function getPetList() {
         const accessToken = session.accessToken;
 
-        getPets(accessToken)
+        getPets(accessToken, session.orgId, session.user?.id)
             .then((res) => {
                 if (res.data instanceof Array) {
                     setPetList(res.data);

@@ -44,20 +44,20 @@ export default function SettingsSection(props: SettingsSectionProps) {
 
     const CustomSwitch = styled(Switch)(({ theme }) => ({
         "& .MuiSwitch-switchBase.Mui-checked": {
-            color: "#4e40ed",
+            color: "var(--primary-color)",
             "&:hover": {
-                backgroundColor: alpha("#4e40ed", theme.palette.action.hoverOpacity)
+                backgroundColor: alpha("var(--primary-color)", theme.palette.action.hoverOpacity)
             }
         },
         "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-            backgroundColor: "#4e40ed"
+            backgroundColor: "var(--primary-color)"
         }
     }));
 
     const getSettings = () => {
         async function getNotifications() {
             const accessToken = session.accessToken;
-            const response = await getNotification(accessToken);
+            const response = await getNotification(accessToken, session.orgId, session.userId, session.user.emails[0]);
 
             if (response) {
                 setEnabled(response.data.notifications.enabled);
@@ -84,7 +84,7 @@ export default function SettingsSection(props: SettingsSectionProps) {
                     emailAddress: email
                 }
             };
-            const response = await postNotification(accessToken, payload);
+            const response = await postNotification(accessToken, session.orgId, session.user.id, payload);
         }
         setNotification();
     };

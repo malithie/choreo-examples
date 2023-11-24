@@ -31,14 +31,14 @@ export interface Doctor {
 }
 
 export interface DoctorInfo {
-    address: string;
-    availability: Availability[];
-    dateOfBirth: string;
+    address?: string;
+    availability?: Availability[];
+    dateOfBirth?: string;
     emailAddress: string;
-    gender: string;
+    gender?: string;
     name: string;
     registrationNumber: string;
-    specialty: string;
+    specialty?: string;
 }
 
 export interface Availability {

@@ -19,9 +19,9 @@
 import createHeaders from "../createHeaders";
 import { getPetInstance } from "../CreatePet/instance";
 
-export async function deletePet(accessToken: string, petId: string) {
+export async function deletePet(accessToken: string, orgId: string, userId: string, petId: string) {
     const headers = createHeaders(accessToken);
-    const response = await getPetInstance().delete("/pets/" + petId, {
+    const response = await getPetInstance().delete(`/org/${orgId}/user/${userId}/pets/` + petId, {
         headers: headers
     });
 

@@ -90,7 +90,6 @@ export default function EditDoctor(props: EditDoctorProps) {
         }
 
         if (url !== null && url !== "") {
-            console.log("url: "+ url);
             // Start loading
             setIsLoading(true);
       
@@ -156,7 +155,7 @@ export default function EditDoctor(props: EditDoctorProps) {
                 specialty: docSpecialty
             };
 
-            putDoctor(accessToken, doctor.id, payload);
+            putDoctor(accessToken, session.orgId, doctor.id, payload);
         }
         updateDoctor();
         setAvailabilityInfo([]);
@@ -416,7 +415,7 @@ export default function EditDoctor(props: EditDoctorProps) {
                     <br />
                     { isLoading ? (
                         <div className={ styles.docImageStyle }>
-                            <TailSpin color="#4e40ed" height={ 100 } width={ 100 } />
+                            <TailSpin color="var(--primary-color)" height={ 100 } width={ 100 } />
                         </div>
                     ) : (
                         <div className={ styles.docImageStyle }>
@@ -432,8 +431,8 @@ export default function EditDoctor(props: EditDoctorProps) {
                                 <Image
                                     style={ { borderRadius: "10%", height: "100%",  width: "100%" } }
                                     src={ 
-                                        doctor?.gender.toLowerCase() === "male" ? 
-                                            male_doc_thumbnail : female_doc_thumbnail }
+                                        doctor?.gender?.toLowerCase() === "male" ? 
+                                            male_doc_thumbnail : male_doc_thumbnail }
                                     alt="doc-thumbnail"
                                 />
 

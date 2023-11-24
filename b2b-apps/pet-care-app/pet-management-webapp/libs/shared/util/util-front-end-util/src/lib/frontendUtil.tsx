@@ -19,6 +19,7 @@
 import { SideNavItem } from "@pet-management-webapp/shared/data-access/data-access-common-models-util";
 import AdminIcon from "@rsuite/icons/Admin";
 import CalendarIcon from "@rsuite/icons/Calendar";
+import EditIcon from "@rsuite/icons/Edit";
 import GridIcon from "@rsuite/icons/Grid";
 import DashboardIcon from "@rsuite/icons/legacy/Dashboard";
 import GearCircleIcon from "@rsuite/icons/legacy/GearCircle";
@@ -138,6 +139,9 @@ export function getIconFromString(iconString: string | undefined): JSX.Element |
         case "ChannellingIcon":
             return(<CalendarIcon/>);  
 
+        case "BrandingIcon":
+            return(<EditIcon/>);
+
         default:
 
             return;
@@ -145,5 +149,5 @@ export function getIconFromString(iconString: string | undefined): JSX.Element |
 }
 
 export default {
-    LOADING_DISPLAY_NONE, LOADING_DISPLAY_BLOCK, hideBasedOnScopes, getIconFromString
+    LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE, getIconFromString, hideBasedOnScopes
 };

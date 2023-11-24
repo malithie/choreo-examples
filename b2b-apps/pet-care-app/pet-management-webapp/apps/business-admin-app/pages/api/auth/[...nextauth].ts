@@ -15,14 +15,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import { controllerDecodeSwitchOrg }
-    from "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
 import { getConfig } from "@pet-management-webapp/business-admin-app/util/util-application-config-util";
 import { getLoggedUserFromProfile, getLoggedUserId, getOrgId, getOrgName } from
     "@pet-management-webapp/shared/util/util-authorization-config-util";
+import { jwtDecode } from "jwt-decode";
 import { NextApiRequest, NextApiResponse } from "next";
-import NextAuth from "next-auth";
+import NextAuth, { Profile } from "next-auth";
+import { JWT } from "next-auth/jwt";
 
 /**
  * 
@@ -40,8 +39,7 @@ const wso2ISProvider = (req: NextApiRequest, res: NextApiResponse) => NextAuth(r
 
             if (account) {
                 token.accessToken = account.access_token;
-                // Session token size is going beyond 4k when ID token is added. Hence commenting it out.
-                //token.idToken = account.id_token;
+                token.idToken = account.id_token;
                 token.scope = account.scope;
                 token.user = profile;
             }
@@ -54,37 +52,19 @@ const wso2ISProvider = (req: NextApiRequest, res: NextApiResponse) => NextAuth(r
         },
         async session({ session, token }) {
 
-            const orgSession = await controllerDecodeSwitchOrg(token);
-
-            if (!orgSession) {
+            if (!session) {
                 session.error = true;
-            } else if (orgSession.expires_in <= 0) {
-                session.expires = true;
-            }
-            else {
+            } else {
                 session.accessToken = token.accessToken as string;
-                session.adminAccessToken = orgSession.access_token;
-                session.idToken = orgSession.id_token;
-                session.scope = orgSession.scope;
-                session.refreshToken = orgSession.refresh_token;
+                session.orginalIdToken = token.idToken;
+                session.scope = token?.scope;
+                const profile: Profile = jwtDecode(session.orginalIdToken);
+                
                 session.expires = false;
-                session.userId = getLoggedUserId(session.idToken);
-                session.user = getLoggedUserFromProfile(token.user);
-                session.orgId = getOrgId(session.idToken);
-                session.orgName = getOrgName(session.idToken);
-                session.orginalIdToken = orgSession.id_token.toString();
-
-                const groupsList = token.user.groups;
-
-                if (groupsList == null) {
-                    session.group = "petOwner";
-                } else if (groupsList.some(x => x.toLowerCase() === "doctor")) {
-                    session.group = "doctor";
-                } else if (groupsList.some(x => x.toLowerCase() === "admin")) {
-                    session.group = "admin";
-                } else {
-                    session.group = "petOwner";
-                }
+                session.userId = getLoggedUserId(session.orginalIdToken as unknown as JWT);
+                session.user = getLoggedUserFromProfile(profile);
+                session.orgId = getOrgId(session.orginalIdToken as unknown as JWT);
+                session.orgName = getOrgName(session.orginalIdToken as unknown as JWT);
             }
 
             return session;

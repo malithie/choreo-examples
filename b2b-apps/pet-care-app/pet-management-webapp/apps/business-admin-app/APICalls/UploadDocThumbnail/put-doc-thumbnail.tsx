@@ -18,12 +18,12 @@
 
 import { getDoctorInstance } from "../getDoctors/doctorInstance";
 
-export async function updateDocThumbnail(accessToken: string, doctorId: string, payload: FormData) {
+export async function updateDocThumbnail(accessToken: string, orgId:string, doctorId: string, payload: FormData) {
     const headers = {
         "Authorization": `Bearer ${accessToken}`,
         "Content-Type": "multipart/form-data"
     };
-    const path = "/doctors/" + doctorId + "/thumbnail";
+    const path = `org/${orgId}/doctors/` + doctorId + "/thumbnail";
     const response = await getDoctorInstance().put(path, payload, {
         headers: headers
     });

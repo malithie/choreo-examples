@@ -53,11 +53,11 @@ function FileUploadSingle(props: FileUploadProps) {
                 "file",
                 file
             );
-            const response = await updateDocThumbnail(accessToken, doctorId, formData);
+            const response = await updateDocThumbnail(accessToken, session.orgId, doctorId, formData);
 
             if (response.status === 200) {
                 const accessToken = await session.accessToken;
-                const response = await getDocThumbnail(accessToken, doctorId);
+                const response = await getDocThumbnail(accessToken, session.orgId, doctorId);
 
                 if (response.data.size > 0) {
                     const imageUrl = URL.createObjectURL(response.data);

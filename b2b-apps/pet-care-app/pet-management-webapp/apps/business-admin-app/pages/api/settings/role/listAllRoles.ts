@@ -41,7 +41,7 @@ export default async function listAllRoles(req: NextApiRequest, res: NextApiResp
 
     try {
         const fetchData = await fetch(
-            `${getOrgUrl(orgId)}/api/server/v1/organizations/${orgId}/roles`,
+            `${getOrgUrl(orgId)}/scim2/v2/Roles`,
             requestOptions(session)
         );
         const data = await fetchData.json();

@@ -19,8 +19,14 @@
 export interface PatchOperation {
     operation?: string,
     op?: string,
-    path: string,
-    value?: string | string[] | boolean
+    path?: string,
+    value?: {
+        users?: UserValue []
+    }
+}
+
+interface UserValue {
+    value: string
 }
 
 export default PatchOperation;

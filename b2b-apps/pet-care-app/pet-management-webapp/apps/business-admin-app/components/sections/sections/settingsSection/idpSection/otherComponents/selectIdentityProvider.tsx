@@ -49,7 +49,7 @@ export default function SelectIdentityProvider(prop: SelectIdentityProviderProps
             <Modal.Header>
                 <ModelHeaderComponent
                     title="Select Identity Provider"
-                    subTitle="Choose one of the following identity providers" />
+                    subTitle="Choose one of the following identity provider types" />
             </Modal.Header>
             <Modal.Body>
                 <div>

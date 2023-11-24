@@ -103,7 +103,6 @@ export default function MedicalReportEdit(props: MedicalReportEdit) {
             setDrugName("");
             setDosage("");
             setDuration("");
-            console.log(medicineInfo);
         }
     };
 
@@ -285,7 +284,7 @@ export default function MedicalReportEdit(props: MedicalReportEdit) {
                     </div>
                     <br />
                     <div className={ styles.docImageStyle }>
-                        <PageIcon style={ { width: "100%", height: "100%", color: "#4e40ed" } } />
+                        <PageIcon style={ { width: "100%", height: "100%", color: "var(--primary-color)" } } />
                     </div>
                 </div>
             </Modal.Body>

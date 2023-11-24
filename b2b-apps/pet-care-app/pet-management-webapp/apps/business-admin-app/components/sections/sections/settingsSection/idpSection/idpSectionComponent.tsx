@@ -17,7 +17,10 @@
  */
 
 import {
-    EnterpriseIdentityProvider, GoogleIdentityProvider, IdentityProvider, IdentityProviderTemplate
+    IdentityProvider, 
+    IdentityProviderTemplate,
+    StandardBasedOidcIdentityProvider,
+    StandardBasedSAMLIdentityProvider
 } from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
 import {
     controllerDecodeListAllIdentityProviders
@@ -28,7 +31,7 @@ import {
 import AppSelectIcon from "@rsuite/icons/AppSelect";
 import { Session } from "next-auth";
 import { useCallback, useEffect, useState } from "react";
-import { Container, useToaster } from "rsuite";
+import { Button, Container, useToaster } from "rsuite";
 import IdentityProviderList from "./otherComponents/identityProviderList";
 import IdpCreate from "./otherComponents/idpCreateModal/idpCreate";
 import SelectIdentityProvider from "./otherComponents/selectIdentityProvider";
@@ -54,8 +57,8 @@ export default function IdpSectionComponent(props: IdpSectionComponentProps) {
     const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplate>(undefined);
 
     const templates: IdentityProviderTemplate[] = [
-        EnterpriseIdentityProvider,
-        GoogleIdentityProvider
+        StandardBasedOidcIdentityProvider,
+        StandardBasedSAMLIdentityProvider
     ];
 
     const fetchAllIdPs = useCallback(async () => {
@@ -67,7 +70,6 @@ export default function IdpSectionComponent(props: IdpSectionComponentProps) {
         } else {
             setIdpList([]);
         }
-        console.log(session);
 
     }, [ session ]);
 
@@ -111,9 +113,25 @@ export default function IdpSectionComponent(props: IdpSectionComponentProps) {
     return (
         <Container>
 
-            <SettingsTitleComponent
-                title="Identity Providers"
-                subtitle="Manage identity providers to allow users to log in to your application through them." />
+            {
+                idpList?.length == 0
+                    ? (<SettingsTitleComponent
+                        title="Identity Providers"
+                        subtitle="Manage identity providers to allow users to log in to your application through them."
+                    />)
+                    : (<SettingsTitleComponent
+                        title="Identity Providers"
+                        subtitle="Manage identity providers to allow users to log in to your application through them.">
+                        <Button 
+                            appearance="primary"
+                            onClick={ onAddIdentityProviderClick }
+                            size="md"
+                            style={ { marginTop: "12px" } }>
+                            { "+ Identity Provider" }
+                        </Button>
+                    </SettingsTitleComponent>)
+            }
+            
 
             {
                 idpList

@@ -42,7 +42,7 @@ function PetCard(props: PetCardProps) {
     async function getThumbnails() {
         const accessToken = session.accessToken;
     
-        getThumbnail(accessToken, petId)
+        getThumbnail(accessToken, session.orgId, session.user.id, petId)
             .then((res) => {
                 if (res.data.size > 0) {
                     const imageUrl = URL.createObjectURL(res.data);
@@ -69,7 +69,7 @@ function PetCard(props: PetCardProps) {
             <CardContent>
                 { isLoading ? (
                     <div className={ styles.tailSpinDiv }>
-                        <TailSpin color="#4e40ed" height={ 80 } width={ 80 } />
+                        <TailSpin color="var(--primary-color)" height={ 80 } width={ 80 } />
                     </div>
                 ) : (
                     <>

@@ -22,12 +22,13 @@ import createHeaders from "../createHeaders";
 import { getDoctorInstance } from "../getDoctors/doctorInstance";
 
 export async function getNextAppointmentNo(accessToken: string, 
+    orgId:string, 
     doctorId: string, date: string, 
     sessionStartTime: string, 
     sessionEndTime: string) {
     const headers = createHeaders(accessToken);
     const response = await getDoctorInstance().
-        get("/doctors/"+ doctorId +"/next-appointment-number?date=" + date + 
+        get(`org/${orgId}/doctors/`+ doctorId +"/next-appointment-number?date=" + date + 
         "&sessionStartTime=" + sessionStartTime + 
         "&sessionEndTime=" + sessionEndTime , {
             headers: headers

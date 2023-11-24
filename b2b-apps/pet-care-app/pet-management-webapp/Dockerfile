@@ -36,10 +36,10 @@ COPY --from=builder --chown=${USER_ID}:${USER_GROUP_ID} /home/app/node_modules .
 COPY --from=builder --chown=${USER_ID}:${USER_GROUP_ID} /home/app/server.js /home/app/
 
 USER 10001
-EXPOSE 3001
+EXPOSE 3002
 
 ENV NODE_ENV=production
-ENV PORT 3001
+ENV PORT 3002
 ENV NEXTAUTH_SECRET=V9Ogd83zDs4BtBqZf7rw7fVx/7KrYQfA+8LO2BMuJvo=
 
 CMD ["node", "server.js"]

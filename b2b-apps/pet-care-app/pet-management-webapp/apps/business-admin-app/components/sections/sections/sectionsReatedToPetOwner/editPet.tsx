@@ -98,7 +98,10 @@ export default function EditPetComponent(props: EditPetComponentProps) {
             const payload: updatePetInfo = {
                 breed: petBreed,
                 dateOfBirth: petDoB,
+                email: session.user.emails[0],
                 name: petName,
+                orgId: session.orgId,
+                userId: session.user.id,
                 vaccinations: vaccineInfo
             };
             const response = await updatePet(accessToken, pet.id, payload);
@@ -331,7 +334,7 @@ export default function EditPetComponent(props: EditPetComponentProps) {
                     <br /><br />
                     <div className={ styles.docImageStyle }>
                         { isLoading ? (
-                            <TailSpin color="#4e40ed" height={ 100 } width={ 100 } />
+                            <TailSpin color="var(--primary-color)" height={ 100 } width={ 100 } />
                         ) : (
                             <div>
                                 { imageUrl ? (

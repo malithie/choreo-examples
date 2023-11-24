@@ -88,7 +88,7 @@ export default function AddDoctorComponent(props: AddDoctorComponentProps) {
             specialty: values.Specialty
         };
 
-        postDoctor(session.accessToken, payload)
+        postDoctor(session.accessToken, session.orgId, payload)
             .then((response) => onDataSubmit(response, form))
             .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
     };

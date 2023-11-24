@@ -93,17 +93,18 @@ export enum PatchMethod {
     REPLACE = "REPLACE"
 }
 
-export const GOOGLE_ID = "google-idp";
-export const ENTERPRISE_ID = "enterprise-idp";
 export const BASIC_ID = "basic-idp";
 export const EMPTY_STRING = "";
+export const OIDC_IDP = "enterprise-oidc-idp";
+export const SAML_IDP = "enterprise-saml-idp";
 
 export const GOOGLE_AUTHENTICATOR_ID = "GoogleOIDCAuthenticator";
-export const ENTERPRISE_AUTHENTICATOR_ID = "OpenIDConnectAuthenticator";
+export const OIDC_AUTHENTICATOR_ID = "OpenIDConnectAuthenticator";
+export const SAML_AUTHENTICATOR_ID = "SAMLSSOAuthenticator";
 export const BASIC_AUTHENTICATOR_ID = "BasicAuthenticator";
 
 export default {
-    BASIC_AUTHENTICATOR_ID, BASIC_ID, EMPTY_STRING, ENTERPRISE_AUTHENTICATOR_ID, ENTERPRISE_ID,
-    GOOGLE_AUTHENTICATOR_ID, GOOGLE_ID, PatchMethod, checkIfJSONisEmpty, copyTheTextToClipboard, getCurrentDate,
+    BASIC_AUTHENTICATOR_ID, BASIC_ID, EMPTY_STRING, 
+    GOOGLE_AUTHENTICATOR_ID, PatchMethod, checkIfJSONisEmpty, copyTheTextToClipboard, getCurrentDate,
     random_rgba, sizeOfJson, stringIsEmpty
 };

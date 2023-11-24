@@ -20,9 +20,9 @@ import { AxiosResponse } from "axios";
 import createHeaders from "../createHeaders";
 import { getPetInstance } from "../CreatePet/instance";
 
-export async function getPets(accessToken: string) {
+export async function getPets(accessToken: string, orgId: string, userId: string) {
     const headers = createHeaders(accessToken);
-    const response = await getPetInstance().get("/pets", {
+    const response = await getPetInstance().get(`/org/${orgId}/user/${userId}/pets`, {
         headers: headers
     });
 

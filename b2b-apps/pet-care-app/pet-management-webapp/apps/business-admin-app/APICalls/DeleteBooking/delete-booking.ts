@@ -18,9 +18,9 @@
 import createHeaders from "../createHeaders";
 import { getDoctorInstance } from "../getDoctors/doctorInstance";
 
-export async function deleteBooking(accessToken: string, bookingId: string) {
+export async function deleteBooking(accessToken: string, orgId: string, bookingId: string) {
     const headers = createHeaders(accessToken);
-    const response = await getDoctorInstance().delete("/bookings/" + bookingId, {
+    const response = await getDoctorInstance().delete(`/org/${orgId}/bookings/` + bookingId, {
         headers: headers
     });
 

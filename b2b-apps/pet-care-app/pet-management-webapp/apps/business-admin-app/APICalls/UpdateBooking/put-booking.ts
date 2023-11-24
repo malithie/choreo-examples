@@ -20,9 +20,9 @@ import { BookingInfo } from "apps/business-admin-app/types/booking";
 import createHeaders from "../createHeaders";
 import { getDoctorInstance } from "../getDoctors/doctorInstance";
 
-export async function updateBooking(accessToken: string, bookingId: string, payload?: BookingInfo) {
+export async function updateBooking(accessToken: string, orgId: string, bookingId: string, payload?: BookingInfo) {
     const headers = createHeaders(accessToken);
-    const path = "/bookings/" + bookingId;
+    const path = `/org/${orgId}/bookings/` + bookingId;
     const response = await getDoctorInstance().put(path, payload, {
         headers: headers
     });

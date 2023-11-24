@@ -21,9 +21,9 @@ import { AxiosResponse } from "axios";
 import createHeaders from "../createHeaders";
 import { getDoctorInstance } from "../getDoctors/doctorInstance";
 
-export async function getDoctorBookings(accessToken: string, doctorId: string) {
+export async function getDoctorBookings(accessToken: string, orgId:string, doctorId: string) {
     const headers = createHeaders(accessToken);
-    const response = await getDoctorInstance().get("/doctors/"+ doctorId +"/bookings", {
+    const response = await getDoctorInstance().get(`org/${orgId}/doctors/`+ doctorId +"/bookings", {
         headers: headers
     });
 

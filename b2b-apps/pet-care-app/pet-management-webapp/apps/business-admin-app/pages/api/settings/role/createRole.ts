@@ -44,7 +44,7 @@ export default async function createRole(req: NextApiRequest, res: NextApiRespon
 
     try {
         const fetchData = await fetch(
-            `${getOrgUrl(orgId)}/api/server/v1/organizations/${orgId}/roles`,
+            `${getOrgUrl(orgId)}/scim2/Roles`,
             requestOptionsWithBody(session, RequestMethod.POST, role)
         );
         const data = await fetchData.json();

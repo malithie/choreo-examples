@@ -18,6 +18,10 @@
 
 import * as EnterpriseIdentityProvider from "./lib/identityProvider/data/templates/enterprise-identity-provider.json";
 import * as GoogleIdentityProvider from "./lib/identityProvider/data/templates/google.json";
+import * as StandardBasedOidcIdentityProvider 
+    from "./lib/identityProvider/data/templates/standard-based-oidc-identity-provider.json";
+import * as StandardBasedSAMLIdentityProvider 
+    from "./lib/identityProvider/data/templates/standard-based-saml-identity-provider.json";
 
 export * from "./lib/application/application";
 export * from "./lib/application/applicationList";
@@ -37,6 +41,9 @@ export * from "./lib/role/role";
 export * from "./lib/role/roleGroups";
 export * from "./lib/role/roleList";
 export * from "./lib/role/roleUsers";
+export * from "./lib/branding/brandingPreference";
 
 export { EnterpriseIdentityProvider };
 export { GoogleIdentityProvider };
+export { StandardBasedOidcIdentityProvider };
+export { StandardBasedSAMLIdentityProvider };

@@ -132,7 +132,7 @@ export default function EditDoctorProfile(props: EditDoctorProfileProps) {
                 specialty: docSpecialty
             };
 
-            putDoctor(accessToken, doctor.id, payload);
+            putDoctor(accessToken, session.orgId, doctor.id, payload);
         }
         updateDoctor();
         setAvailabilityInfo([]);
@@ -403,8 +403,8 @@ export default function EditDoctorProfile(props: EditDoctorProfileProps) {
                             <Image
                                 style={ { borderRadius: "10%", height: "100%",  width: "100%" } }
                                 src={ 
-                                    doctor?.gender.toLowerCase() === "male" ? 
-                                        male_doc_thumbnail : female_doc_thumbnail }
+                                    doctor?.gender?.toLowerCase() === "male" ? 
+                                        male_doc_thumbnail : male_doc_thumbnail }
                                 alt="doc-thumbnail"
                             />
 

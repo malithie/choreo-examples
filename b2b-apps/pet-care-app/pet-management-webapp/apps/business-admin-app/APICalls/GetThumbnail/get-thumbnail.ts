@@ -17,13 +17,13 @@
  */
 import { getPetInstance } from "../CreatePet/instance";
 
-export async function getThumbnail(accessToken: string, petId: string) {
+export async function getThumbnail(accessToken: string, orgId: string, userId: string, petId: string) {
     const headers = {
         "Authorization": `Bearer ${accessToken}`,
         "accept": "*/*"
     };
 
-    const response = await getPetInstance().get("/pets/" + petId + "/thumbnail" , {
+    const response = await getPetInstance().get(`/org/${orgId}/user/${userId}/pets/` + petId + "/thumbnail" , {
         headers: headers,
         responseType: "blob"
     });

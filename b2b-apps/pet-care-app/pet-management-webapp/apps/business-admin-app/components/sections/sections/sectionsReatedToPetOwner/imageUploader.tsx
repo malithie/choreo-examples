@@ -56,7 +56,7 @@ function FileUploadSingle(props: FileUploadProps) {
 
             if (response.status === 200) {
                 const accessToken = await session.accessToken;
-                const response = await getThumbnail(accessToken, petId);
+                const response = await getThumbnail(accessToken, session.orgId, session.user.id, petId);
 
                 if (response.data.size > 0) {
                     const imageUrl = URL.createObjectURL(response.data);

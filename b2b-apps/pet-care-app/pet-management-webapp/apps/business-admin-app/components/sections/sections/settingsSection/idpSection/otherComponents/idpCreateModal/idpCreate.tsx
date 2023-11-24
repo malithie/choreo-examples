@@ -20,14 +20,14 @@ import { IdentityProvider, IdentityProviderTemplate, getCallbackUrl } from
     "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
 import { ModelHeaderComponent } from "@pet-management-webapp/shared/ui/ui-basic-components";
 import { infoTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
-import { CopyTextToClipboardCallback, ENTERPRISE_ID, GOOGLE_ID, copyTheTextToClipboard }
+import { CopyTextToClipboardCallback, OIDC_IDP, SAML_IDP, copyTheTextToClipboard }
     from "@pet-management-webapp/shared/util/util-common";
 import CopyIcon from "@rsuite/icons/Copy";
 import InfoRoundIcon from "@rsuite/icons/InfoRound";
 import { Session } from "next-auth";
 import { FlexboxGrid, Input, InputGroup, Modal, Panel, Stack, useToaster } from "rsuite";
 import ExternalIdentityProvider from "./externalIdentityProvider";
-import GoogleIdentityProvider from "./googleIdentityProvider";
+import SAMLIdentityProvider from "./samlIdentityProvider";
 
 interface PrerequisiteProps {
     orgId: string
@@ -58,16 +58,17 @@ export default function IdpCreate(prop: IdpCreateProps) {
     const resolveTemplateForm = (): JSX.Element => {
         switch (template.templateId) {
 
-            case GOOGLE_ID:
-                return (<GoogleIdentityProvider
+            case OIDC_IDP:
+
+                return (<ExternalIdentityProvider
                     session={ session }
                     template={ template }
                     onIdpCreate={ onIdpCreate }
                     onCancel={ onCancel } />);
 
-            case ENTERPRISE_ID:
+            case SAML_IDP:
 
-                return (<ExternalIdentityProvider
+                return (<SAMLIdentityProvider
                     session={ session }
                     template={ template }
                     onIdpCreate={ onIdpCreate }

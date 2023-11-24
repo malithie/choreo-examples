@@ -62,7 +62,7 @@ export default function PetOverview(props: PetOverviewProps) {
         const accessToken = session.accessToken;
 
         if (pet) {
-            getThumbnail(accessToken, pet?.id)
+            getThumbnail(accessToken, session.orgId, session.userId, pet?.id)
                 .then((res) => {
                     if (res.data.size > 0) {
                         const imageUrl = URL.createObjectURL(res.data);
@@ -119,7 +119,7 @@ export default function PetOverview(props: PetOverviewProps) {
     const handleDelete = () => {
         async function deletePets() {
             const accessToken = session.accessToken;
-            const response = await deletePet(accessToken, pet.id);
+            const response = await deletePet(accessToken, session.orgId, session.user.id, pet.id);
 
             setIsOpen(false);
         }
@@ -357,7 +357,7 @@ export default function PetOverview(props: PetOverviewProps) {
                     </div>
                     { isLoading ? (
                         <div className={ styles.docImageStyle }>
-                            <TailSpin color="#4e40ed" height={ 100 } width={ 100 } />
+                            <TailSpin color="var(--primary-color)" height={ 100 } width={ 100 } />
                         </div>
                     ) : (
                         <div className={ styles.docImageStyle }>

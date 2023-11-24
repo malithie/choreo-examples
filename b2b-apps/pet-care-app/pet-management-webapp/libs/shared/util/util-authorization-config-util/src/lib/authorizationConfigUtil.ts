@@ -76,7 +76,8 @@ async function orgSignout(session: Session, hostedUrl: string): Promise<void> {
             .then(
                 () => window.location.assign(
                     getManagementAPIServerBaseUrl() + "/t/" + getTenantDomain() +
-                    "/oidc/logout?id_token_hint=" + session.orginalIdToken + "&post_logout_redirect_uri=" +
+                    "/oidc/logout?client_id=" + getConfig().CommonConfig.AuthorizationConfig.ClientId + 
+                    "&id_token_hint=" + session.orginalIdToken + "&post_logout_redirect_uri=" +
                     hostedUrl + "&state=sign_out_success"
                 )
             );

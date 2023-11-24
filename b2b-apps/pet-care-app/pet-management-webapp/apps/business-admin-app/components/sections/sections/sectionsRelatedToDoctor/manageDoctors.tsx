@@ -27,6 +27,7 @@ import AddDoctorComponent from "./addDoctorComponent";
 import DoctorCard from "./doctorCard";
 import DoctorOverview from "./doctorOverview";
 import styles from "../../../../styles/doctor.module.css";
+import AddUserComponent from "../settingsSection/manageUserSection/otherComponents/addUserComponent";
 
 interface ManageDoctorsSectionProps {
     session: Session
@@ -51,7 +52,7 @@ export default function ManageDoctorsSection(props: ManageDoctorsSectionProps) {
     async function getDoctorList() {
         const accessToken = session.accessToken;
 
-        getDoctors(accessToken)
+        getDoctors(accessToken, session.orgId)
             .then((res) => {
                 if (res.data instanceof Array) {
                     setDoctorList(res.data);
@@ -104,10 +105,16 @@ export default function ManageDoctorsSection(props: ManageDoctorsSectionProps) {
                 </Button>
             </Stack>
 
-            <AddDoctorComponent
+            {/* <AddDoctorComponent
                 session={ session }
                 open={ isAddDoctorOpen }
-                onClose={ closeAddDoctorDialog } />
+                onClose={ closeAddDoctorDialog } /> */}
+
+            <AddUserComponent
+                session={ session }
+                open={ isAddDoctorOpen }
+                onClose={ closeAddDoctorDialog }
+                isDoctor={ true } />
 
             <div>
                 <Grid container spacing={ 2 }>

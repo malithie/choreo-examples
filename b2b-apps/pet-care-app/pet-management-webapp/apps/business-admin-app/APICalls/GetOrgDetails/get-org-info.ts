@@ -21,9 +21,9 @@ import { OrgInfo } from "../../types/doctor";
 import createHeaders from "../createHeaders";
 import { getDoctorInstance } from "../getDoctors/doctorInstance";
 
-export async function getOrgInfo(accessToken: string) {
+export async function getOrgInfo(accessToken: string, orgId: string) {
     const headers = createHeaders(accessToken);
-    const response = await getDoctorInstance().get("/org-info", {
+    const response = await getDoctorInstance().get(`org/${orgId}/orginfo`, {
         headers: headers
     });
 

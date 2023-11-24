@@ -45,7 +45,7 @@ function DoctorCard(props: DoctorCardProps) {
         const accessToken = session.accessToken;
 
         if (doctor) {
-            getDocThumbnail(accessToken, doctor.id)
+            getDocThumbnail(accessToken, session.orgId, doctor.id)
                 .then((res) => {
                     if (res.data.size > 0) {
                         const imageUrl = URL.createObjectURL(res.data);
@@ -87,7 +87,7 @@ function DoctorCard(props: DoctorCardProps) {
                 <CardContent>
                     { isLoading ? (
                         <div className={ styles.tailSpinDiv }>
-                            <TailSpin color="#4e40ed" height={ 80 } width={ 80 } />
+                            <TailSpin color="var(--primary-color)" height={ 80 } width={ 80 } />
                         </div>
                     ) : (
                         <><div className={ styles.doctorIcon }>
@@ -101,8 +101,8 @@ function DoctorCard(props: DoctorCardProps) {
                             ) : (
                                 <Image
                                     style={ { borderRadius: "10%", height: "100%", width: "100%" } }
-                                    src={ doctor.gender.toLowerCase() === "male" ? 
-                                        male_doc_thumbnail : female_doc_thumbnail }
+                                    src={ doctor.gender?.toLowerCase() === "male" ? 
+                                        male_doc_thumbnail : male_doc_thumbnail }
                                     alt="doc-thumbnail" />
 
                             ) }

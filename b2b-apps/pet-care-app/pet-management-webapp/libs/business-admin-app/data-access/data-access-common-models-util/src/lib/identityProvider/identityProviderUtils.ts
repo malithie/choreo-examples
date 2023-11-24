@@ -16,13 +16,12 @@
  * under the License.
  */
 
-import { getManagementAPIServerBaseUrl, getOrgUrl } 
+import { getOrgUrl } 
     from "@pet-management-webapp/shared/util/util-application-config-util";
-import { EMPTY_STRING, ENTERPRISE_ID, GOOGLE_ID } from "@pet-management-webapp/shared/util/util-common";
+import { EMPTY_STRING, OIDC_IDP, SAML_IDP } from "@pet-management-webapp/shared/util/util-common";
 import IdentityProviderDiscoveryUrl from "./identityProviderDiscoveryUrl";
 import IdentityProviderTemplateModel from "./identityProviderTemplateModel";
 import enterpriseImage from "../../../../../ui/ui-assets/src/lib/images/enterprise.svg";
-import googleImage from "../../../../../ui/ui-assets/src/lib/images/google.svg";
 
 /**
  * @param templateId - template id of the identity provider
@@ -30,16 +29,10 @@ import googleImage from "../../../../../ui/ui-assets/src/lib/images/google.svg";
  * @returns - local image for the relevant identity provider
  */
 export function getImageForTheIdentityProvider(templateId: string): string {
-    if (GOOGLE_ID === templateId) {
-
-        return googleImage;
-    }
-    if (ENTERPRISE_ID === templateId) {
-
+    if (templateId === OIDC_IDP || templateId === SAML_IDP) {
         return enterpriseImage;
-
     }
-
+    
     return EMPTY_STRING;
 }
 
@@ -65,19 +58,22 @@ export function setIdpTemplate(model: IdentityProviderTemplateModel, templateId:
     identityProviderDiscoveryUrl?: IdentityProviderDiscoveryUrl): IdentityProviderTemplateModel {
 
     const name: string = formValues["application_name"].toString();
-    const clientId: string = formValues["client_id"].toString();
-    const clientSecret: string = formValues["client_secret"].toString();
 
     model.name = name;
 
     switch (templateId) {
-        case GOOGLE_ID:
-            model = googleIdpTemplate(model, clientId, clientSecret, orgId);
+        case OIDC_IDP: {
+            const clientId: string = formValues["client_id"].toString();
+            const clientSecret: string = formValues["client_secret"].toString();
+            
+            model = enterpriseOIDCIdpTemplate(model, clientId, clientSecret, formValues, orgId,
+                identityProviderDiscoveryUrl);
 
             break;
-        case ENTERPRISE_ID:
-            model = enterpriseIdpTemplate(model, clientId, clientSecret, formValues, orgId,
-                identityProviderDiscoveryUrl);
+        }
+            
+        case SAML_IDP:
+            model = enterpriseSAMLIdpTemplate(model, formValues);
 
             break;
         default:
@@ -94,51 +90,13 @@ export function setIdpTemplate(model: IdentityProviderTemplateModel, templateId:
  * 
  * @param model - template of the idp as a JSON
  * @param clientId - client id text entered by the user for the identity provider
- * @param clientSecret - client secret text entered by the user for the identity provider
- * @param orgId - organization id
- * 
- * @returns - create google IDP template
- */
-function googleIdpTemplate(model: IdentityProviderTemplateModel, clientId: string, clientSecret: string,
-    orgId: string): IdentityProviderTemplateModel {
-
-    model.image = "https://console.asgardeo.io/app/libs/themes/default/assets/images/identity-providers/google-idp-illustration.svg";
-
-    model.alias = `${getManagementAPIServerBaseUrl()}/oauth2/token`;
-
-    model.federatedAuthenticators.authenticators[0].properties = [
-        {
-            "key": "ClientId",
-            "value": clientId
-        },
-        {
-            "key": "ClientSecret",
-            "value": clientSecret
-        },
-        {
-            "key": "callbackUrl",
-            "value": getCallbackUrl(orgId)
-        },
-        {
-            "key": "Scopes",
-            "value": "email openid profile"
-        }
-    ];
-
-    return model;
-}
-
-/**
- * 
- * @param model - template of the idp as a JSON
- * @param clientId - client id text entered by the user for the identity provider
  * @param clientSecret - client secret text entered by the user for the identity provider    
  * @param formValues - values get from the form inputs
  * @param orgId - organization id
  * 
  * @returns create enterprise IDP template
  */
-function enterpriseIdpTemplate(model: IdentityProviderTemplateModel, clientId: string, clientSecret: string,
+function enterpriseOIDCIdpTemplate(model: IdentityProviderTemplateModel, clientId: string, clientSecret: string,
     formValues: Record<string, string>, orgId: string, identityProviderDiscoveryUrl?: IdentityProviderDiscoveryUrl)
     : IdentityProviderTemplateModel {
 
@@ -203,4 +161,90 @@ function enterpriseIdpTemplate(model: IdentityProviderTemplateModel, clientId: s
     return model;
 }
 
-export default { setIdpTemplate, getCallbackUrl, getImageForTheIdentityProvider };
+function enterpriseSAMLIdpTemplate(
+    model: IdentityProviderTemplateModel, 
+    formValues: Record<string, string>
+): IdentityProviderTemplateModel {
+
+    // errors = fieldValidate("entity_id", values.entity_id, errors);
+    // errors = fieldValidate("meta_data_saml", values.meta_data_saml, errors);
+    // errors = fieldValidate("sso_url", values.authorization_endpoint, errors);
+    // errors = fieldValidate("entity_id", values.token_endpoint, errors);
+
+    model.image = "https://console.asgardeo.io/app/libs/themes/default/assets/images/" 
+        + "identity-providers/enterprise-idp-illustration.svg";
+
+    if (formValues["meta_data_saml"]) {
+        model.federatedAuthenticators.authenticators[0].properties = [
+            {
+                "key": "SPEntityId",
+                "value": formValues["sp_entity_id"]
+            },
+            {
+                "key": "meta_data_saml",
+                "value": formValues["meta_data_saml"]
+            },
+            {
+                "key": "SelectMode",
+                "value": "Metadata File Configuration"
+            },
+            {
+                "key": "IsUserIdInClaims",
+                "value": "false"
+            },
+            {
+                "key": "IsSLORequestAccepted",
+                "value": "false"
+            }
+        ];
+    }
+
+    if (formValues["sso_url"]) {
+        model.federatedAuthenticators.authenticators[0].properties = [
+            {
+                "key": "IdPEntityId",
+                "value": formValues["idp_entity_id"]
+            },
+            {
+                "key": "NameIDType",
+                "value": "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"
+            },
+            {
+                "key": "RequestMethod",
+                "value": "post"
+            },
+            {
+                "key": "SPEntityId",
+                "value": formValues["sp_entity_id"]
+            },
+            {
+                "key": "SSOUrl",
+                "value": formValues["sso_url"]
+            },
+            {
+                "key": "SelectMode",
+                "value": "Manual Configuration"
+            },
+            {
+                "key": "IsUserIdInClaims",
+                "value": "false"
+            },
+            {
+                "key": "IsSLORequestAccepted",
+                "value": "false"
+            },
+            {
+                "key": "SignatureAlgorithm",
+                "value": "RSA with SHA256"
+            },
+            {
+                "key": "DigestAlgorithm",
+                "value": "SHA256"
+            }
+        ];
+    }
+
+    return model;
+}
+
+export default { getCallbackUrl, getImageForTheIdentityProvider, setIdpTemplate };

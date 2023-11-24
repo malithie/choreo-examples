@@ -59,7 +59,7 @@ export default function GetStartedSectionComponentForAdmin(props: GetStartedSect
     async function getDoctorList() {
         const accessToken = session.accessToken;
 
-        getDoctors(accessToken)
+        getDoctors(accessToken, session.orgId)
             .then((res) => {
                 if (res.data instanceof Array) {
                     setDoctorList(res.data);
@@ -81,7 +81,7 @@ export default function GetStartedSectionComponentForAdmin(props: GetStartedSect
     async function getOrgDetails() {
         const accessToken = session.accessToken;
 
-        getOrgInfo(accessToken)
+        getOrgInfo(accessToken, session.orgId)
             .then((res) => {
                 if (res.data) {
                     setOrgInfo(res.data);
@@ -111,9 +111,9 @@ export default function GetStartedSectionComponentForAdmin(props: GetStartedSect
         async function updateOrgDetails() {
             const accessToken = session.accessToken;
             const name = session.orgName;
-            const address = (orgAddress) ? orgAddress : orgInfo.address;
-            const registrationNumber = (regNo) ? regNo : orgInfo.registrationNumber;
-            const telephoneNumber = (telephoneNo) ? telephoneNo : orgInfo.telephoneNumber;
+            const address = (orgAddress) ? orgAddress : orgInfo?.address;
+            const registrationNumber = (regNo) ? regNo : orgInfo?.registrationNumber;
+            const telephoneNumber = (telephoneNo) ? telephoneNo : orgInfo?.telephoneNumber;
 
             const payload: UpdateOrgInfo = {
                 address: address,
@@ -122,7 +122,7 @@ export default function GetStartedSectionComponentForAdmin(props: GetStartedSect
                 telephoneNumber: telephoneNumber
             };
 
-            putOrgInfo(accessToken, payload);
+            putOrgInfo(accessToken, session.orgId, payload);
         }
         updateOrgDetails();
     };
@@ -246,15 +246,17 @@ export default function GetStartedSectionComponentForAdmin(props: GetStartedSect
                     { edit? (
                         <div className={ styles.buttonContainer }>
                             <button className={ styles.closeEditOrgDetailBtn } onClick={ () => { handleCancel(); } }>
-                                <CloseOutlineIcon style={ { width: "100%", height: "100%", color: "#4e40ed" } } />
+                                <CloseOutlineIcon 
+                                    style={ { width: "100%", height: "100%", color: "var(--primary-color)" } } />
                             </button>
                             <button className={ styles.saveEditOrgDetailBtn } onClick={ () => { handleSave(); } }>
-                                <CheckOutlineIcon style={ { width: "100%", height: "100%", color: "#4e40ed" } } />
+                                <CheckOutlineIcon 
+                                    style={ { width: "100%", height: "100%", color: "var(--primary-color)" } } />
                             </button>
                         </div>
                     ):(
                         <button className={ styles.editOrgDetailBtn } onClick={ () => {handleEdit(); } }>
-                            <EditIcon style={ { width: "100%", height: "100%", color: "#4e40ed" } }/>
+                            <EditIcon style={ { width: "100%", height: "100%", color: "var(--primary-color)" } }/>
                         </button>
                     ) }
                     <div className={ styles.orgInfoGrid }>
