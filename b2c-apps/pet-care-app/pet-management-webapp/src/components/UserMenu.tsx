@@ -68,7 +68,7 @@ export default function MenuListComposition(props: {
         <><div className="user-menu-div">
             <button className="menu-btn" onClick={handleToggle}>
                 <label className="usename-label">
-                    {user.name}
+                    {user.displayName||user.username}
                 </label>
                 <i className="arrow-down"></i>
             </button>
