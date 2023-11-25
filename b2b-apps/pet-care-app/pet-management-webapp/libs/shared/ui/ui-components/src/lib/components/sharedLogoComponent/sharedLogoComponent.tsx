@@ -97,6 +97,7 @@ function Logo(prop: SharedLogoProps) {
 
     return (
         <Image
+            className="pet-care-logo"
             src={ image }
             alt="404 image"
             style={ getImageStyle(imageSize, white) } />
