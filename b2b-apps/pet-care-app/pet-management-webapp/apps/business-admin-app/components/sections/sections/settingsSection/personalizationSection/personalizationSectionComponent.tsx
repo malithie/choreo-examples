@@ -27,16 +27,17 @@ import { checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-comm
 import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } from "@pet-management-webapp/shared/util/util-front-end-util";
 import { postPersonalization } from "apps/business-admin-app/APICalls/UpdatePersonalization/post-personalization";
 import { Personalization } from "apps/business-admin-app/types/personalization";
+import controllerDecodeGetBrandingPreference 
+    from "libs/business-admin-app/data-access/data-access-controller/src/lib/controller/branding/controllerDecodeGetBrandingPreference";
+import controllerDecodeUpdateBrandingPreference 
+    from "libs/business-admin-app/data-access/data-access-controller/src/lib/controller/branding/controllerDecodeUpdateBrandingPreference";
 import { Session } from "next-auth";
 import React, { useCallback, useEffect, useState } from "react";
 import { Form } from "react-final-form";
 import { Container, Toaster, useToaster } from "rsuite";
 import FormSuite from "rsuite/Form";
+import personalize from "./personalize";
 import styles from "../../../../../styles/Settings.module.css";
-import controllerDecodeGetBrandingPreference 
-    from "libs/business-admin-app/data-access/data-access-controller/src/lib/controller/branding/controllerDecodeGetBrandingPreference";
-import controllerDecodeUpdateBrandingPreference 
-    from "libs/business-admin-app/data-access/data-access-controller/src/lib/controller/branding/controllerDecodeUpdateBrandingPreference";
 
 interface PersonalizationSectionComponentProps {
     session: Session
@@ -90,6 +91,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         brandingPreference["preference"]["theme"][activeTheme]["images"]["logo"]["altText"] = values["logo_alt_text"];
         brandingPreference["preference"]["theme"][activeTheme]["images"]["favicon"]["imgURL"] = values["favicon_url"];
         brandingPreference["preference"]["theme"][activeTheme]["colors"]["primary"]["main"] = values["primary_color"];
+
         controllerDecodeUpdateBrandingPreference(session, brandingPreference)
             .then(() => {
                 const newPersonalization: Personalization = {
@@ -102,7 +104,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
 
                 postPersonalization(session.accessToken, session.orgId, newPersonalization)
                     .then(() => {
-                        // TODO: Change branding of the application
+                        personalize(newPersonalization);
                     })
                     .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
                 fetchBrandingPreference();
