@@ -193,8 +193,7 @@ export default function SAMLIdentityProvider(prop: SAMLIdentityProviderProps) {
                             needErrorMessage={ true }
                         >
                             <FormSuite.Control 
-                                name="input" 
-                                value="https://dev-isaunogj.us.auth0.com/.well-known/openid-configuration"/>
+                                name="input" />
                         </FormField>
                         <RadioGroup name="radioList" value={ configureType } onChange={ onConfigureTypeChange }>
                             <Radio value={ IdentityProviderConfigureType.AUTO }>

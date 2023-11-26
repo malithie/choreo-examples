@@ -103,6 +103,13 @@ export const OIDC_AUTHENTICATOR_ID = "OpenIDConnectAuthenticator";
 export const SAML_AUTHENTICATOR_ID = "SAMLSSOAuthenticator";
 export const BASIC_AUTHENTICATOR_ID = "BasicAuthenticator";
 
+export const EMAIL = "email";
+export const EMAIL_OTP_AUTHENTICATOR = "email-otp-authenticator";
+export const SMS = "sms";
+export const SMS_OTP_AUTHENTICATOR = "sms-otp-authenticator";
+export const TOTP = "totp";
+export const TOTP_OTP_AUTHENTICATOR = "totp";
+
 export default {
     BASIC_AUTHENTICATOR_ID, BASIC_ID, EMPTY_STRING, 
     GOOGLE_AUTHENTICATOR_ID, PatchMethod, checkIfJSONisEmpty, copyTheTextToClipboard, getCurrentDate,

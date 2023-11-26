@@ -72,6 +72,26 @@ export function checkIfIdpIsinAuthSequence(template: Application, idpDetails): b
     return [ check, onlyIdp ];
 }
 
+export function checkIfAuthenticatorIsinAuthSequence(template: Application, authenticatorName: string): boolean[] {
+    const authenticationSequenceModel = template.authenticationSequence;
+    let check = false;
+    let onlyIdp = false;
+
+    authenticationSequenceModel.steps.forEach((step) => {
+        step.options.forEach((option) => {
+            if (option.authenticator === authenticatorName) {
+                check = true;
+            }
+        });
+
+        if (step.options.length === 1) {
+            onlyIdp = true;
+        }
+    });
+
+    return [ check, onlyIdp ];
+}
+
 /**
  * 
  * @param template - applicaiton details template

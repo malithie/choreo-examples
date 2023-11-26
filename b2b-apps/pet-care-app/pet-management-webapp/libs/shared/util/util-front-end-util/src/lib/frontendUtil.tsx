@@ -31,6 +31,7 @@ import PhoneIcon from "@rsuite/icons/Phone";
 import SettingHorizontalIcon from "@rsuite/icons/SettingHorizontal";
 import ShieldIcon from "@rsuite/icons/Shield";
 import SpeakerIcon from "@rsuite/icons/Speaker";
+import TagLockIcon from "@rsuite/icons/TagLock";
 
 export const LOADING_DISPLAY_NONE = {
     display: "none"
@@ -141,6 +142,9 @@ export function getIconFromString(iconString: string | undefined): JSX.Element |
 
         case "BrandingIcon":
             return(<EditIcon/>);
+        
+        case "MFAIcon":
+            return(<TagLockIcon/>);
 
         default:
 

@@ -38,6 +38,7 @@ import ManageDoctorsSection from "./sections/sectionsRelatedToDoctor/manageDocto
 import IdpSectionComponent from "./sections/settingsSection/idpSection/idpSectionComponent";
 import ManageGroupSectionComponent from "./sections/settingsSection/manageGroupSection/manageGroupSectionComponent";
 import ManageUserSectionComponent from "./sections/settingsSection/manageUserSection/manageUserSectionComponent";
+import ConfigureMFASection from "./sections/settingsSection/mfaSection/configureMfaSection";
 import PersonalizationSectionComponent 
     from "./sections/settingsSection/personalizationSection/personalizationSectionComponent";
 import personalize from "./sections/settingsSection/personalizationSection/personalize";
@@ -137,7 +138,10 @@ export default function Home(props: HomeProps): JSX.Element {
                 return <GetStartedSectionComponentForPetOwner  session={ session } />;     
             case "12":
 
-                return <PersonalizationSectionComponent  session={ session } />;      
+                return <PersonalizationSectionComponent  session={ session } />;    
+            case "13":
+
+                return <ConfigureMFASection  session={ session } />;   
         }
     };
 

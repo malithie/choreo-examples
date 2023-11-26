@@ -191,6 +191,17 @@
             "scopes": [
                 "internal_org_branding_preference_update"
             ]
+        },
+        {
+            "title": "MFA",
+            "eventKey": "13",
+            "icon": "MFAIcon",
+            "type": "item",
+            "hideBasedOnScope": true,
+            "scopes": [
+                "internal_org_application_mgt_view",
+                "internal_org_application_mgt_update"
+            ]
         }
     ]
 }
