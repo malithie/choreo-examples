@@ -119,7 +119,7 @@ export default function SAMLIdentityProvider(prop: SAMLIdentityProviderProps) {
         }
     };
 
-    const onUpdate = async (values: Record<string, string>): Promise<void> => {
+    const onUpdate = async (values: Record<string, any>): Promise<void> => {
 
         setLoadingDisplay(LOADING_DISPLAY_BLOCK);
         if (values.meta_data_saml) {

@@ -22,7 +22,7 @@ export interface PatchOperation {
     path?: string,
     value?: {
         users?: UserValue []
-    }
+    } | any
 }
 
 interface UserValue {
