@@ -30,9 +30,22 @@ export default function Signin() {
     const moveTime = 40;
     const [ redirectSeconds, setRedirectSeconds ] = useState<number>(moveTime);
 
+    const getOrgIdFromUrl = (): string => {
+        const currentUrl = window.location.href;
+        const url = new URL(currentUrl);
+        const searchParams = url.searchParams;
+        const orgId = searchParams.get("orgId");
+      
+        return orgId;
+    };
+
     useEffect(() => {
         if (redirectSeconds <= 1) {
-            orgSignin(true);
+            if (getOrgIdFromUrl()) {
+                orgSignin(true, getOrgIdFromUrl());
+            } else {
+                orgSignin(true);
+            }
 
             return;
         }

@@ -17,23 +17,21 @@
  */
 
 import { 
-    Application, ApplicationList, IdentityProvider, checkIfAuthenticatorIsinAuthSequence 
+    Application, ApplicationList, checkIfAuthenticatorIsinAuthSequence 
 } from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
 import { 
-    controllerDecodeGetApplication, controllerDecodeListCurrentApplication, controllerDecodePatchGeneralSettingsIdp 
+    controllerDecodeGetApplication, controllerDecodeListCurrentApplication 
 } from "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
-import { AccordianItemHeaderComponent, errorTypeDialog, successTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
+import { AccordianItemHeaderComponent } from "@pet-management-webapp/shared/ui/ui-components";
 import { EMAIL, EMAIL_OTP_AUTHENTICATOR, checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
+import { 
+    LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE, fieldValidate 
+} from "@pet-management-webapp/shared/util/util-front-end-util";
 import { Session } from "next-auth";
 import React, { useCallback, useEffect, useState } from "react";
-import { Button, Panel, Stack, toaster } from "rsuite";
+import { Button, Panel, Stack } from "rsuite";
 import ConfirmMFAAddRemoveModal from "./confirmMFAAddRemoveModal";
 import { getImageForMFAProvider } from "./mfaProviderUtils";
-import FormSuite from "rsuite/Form";
-import { FormField, FormButtonToolbar } from "@pet-management-webapp/shared/ui/ui-basic-components";
-import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE, fieldValidate } from "@pet-management-webapp/shared/util/util-front-end-util";
-import styles from "../../../../../styles/Settings.module.css";
-import { Form } from "react-final-form";
 
 interface EmailAsMFAProps {
     session: Session,
@@ -143,104 +141,6 @@ export default function EmailAsMFA(props: EmailAsMFAProps) {
                             idpIsinAuthSequence={ idpIsinAuthSequence } 
                             authenticator={ EMAIL_OTP_AUTHENTICATOR } />
                     </Stack>
-                    <Form
-                        onSubmit={ onUpdate }
-                        validate={ validate }
-                        render={ ({ handleSubmit, form, submitting, pristine, errors }) => (
-                            <FormSuite
-                                layout="vertical"
-                                className={ styles.addUserForm }
-                                onSubmit={ () => { handleSubmit().then(form.restart); } }
-                                fluid>
-
-                                <FormField
-                                    name="server_host"
-                                    label="Server Host"
-                                    helperText={ 
-                                        "The Server Host usually begins with smtp, " +
-                                        "followed by the domain name of the email service provider." 
-                                    }
-                                    needErrorMessage={ true }
-                                >
-                                    <FormSuite.Control name="input" />
-                                </FormField>
-
-                                <FormField
-                                    name="server_port"
-                                    label="Server Port"
-                                    needErrorMessage={ true }
-                                >
-                                    <FormSuite.Control name="input" />
-                                </FormField>
-
-                                <FormField
-                                    name="from_address"
-                                    label="From Address"
-                                    helperText={
-                                        "The From Address is the email address you want to " + 
-                                        "appear as the sender of your outgoing emails."
-                                    }
-                                    needErrorMessage={ true }
-                                >
-                                    <FormSuite.Control name="input" />
-                                </FormField>
-
-                                <FormField
-                                    name="reply_to_address"
-                                    label="Reply-to Address"
-                                    helperText={
-                                        "The Reply-To Address is used to specify the email address that " + 
-                                        "recipients should use if they want to reply to your message."
-                                    }
-                                    needErrorMessage={ true }
-                                >
-                                    <FormSuite.Control name="input" />
-                                </FormField>
-
-                                <FormField
-                                    name="username"
-                                    label="Username"
-                                    helperText={
-                                        "The SMTP username is usually the same as your email address."
-                                    }
-                                    needErrorMessage={ true }
-                                >
-                                    <FormSuite.Control name="input" />
-                                </FormField>
-
-                                <FormField
-                                    name="password"
-                                    label="Password"
-                                    helperText={
-                                        "The SMTP password is a security credential that is used to authenticate " + 
-                                        "and verify your identity when sending emails through the SMTP server."
-                                    }
-                                    needErrorMessage={ true }
-                                >
-                                    <FormSuite.Control name="input" type="password" />
-                                </FormField>
-
-                                <FormField
-                                    name="display_name"
-                                    label="Display Name"
-                                    helperText={
-                                        "The Display Name is used to specify the name that recipients will " + 
-                                        "see in their email inbox when they receive your message."
-                                    }
-                                    needErrorMessage={ true }
-                                >
-                                    <FormSuite.Control name="input" type="password" />
-                                </FormField>
-
-                                <FormButtonToolbar
-                                    submitButtonText="Update"
-                                    submitButtonDisabled={ submitting || pristine || !checkIfJSONisEmpty(errors) }
-                                    needCancel={ false }
-                                />
-
-                            </FormSuite>
-                        ) }
-                    />
                 </Stack>
             </div>
         </Panel>

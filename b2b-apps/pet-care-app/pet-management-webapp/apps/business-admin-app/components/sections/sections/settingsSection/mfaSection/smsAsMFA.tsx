@@ -24,16 +24,16 @@ import {
 } from "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
 import { AccordianItemHeaderComponent } from "@pet-management-webapp/shared/ui/ui-components";
 import { SMS, SMS_OTP_AUTHENTICATOR, checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
+import { 
+    LOADING_DISPLAY_BLOCK, 
+    LOADING_DISPLAY_NONE, 
+    fieldValidate 
+} from "@pet-management-webapp/shared/util/util-front-end-util";
 import { Session } from "next-auth";
 import React, { useCallback, useEffect, useState } from "react";
 import { Button, Panel, Stack } from "rsuite";
 import ConfirmMFAAddRemoveModal from "./confirmMFAAddRemoveModal";
 import { getImageForMFAProvider } from "./mfaProviderUtils";
-import { Form } from "react-final-form";
-import FormSuite from "rsuite/Form";
-import { FormField, FormButtonToolbar } from "@pet-management-webapp/shared/ui/ui-basic-components";
-import styles from "../../../../../styles/Settings.module.css";
-import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE, fieldValidate } from "@pet-management-webapp/shared/util/util-front-end-util";
 
 interface SmsAsMFAProps {
     session: Session,
@@ -138,122 +138,6 @@ export default function SmsAsMFA(props: SmsAsMFAProps) {
                             idpIsinAuthSequence={ idpIsinAuthSequence } 
                             authenticator={ SMS_OTP_AUTHENTICATOR } />
                     </Stack>
-                    <Form
-                        onSubmit={ onUpdate }
-                        validate={ validate }
-                        render={ ({ handleSubmit, form, submitting, pristine, errors }) => (
-                            <FormSuite
-                                layout="vertical"
-                                className={ styles.addUserForm }
-                                onSubmit={ () => { handleSubmit().then(form.restart); } }
-                                fluid>
-
-                                <FormField
-                                    name="sms_provider_name"
-                                    label="SMS Provider Name"
-                                    helperText={ 
-                                        "The name of the SMS provider." 
-                                    }
-                                    needErrorMessage={ true }
-                                >
-                                    <FormSuite.Control name="input" />
-                                </FormField>
-
-                                <FormField
-                                    name="sms_provider_url"
-                                    label="SMS Provider URL"
-                                    needErrorMessage={ true }
-                                    helperText="The URL of the SMS provider."
-                                >
-                                    <FormSuite.Control name="input" />
-                                </FormField>
-
-                                <FormField
-                                    name="sms_provider_auth_key"
-                                    label="SMS Provider Auth Key"
-                                    helperText={
-                                        "The auth key of the SMS provider."
-                                    }
-                                    needErrorMessage={ true }
-                                >
-                                    <FormSuite.Control name="input" type="password" />
-                                </FormField>
-
-                                <FormField
-                                    name="sms_provider_auth_secret"
-                                    label="SMS Provider Auth Secret"
-                                    helperText={
-                                        "The auth secret of the SMS provider."
-                                    }
-                                    needErrorMessage={ true }
-                                >
-                                    <FormSuite.Control name="input" />
-                                </FormField>
-
-                                <FormField
-                                    name="sender"
-                                    label="Sender"
-                                    helperText={
-                                        "The sender of the SMS."
-                                    }
-                                    needErrorMessage={ true }
-                                >
-                                    <FormSuite.Control name="input" />
-                                </FormField>
-
-                                <FormField
-                                    name="content_type"
-                                    label="Content Type"
-                                    helperText={
-                                        "The content type of the API request used for sending the SMS."
-                                    }
-                                    needErrorMessage={ true }
-                                >
-                                    <FormSuite.Control name="input" />
-                                </FormField>
-
-                                <FormField
-                                    name="headers"
-                                    label="Headers"
-                                    helperText={
-                                        "Headers to be included in the send SMS API request."
-                                    }
-                                    needErrorMessage={ true }
-                                >
-                                    <FormSuite.Control name="input" />
-                                </FormField>
-
-                                <FormField
-                                    name="http_method"
-                                    label="HTTP Method"
-                                    helperText={
-                                        "The HTTP method of the API request used for sending the SMS."
-                                    }
-                                    needErrorMessage={ true }
-                                >
-                                    <FormSuite.Control name="input" />
-                                </FormField>
-
-                                <FormField
-                                    name="payload"
-                                    label="Payload"
-                                    helperText={
-                                        "Payload of the SMS API request."
-                                    }
-                                    needErrorMessage={ true }
-                                >
-                                    <FormSuite.Control name="input" />
-                                </FormField>
-
-                                <FormButtonToolbar
-                                    submitButtonText="Update"
-                                    submitButtonDisabled={ submitting || pristine || !checkIfJSONisEmpty(errors) }
-                                    needCancel={ false }
-                                />
-
-                            </FormSuite>
-                        ) }
-                    />
                 </Stack>
             </div>
         </Panel>

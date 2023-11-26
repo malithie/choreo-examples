@@ -36,8 +36,21 @@ export default function Home() {
 
     const router: NextRouter = useRouter();
 
+    const getOrgIdFromUrl = (): string => {
+        const currentUrl = window.location.href;
+        const url = new URL(currentUrl);
+        const searchParams = url.searchParams;
+        const orgId = searchParams.get("orgId");
+      
+        return orgId;
+    };
+
     const signinOnClick = (): void => {
-        router.push("/signin");
+        if (getOrgIdFromUrl()) {
+            router.push("/signin?orgId=" + getOrgIdFromUrl());
+        } else {
+            router.push("/signin");
+        }
     };
 
     return (
