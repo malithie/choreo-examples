@@ -25,13 +25,10 @@ import {
 import { AccordianItemHeaderComponent } from "@pet-management-webapp/shared/ui/ui-components";
 import { SMS, SMS_OTP_AUTHENTICATOR, checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
 import { 
-    LOADING_DISPLAY_BLOCK, 
-    LOADING_DISPLAY_NONE, 
-    fieldValidate 
-} from "@pet-management-webapp/shared/util/util-front-end-util";
+    LOADING_DISPLAY_NONE} from "@pet-management-webapp/shared/util/util-front-end-util";
 import { Session } from "next-auth";
 import React, { useCallback, useEffect, useState } from "react";
-import { Button, Panel, Stack } from "rsuite";
+import { Button, FlexboxGrid } from "rsuite";
 import ConfirmMFAAddRemoveModal from "./confirmMFAAddRemoveModal";
 import { getImageForMFAProvider } from "./mfaProviderUtils";
 
@@ -90,56 +87,47 @@ export default function SmsAsMFA(props: SmsAsMFAProps) {
         setOpenListAppicationModal(false);
     };
 
-    const onUpdate = (values: Record<string, string>, form): void => {
-        setLoadingDisplay(LOADING_DISPLAY_BLOCK);
-    };
-
-    const validate = (values: Record<string, unknown>): Record<string, string> => {
-        let errors: Record<string, string> = {};
-
-        errors = fieldValidate("sms_provider_name", values.name, errors);
-        errors = fieldValidate("sms_provider_url", values.description, errors);
-        errors = fieldValidate("sms_provider_auth_key", values.name, errors);
-        errors = fieldValidate("sms_provider_auth_secret", values.description, errors);
-        errors = fieldValidate("sender", values.description, errors);
-        errors = fieldValidate("content_type", values.name, errors);
-        errors = fieldValidate("headers", values.description, errors);
-        errors = fieldValidate("http_method", values.description, errors);
-        errors = fieldValidate("payload", values.description, errors);
-
-        return errors;
-    };
-
     return (
+        <div style={ { margin: "50px 25px" } }>
+            <FlexboxGrid align="middle">
+                <FlexboxGrid.Item colspan={ 12 }>
+                    <AccordianItemHeaderComponent
+                        imageSrc={ getImageForMFAProvider(SMS) }
+                        title={ "SMS OTP" }
+                        description={ "Configure SMS as multi-factor authentication." } />
+                </FlexboxGrid.Item>
+                {
+                    idpIsinAuthSequence === null
+                        ? null
+                        : idpIsinAuthSequence
+                            ? (
+                                <FlexboxGrid.Item colspan={ 6 }>
+                                    <Button 
+                                        style={ { width: "125%" } } 
+                                        appearance="ghost" 
+                                        onClick={ onAddToLoginFlowClick }>
+                                        Remove from Login Flow
+                                    </Button>
+                                </FlexboxGrid.Item>)
+                            : (
+                                <FlexboxGrid.Item colspan={ 6 }>
+                                    <Button 
+                                        style={ { width: "125%" } } 
+                                        appearance="primary" 
+                                        onClick={ onAddToLoginFlowClick }>
+                                        Add to the Login Flow
+                                    </Button>
+                                </FlexboxGrid.Item>)
+                }
+                <ConfirmMFAAddRemoveModal
+                    session={ session }
+                    openModal={ openListAppicationModal }
+                    onModalClose={ onCloseListAllApplicaitonModal }
+                    applicationDetail={ applicationDetail }
+                    idpIsinAuthSequence={ idpIsinAuthSequence } 
+                    authenticator={ SMS_OTP_AUTHENTICATOR } />
+            </FlexboxGrid>
 
-        <Panel
-            header={
-                (<AccordianItemHeaderComponent
-                    imageSrc={ getImageForMFAProvider(SMS) }
-                    title={ "SMS OTP" }
-                    description={ "Configure SMS as multi-factor authentication." } />)
-            }
-        >
-            <div style={ { marginLeft: "25px", marginRight: "25px" } }>
-                <Stack direction="column" alignItems="stretch">
-                    <Stack justifyContent="flex-end" alignItems="stretch">
-                        {
-                            idpIsinAuthSequence === null
-                                ? null
-                                : idpIsinAuthSequence
-                                    ? <Button onClick={ onAddToLoginFlowClick }>Remove from Login Flow</Button>
-                                    : <Button onClick={ onAddToLoginFlowClick }>Add to the Login Flow</Button>
-                        }
-                        <ConfirmMFAAddRemoveModal
-                            session={ session }
-                            openModal={ openListAppicationModal }
-                            onModalClose={ onCloseListAllApplicaitonModal }
-                            applicationDetail={ applicationDetail }
-                            idpIsinAuthSequence={ idpIsinAuthSequence } 
-                            authenticator={ SMS_OTP_AUTHENTICATOR } />
-                    </Stack>
-                </Stack>
-            </div>
-        </Panel>
+        </div>
     );
 }

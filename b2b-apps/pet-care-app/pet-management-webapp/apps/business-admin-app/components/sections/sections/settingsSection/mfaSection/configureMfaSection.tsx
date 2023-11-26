@@ -17,13 +17,13 @@
  */
 
 import { SettingsTitleComponent } from "@pet-management-webapp/shared/ui/ui-components";
+import { EMAIL, SMS, TOTP } from "@pet-management-webapp/shared/util/util-common";
 import { Session } from "next-auth";
-import { Container, FlexboxGrid, PanelGroup } from "rsuite";
+import { Container, FlexboxGrid } from "rsuite";
 import EmailAsMFA from "./emailAsMFA";
 import SmsAsMFA from "./smsAsMFA";
 import TotpAsMFA from "./totpAsMFA";
 import styles from "../../../../../styles/idp.module.css";
-import { EMAIL, SMS, TOTP } from "@pet-management-webapp/shared/util/util-common";
 
 interface ConfigureMFASectionProps {
     session: Session
@@ -45,11 +45,9 @@ export default function ConfigureMFASection(props: ConfigureMFASectionProps) {
                 justify="start"
                 align="top" >
                 <div className={ styles.idp__list }>
-                    <PanelGroup accordion bordered>
-                        <EmailAsMFA session={ session } key={ EMAIL } id={ EMAIL } />
-                        <SmsAsMFA session={ session } key={ SMS } id={ SMS } />
-                        <TotpAsMFA session={ session } key={ TOTP } id={ TOTP } />
-                    </PanelGroup>
+                    <EmailAsMFA session={ session } key={ EMAIL } id={ EMAIL } />
+                    <SmsAsMFA session={ session } key={ SMS } id={ SMS } />
+                    <TotpAsMFA session={ session } key={ TOTP } id={ TOTP } />
                 </div>
             </FlexboxGrid >
 

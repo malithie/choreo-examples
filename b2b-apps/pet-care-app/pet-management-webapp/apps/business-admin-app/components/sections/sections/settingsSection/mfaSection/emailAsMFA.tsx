@@ -25,11 +25,10 @@ import {
 import { AccordianItemHeaderComponent } from "@pet-management-webapp/shared/ui/ui-components";
 import { EMAIL, EMAIL_OTP_AUTHENTICATOR, checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
 import { 
-    LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE, fieldValidate 
-} from "@pet-management-webapp/shared/util/util-front-end-util";
+    LOADING_DISPLAY_NONE} from "@pet-management-webapp/shared/util/util-front-end-util";
 import { Session } from "next-auth";
 import React, { useCallback, useEffect, useState } from "react";
-import { Button, Panel, Stack } from "rsuite";
+import { Button, FlexboxGrid } from "rsuite";
 import ConfirmMFAAddRemoveModal from "./confirmMFAAddRemoveModal";
 import { getImageForMFAProvider } from "./mfaProviderUtils";
 
@@ -93,56 +92,47 @@ export default function EmailAsMFA(props: EmailAsMFAProps) {
         setOpenListAppicationModal(false);
     };
 
-    const onUpdate = (values: Record<string, string>, form): void => {
-        setLoadingDisplay(LOADING_DISPLAY_BLOCK);
-    };
-
-    const validate = (values: Record<string, unknown>): Record<string, string> => {
-        let errors: Record<string, string> = {};
-
-        errors = fieldValidate("server_host", values.name, errors);
-        errors = fieldValidate("server_port", values.description, errors);
-        errors = fieldValidate("from_address", values.name, errors);
-        errors = fieldValidate("reply_to_address", values.description, errors);
-        errors = fieldValidate("username", values.description, errors);
-        errors = fieldValidate("password", values.name, errors);
-        errors = fieldValidate("display_name", values.description, errors);
-
-        return errors;
-    };
-
     return (
-
-        <Panel
-            header={
-                (<AccordianItemHeaderComponent
-                    imageSrc={ getImageForMFAProvider(EMAIL) }
-                    title={ "Email OTP" }
-                    description={ "Configure Email as multi-factor authentication." } />)
-            }
-            eventKey={ EMAIL }
-            id={ EMAIL }
-        >
-            <div style={ { marginLeft: "25px", marginRight: "25px" } }>
-                <Stack direction="column" alignItems="stretch">
-                    <Stack justifyContent="flex-end" alignItems="stretch">
-                        {
-                            idpIsinAuthSequence === null
-                                ? null
-                                : idpIsinAuthSequence
-                                    ? <Button onClick={ onAddToLoginFlowClick }>Remove from Login Flow</Button>
-                                    : <Button onClick={ onAddToLoginFlowClick }>Add to the Login Flow</Button>
-                        }
-                        <ConfirmMFAAddRemoveModal
-                            session={ session }
-                            openModal={ openListAppicationModal }
-                            onModalClose={ onCloseListAllApplicaitonModal }
-                            applicationDetail={ applicationDetail }
-                            idpIsinAuthSequence={ idpIsinAuthSequence } 
-                            authenticator={ EMAIL_OTP_AUTHENTICATOR } />
-                    </Stack>
-                </Stack>
-            </div>
-        </Panel>
+        <div style={ { margin: "50px 25px" } }>
+            <FlexboxGrid align="middle">
+                <FlexboxGrid.Item colspan={ 12 }>
+                    <AccordianItemHeaderComponent
+                        imageSrc={ getImageForMFAProvider(EMAIL) }
+                        title={ "Email OTP" }
+                        description={ "Configure Email as multi-factor authentication." } />
+                </FlexboxGrid.Item>
+                
+                {
+                    idpIsinAuthSequence === null
+                        ? null
+                        : idpIsinAuthSequence
+                            ? (
+                                <FlexboxGrid.Item colspan={ 6 }>
+                                    <Button 
+                                        style={ { width: "125%" } } 
+                                        appearance="ghost" 
+                                        onClick={ onAddToLoginFlowClick }>
+                                        Remove from Login Flow
+                                    </Button>
+                                </FlexboxGrid.Item>)
+                            : (
+                                <FlexboxGrid.Item colspan={ 6 }>
+                                    <Button 
+                                        style={ { width: "125%" } } 
+                                        appearance="primary" 
+                                        onClick={ onAddToLoginFlowClick }>
+                                        Add to the Login Flow
+                                    </Button>
+                                </FlexboxGrid.Item>)
+                }
+                <ConfirmMFAAddRemoveModal
+                    session={ session }
+                    openModal={ openListAppicationModal }
+                    onModalClose={ onCloseListAllApplicaitonModal }
+                    applicationDetail={ applicationDetail }
+                    idpIsinAuthSequence={ idpIsinAuthSequence } 
+                    authenticator={ EMAIL_OTP_AUTHENTICATOR } />
+            </FlexboxGrid>
+        </div>
     );
 }
