@@ -22,9 +22,11 @@ import getSettingsView from "../pages/settings";
 import GetSettings from "../pages/settings";
 import SETTINGS_ICON from "../images/settings.png";
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { BasicUserInfo, useAuthContext } from "@asgardeo/auth-react";
 import { getNotification } from "./Notifications/get-notification";
+import { getConfig } from "../util/getConfig";
 
 export default function MenuListComposition(props: {
     user: BasicUserInfo;
@@ -46,6 +48,10 @@ export default function MenuListComposition(props: {
 
     const handleLogout = () => {
         signout();
+    };
+
+    const gotoMyAccount = () => {
+        window.open(getConfig().baseUrl + '/myaccount', '_blank');
     };
 
     const handleClose = () => {
@@ -96,6 +102,21 @@ export default function MenuListComposition(props: {
                         <ListItemText
                             disableTypography
                             primary={<Typography variant="body2" style={{ color: 'black', fontSize: "2.5vh" }}>Settings</Typography>}
+                        />
+                    </ListItem>
+                    <ListItem
+                        button
+                        component="nav"
+                        disableGutters
+                        onClick={gotoMyAccount}
+                        data-testid="header-user-profile-item-logout"
+                    >
+                        <ListItemIcon>
+                            <AccountCircleIcon style={{width: "4vh", height: "4vh", padding: "2vh"}}/>
+                        </ListItemIcon>
+                        <ListItemText
+                            disableTypography
+                            primary={<Typography variant="body2" style={{ color: 'black', fontSize: "2.5vh" }}>MyAccount</Typography>}
                         />
                     </ListItem>
                     <ListItem
