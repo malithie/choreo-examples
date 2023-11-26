@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getOrgUrl } 
+import { getBaseUrl, getOrgUrl } 
     from "@pet-management-webapp/shared/util/util-application-config-util";
 import { EMPTY_STRING, OIDC_IDP, SAML_IDP } from "@pet-management-webapp/shared/util/util-common";
 import IdentityProviderDiscoveryUrl from "./identityProviderDiscoveryUrl";
@@ -42,6 +42,14 @@ export function getImageForTheIdentityProvider(templateId: string): string {
  */
 export function getCallbackUrl(orgId: string): string {
     return `${getOrgUrl(orgId)}/commonauth`;
+}
+
+/**
+ * 
+ * @returns callBackUrl of the idp
+ */
+export function getIdPCallbackUrl(orgId: string): string {
+    return `${getBaseUrl(orgId)}/${orgId}/commonauth`;
 }
 
 /**
@@ -123,7 +131,8 @@ function enterpriseOIDCIdpTemplate(model: IdentityProviderTemplateModel, clientI
         }
     }
 
-    model.image = "https://console.asgardeo.io/app/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
+    model.image = "https://localhost:9443/console/libs/themes/default/assets/images/" + 
+        "identity-providers/enterprise-idp-illustration.svg";
 
     model.federatedAuthenticators.authenticators[0].properties = [
         {

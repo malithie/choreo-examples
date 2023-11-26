@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityProvider, IdentityProviderTemplate, getCallbackUrl } from
+import { IdentityProvider, IdentityProviderTemplate, getIdPCallbackUrl } from
     "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
 import { ModelHeaderComponent } from "@pet-management-webapp/shared/ui/ui-basic-components";
 import { infoTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
@@ -127,9 +127,9 @@ function Prerequisite(prop: PrerequisiteProps) {
             </p>
             <br />
             <InputGroup >
-                <Input readOnly value={ getCallbackUrl(orgId) } size="lg" />
+                <Input readOnly value={ getIdPCallbackUrl(orgId) } size="lg" />
                 <InputGroup.Button
-                    onClick={ () => copyValueToClipboard(getCallbackUrl(orgId)) }>
+                    onClick={ () => copyValueToClipboard(getIdPCallbackUrl(orgId)) }>
                     <CopyIcon />
                 </InputGroup.Button>
             </InputGroup>

@@ -187,16 +187,13 @@ function ApplicationListAvailable(props: ApplicationListAvailableProps) {
         <div>
             {
                 idpIsinAuthSequence
-                    ? <p>This will remove the Idp as an authentication step from all applicaitons</p>
+                    ? (<p>This will remove the Idp as an authentication step from the following
+                    applicaiton</p>)
                     : (<p>This will add the Idp as an authentication step to the authentication flow of the following
                         applicaiton</p>)
             }
 
-            {
-                idpIsinAuthSequence
-                    ? null
-                    : <ApplicationListItem applicationDetail={ applicationDetail } />
-            }
+<ApplicationListItem applicationDetail={ applicationDetail } />
 
             <p>Please confirm your action to procced</p>
 
