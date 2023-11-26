@@ -181,7 +181,11 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                 }
                                 needErrorMessage={ true }
                             >
-                                <FormSuite.Control name="input" />
+                                <FormSuite.Control 
+                                    name="input" 
+                                    type="color" 
+                                    style={ { height: 40, padding: 3, width: 100 } }
+                                />
                             </FormField>
 
                             <FormButtonToolbar
