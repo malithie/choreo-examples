@@ -17,22 +17,20 @@
  */
 
 import { 
-    IdentityProviderGroupMappings
+    LocalClaim 
 } from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
 import { commonControllerDecode } from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
 import { Session } from "next-auth";
-import { controllerCallPatchIdpClaims } from "./controllerCallPatchIdpClaims";
+import { controllerCallGetLocalClaims } from "./controllerCallGetLocalClaims";
 
-export async function controllerDecodePatchIdpClaims(
-    session: Session, 
-    idpId: string, 
-    idpGroupsMappings: IdentityProviderGroupMappings
-): Promise<IdentityProviderGroupMappings | null> {
+export async function controllerDecodeGetLocalClaims(session: Session)
+    : Promise<LocalClaim[] | null> {
 
-    const res = (await commonControllerDecode(() => controllerCallPatchIdpClaims(session, idpId, idpGroupsMappings),
-        null) as IdentityProviderGroupMappings | null);
+    const res = (await commonControllerDecode(() => controllerCallGetLocalClaims(session),
+        null) as LocalClaim[] | null);
 
     return res;
+
 }
 
-export default controllerDecodePatchIdpClaims;
+export default controllerDecodeGetLocalClaims;

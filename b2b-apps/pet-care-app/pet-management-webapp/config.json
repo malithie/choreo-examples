@@ -71,7 +71,11 @@
                 "view_user_settings",
                 "update_user_settings",
                 "view_personalization",
-                "update_personalization"
+                "update_personalization",
+                "internal_org_claim_meta_create", 
+                "internal_org_claim_meta_view", 
+                "internal_org_claim_meta_update", 
+                "internal_org_claim_meta_delete"
             ],
             "Branding": {
                 "name": "Pet Care App",

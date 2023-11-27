@@ -112,7 +112,7 @@ export default function SmsAsMFA(props: SmsAsMFAProps) {
                             : (
                                 <FlexboxGrid.Item colspan={ 6 }>
                                     <Button 
-                                        style={ { width: "125%" } } 
+                                        style={ { width: "125%", opacity:"0.9" } } 
                                         appearance="primary" 
                                         onClick={ onAddToLoginFlowClick }>
                                         Add to the Login Flow
