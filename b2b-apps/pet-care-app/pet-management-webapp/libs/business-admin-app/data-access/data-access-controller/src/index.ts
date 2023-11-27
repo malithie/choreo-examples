@@ -58,3 +58,4 @@ export * from "./lib/controller/group/controllerDeleteGroup/controllerDecodeDele
 export * from "./lib/controller/user/controllerDeleteUser/controllerDecodeDeleteUser";
 export * from "./lib/controller/branding/controllerDecodeGetBrandingPreference";
 export * from "./lib/controller/branding/controllerDecodeUpdateBrandingPreference";
+export * from "./lib/controller/branding/controllerDecodeRevertBrandingPreference";

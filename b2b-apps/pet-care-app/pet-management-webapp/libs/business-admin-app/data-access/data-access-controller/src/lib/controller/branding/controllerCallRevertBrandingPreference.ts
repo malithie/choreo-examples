@@ -16,17 +16,18 @@
  * under the License.
  */
 
-import { AxiosResponse } from "axios";
-import { Doctor, DoctorInfo } from "../../../business-admin-app/types/doctor";
-import createHeaders from "../createHeaders";
-import { getDoctorInstance } from "../getDoctors/doctorInstance";
+import { commonControllerCall } from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
+import { Session } from "next-auth";
 
-export async function postDoctor(accessToken: string, payload?: DoctorInfo) {
-    const headers = createHeaders(accessToken);
-    const response = await getDoctorInstance().post("/doctors", payload, {
-        headers: headers
-    });
 
-    return response as AxiosResponse<Doctor>;
+export async function controllerCallRevertBrandingPreference(
+    session: Session
+) {
+    const data = 
+    (await commonControllerCall(
+        "/api/settings/branding/revertBrandingPreference",
+        session
+    ));
 
+    return data;
 }

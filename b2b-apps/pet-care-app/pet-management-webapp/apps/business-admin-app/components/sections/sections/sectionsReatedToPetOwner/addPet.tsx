@@ -78,10 +78,7 @@ export default function AddPetComponent(props: AddPetComponentProps) {
         const payload: updatePetInfo = {
             breed: values.Type,
             dateOfBirth: values.DateOfBirth,
-            email: session.user.emails[0],
             name: values.Name,
-            orgId: session.orgId,
-            userId: session.user.id,
             vaccinations: []
         };
 

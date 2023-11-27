@@ -98,10 +98,7 @@ export default function EditPetComponent(props: EditPetComponentProps) {
             const payload: updatePetInfo = {
                 breed: petBreed,
                 dateOfBirth: petDoB,
-                email: session.user.emails[0],
                 name: petName,
-                orgId: session.orgId,
-                userId: session.user.id,
                 vaccinations: vaccineInfo
             };
             const response = await updatePet(accessToken, pet.id, payload);

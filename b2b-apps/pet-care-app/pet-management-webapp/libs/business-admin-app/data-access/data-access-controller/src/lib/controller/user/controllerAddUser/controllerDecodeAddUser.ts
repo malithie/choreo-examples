@@ -100,7 +100,7 @@ export async function controllerDecodeAddUser(
     firstName: string,
     familyName: string,
     email: string,
-    password: string): Promise<User | boolean> {
+    password: string): Promise<User | boolean | any> {
 
     const addUserEncode: SendUser =
         (getAddUserBody(inviteConst, firstName, familyName, email, password) as SendUser);

@@ -32,7 +32,7 @@ import { NextApiRequest, NextApiResponse } from "next";
  * 
  * @returns correct data if the call is successful, else an error message
  */
-export default async function updateBrandingPreference(req: NextApiRequest, res: NextApiResponse) {
+export default async function revertBrandingPreference(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== "POST") {
         notPostError(res);
     }
@@ -40,31 +40,17 @@ export default async function updateBrandingPreference(req: NextApiRequest, res:
     const body = JSON.parse(req.body);
     const session = body.session;
     const orgId = body.orgId;
-    const brandingPreference = body.param;
-
-    let fetchData;
     
     try {
-        if (brandingPreference?.preference?.configs?.isBrandingEnabled) {
-            fetchData = await fetch(
-                `${getOrgUrl(orgId)}/api/server/v1/branding-preference`,
-                requestOptionsWithBody(session, RequestMethod.PUT, brandingPreference)
-            );
-        }
-        if (brandingPreference?.preference?.configs?.isBrandingEnabled === undefined 
-            || brandingPreference?.preference?.configs?.isBrandingEnabled === false
-            || fetchData?.status === 404) {
-            brandingPreference.preference.configs.isBrandingEnabled = true;
-            brandingPreference.preference.configs.removeDefaultBranding = true;
-            fetchData = await fetch(
-                `${getOrgUrl(orgId)}/api/server/v1/branding-preference`,
-                requestOptionsWithBody(session, RequestMethod.POST, brandingPreference)
-            );
-        }
-        const data = await fetchData.json();
+        const fetchData = await fetch(
+            `${getOrgUrl(orgId)}/api/server/v1/branding-preference` 
+            + `?locale=en-US&name=${orgId}&type=ORG`,
+            requestOptionsWithBody(session, RequestMethod.DELETE, null)
+        );
 
-        res.status(200).json(data);
+        res.status(200).json(fetchData);
     } catch (err) {
+
         return dataNotRecievedError(res);
     }
 }

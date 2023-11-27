@@ -73,6 +73,13 @@ export default function AddUserComponent(props: AddUserComponentProps) {
         errors = fieldValidate("password", values.password, errors);
         errors = fieldValidate("repassword", values.repassword, errors);
 
+        if (userTypeSelect === "DOCTOR") {
+            errors = fieldValidate("DateOfBirth", values.DateOfBirth, errors);
+            errors = fieldValidate("Gender", values.Gender, errors);
+            errors = fieldValidate("Specialty", values.Specialty, errors);
+            errors = fieldValidate("Address", values.Address, errors);
+        }
+
         return errors;
     };
 
@@ -167,13 +174,17 @@ export default function AddUserComponent(props: AddUserComponentProps) {
                 
                 if (userTypeSelect === "DOCTOR") {
                     const payload: DoctorInfo = {
+                        address: values.Address,
                         availability: [],
+                        dateOfBirth: values.DateOfBirth,
                         emailAddress: values.email,
+                        gender: values.Gender,
                         name: values.firstName + " " + values.familyName,
-                        registrationNumber: values.RegistrationNumber
+                        registrationNumber: values.RegistrationNumber,
+                        specialty: values.Specialty
                     };
                     
-                    postDoctor(session.accessToken, session.orgId, payload)
+                    postDoctor(session.accessToken, payload)
                         .then((response) => onDoctorSubmit(response, form));
         
                     roleDetails = rolesList.find((role) => role.displayName === "pet-care-doctor");
@@ -185,7 +196,6 @@ export default function AddUserComponent(props: AddUserComponentProps) {
 
                 if (userTypeSelect === "ADMIN") {
                     roleDetails = rolesList.find((role) => role.displayName === "pet-care-admin");
-                    console.log(roleDetails);
                     controllerDecodePatchRole(session, roleDetails.id, PatchMethod.ADD, "users", response1.id)
                         .then((response) => onRoleSubmit(response))
                         .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
@@ -204,6 +214,11 @@ export default function AddUserComponent(props: AddUserComponentProps) {
         
 
     };
+
+    const options = [
+        { value: "male", label: "Male" },
+        { value: "female", label: "Female" }
+    ];
 
     return (
         <Modal backdrop="static" role="alertdialog" open={ open } onClose={ onClose } size="sm">
@@ -289,6 +304,55 @@ export default function AddUserComponent(props: AddUserComponentProps) {
                                     <FormSuite.Control name="input" type="email" />
                                 </FormField>
 
+                                {
+                                    userTypeSelect === "DOCTOR" 
+                                        ? (
+                                            <>
+                                                <FormField
+                                                    name="DateOfBirth"
+                                                    label="Date Of Birth"
+                                                    helperText="Date Of Birth of the doctor."
+                                                    needErrorMessage={ true }
+                                                >
+                                                    <FormSuite.Control name="input" type="date"/>
+                                                </FormField>
+
+                                                <FormField
+                                                    name="Gender"
+                                                    label="Gender"
+                                                    helperText="Gender of the doctor."
+                                                    needErrorMessage={ true }
+                                                >
+                                                    { /* <FormSuite.Control name="input" type="SelectPicker" /> */ }
+                                                    <SelectPicker
+                                                        name="mySelectField"
+                                                        data={ options }
+                                                        searchable={ false }
+                                                        style={ { width: "100%" } }
+                                                    />
+                                                </FormField>
+
+                                                <FormField
+                                                    name="Specialty"
+                                                    label="Specialty"
+                                                    helperText="Specialty of the doctor."
+                                                    needErrorMessage={ true }
+                                                >
+                                                    <FormSuite.Control name="input" />
+                                                </FormField>
+
+                                                <FormField
+                                                    name="Address"
+                                                    label="Address"
+                                                    helperText="Address of the doctor."
+                                                    needErrorMessage={ true }
+                                                >
+                                                    <FormSuite.Control name="input" />
+                                                </FormField>
+                                            </>
+                                        )
+                                        : null
+                                }
 
                                 <RadioGroup
                                     name="radioList"

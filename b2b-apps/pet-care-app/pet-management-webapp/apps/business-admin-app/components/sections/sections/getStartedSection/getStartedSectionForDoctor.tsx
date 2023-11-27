@@ -56,12 +56,12 @@ export default function GetStartedSectionComponentForDoctor(props: GetStartedSec
     async function getBookings(): Promise<void> {
         const accessToken = session?.accessToken;
 
-        getProfile(accessToken, session.orgId, session.user.emails[0])
+        getProfile(accessToken)
             .then(async (res) => {
                 if (res.data) {
                     setDoctor(res.data);
                 }
-                const response = await getDoctorBookings(accessToken, session.orgId, res.data.id);
+                const response = await getDoctorBookings(accessToken, res.data.id);
 
                 if (response.data instanceof Array) {
                     setBookingList(response.data);
@@ -87,7 +87,7 @@ export default function GetStartedSectionComponentForDoctor(props: GetStartedSec
             const accessToken = session?.accessToken;
             const doctorId = doctor?.id;
       
-            const response = await getDoctorBookingsPerDay(accessToken, session.orgId, doctorId, date);
+            const response = await getDoctorBookingsPerDay(accessToken, doctorId, date);
       
             if (response.data instanceof Array) {
                 return response.data as BookingResult[];

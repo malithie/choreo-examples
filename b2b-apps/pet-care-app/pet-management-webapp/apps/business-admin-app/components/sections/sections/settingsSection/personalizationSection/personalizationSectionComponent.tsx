@@ -19,12 +19,17 @@
 import { 
     BrandingPreference 
 } from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
+import { 
+    controllerDecodeRevertBrandingPreference 
+} from "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
 import { FormButtonToolbar, FormField } from "@pet-management-webapp/shared/ui/ui-basic-components";
 import {
     SettingsTitleComponent
 } from "@pet-management-webapp/shared/ui/ui-components";
 import { checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
 import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } from "@pet-management-webapp/shared/util/util-front-end-util";
+import { deletePersonalization } from "apps/business-admin-app/APICalls/DeletePersonalization/delete-personalization";
+import { getPersonalization } from "apps/business-admin-app/APICalls/GetPersonalization/get-personalization";
 import { postPersonalization } from "apps/business-admin-app/APICalls/UpdatePersonalization/post-personalization";
 import { Personalization } from "apps/business-admin-app/types/personalization";
 import controllerDecodeGetBrandingPreference 
@@ -34,7 +39,7 @@ import controllerDecodeUpdateBrandingPreference
 import { Session } from "next-auth";
 import React, { useCallback, useEffect, useState } from "react";
 import { Form } from "react-final-form";
-import { Container, Toaster, useToaster } from "rsuite";
+import { Button, Container, Divider, Toaster, useToaster } from "rsuite";
 import FormSuite from "rsuite/Form";
 import personalize from "./personalize";
 import styles from "../../../../../styles/Settings.module.css";
@@ -113,6 +118,22 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         setLoadingDisplay(LOADING_DISPLAY_NONE);
     };
 
+    const onRevert = async (): Promise<void> => {
+        setLoadingDisplay(LOADING_DISPLAY_BLOCK);
+        controllerDecodeRevertBrandingPreference(session)
+            .then(() => {
+                deletePersonalization(session.accessToken, session.orgId)
+                    .then(() => {
+                        getPersonalization(session.accessToken, session.orgId)
+                            .then((response) => {
+                                personalize(response.data);
+                            });
+                    });
+                fetchBrandingPreference();
+            })
+            .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
+    };
+
     return (
         <Container>
 
@@ -181,7 +202,11 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                 }
                                 needErrorMessage={ true }
                             >
-                                <FormSuite.Control name="input" />
+                                <FormSuite.Control 
+                                    name="input" 
+                                    type="color" 
+                                    style={ { height: 40, padding: 3, width: 100 } }
+                                />
                             </FormField>
 
                             <FormButtonToolbar
@@ -193,6 +218,14 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                         </FormSuite>
                     )}
                 />
+                <Divider style={ { background: "#bebebe" } }/>
+                <Button
+                    style={ { background: "rgba(255, 0, 0, 0.8)", width: "25%" } }
+                    size="lg"
+                    appearance="primary"
+                    onClick={ onRevert } >
+                    { "Revert to default" }
+                </Button>
             </div>
         </Container>
     );

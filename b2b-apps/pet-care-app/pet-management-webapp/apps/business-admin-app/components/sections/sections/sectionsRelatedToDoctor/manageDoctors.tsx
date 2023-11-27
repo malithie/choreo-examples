@@ -23,7 +23,6 @@ import { Session } from "next-auth";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Button, Stack } from "rsuite";
-import AddDoctorComponent from "./addDoctorComponent";
 import DoctorCard from "./doctorCard";
 import DoctorOverview from "./doctorOverview";
 import styles from "../../../../styles/doctor.module.css";
@@ -52,7 +51,7 @@ export default function ManageDoctorsSection(props: ManageDoctorsSectionProps) {
     async function getDoctorList() {
         const accessToken = session.accessToken;
 
-        getDoctors(accessToken, session.orgId)
+        getDoctors(accessToken)
             .then((res) => {
                 if (res.data instanceof Array) {
                     setDoctorList(res.data);
@@ -71,7 +70,6 @@ export default function ManageDoctorsSection(props: ManageDoctorsSectionProps) {
     useEffect(() => {
         router.replace(router.asPath);
     }, [ isDoctorEditOpen ]);
-
 
     const onAddDoctorClick = (): void => {
         setIsAddDoctorOpen(true);

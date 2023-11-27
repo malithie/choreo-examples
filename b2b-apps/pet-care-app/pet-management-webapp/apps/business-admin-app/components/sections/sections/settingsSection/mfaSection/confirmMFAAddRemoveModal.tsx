@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { Application, IdentityProvider, PatchApplicationAuthMethod } from
+import { Application, PatchApplicationAuthMethod } from
     "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
-import { controllerDecodePatchApplicationAuthSteps } from
+import { controllerDecodePatchApplicationAuthStepsWithAuthenticator } from
     "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
 import { errorTypeDialog, successTypeDialog } from "@pet-management-webapp/shared/ui/ui-components";
 import { checkIfJSONisEmpty } from "@pet-management-webapp/shared/util/util-common";
@@ -26,7 +26,7 @@ import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE } from "@pet-management-web
 import { Session } from "next-auth";
 import React, { useState } from "react";
 import { Avatar, Button, Col, Grid, Loader, Modal, Row, Toaster, useToaster } from "rsuite";
-import stylesSettings from "../../../../../../styles/Settings.module.css";
+import stylesSettings from "../../../../../styles/Settings.module.css";
 
 interface ApplicationListItemProps {
     applicationDetail: Application
@@ -37,14 +37,13 @@ interface ApplicationListAvailableProps {
     idpIsinAuthSequence: boolean
 }
 
-interface ConfirmAddRemoveLoginFlowModalProps {
+interface ConfirmMFAAddRemoveModalProps {
     session: Session,
     applicationDetail: Application,
-    idpDetails: IdentityProvider,
+    authenticator: string,
     idpIsinAuthSequence: boolean,
     openModal: boolean,
     onModalClose: () => void,
-    fetchAllIdPs: () => Promise<void>
 }
 
 /**
@@ -53,9 +52,9 @@ interface ConfirmAddRemoveLoginFlowModalProps {
  * 
  * @returns Add/Remove from login flow button
  */
-export default function ConfirmAddRemoveLoginFlowModal(props: ConfirmAddRemoveLoginFlowModalProps) {
+export default function ConfirmMFAAddRemoveModal(props: ConfirmMFAAddRemoveModalProps) {
 
-    const { session, applicationDetail, idpDetails, idpIsinAuthSequence, openModal, onModalClose, fetchAllIdPs }
+    const { session, applicationDetail, authenticator, idpIsinAuthSequence, openModal, onModalClose}
         = props;
 
     const toaster: Toaster = useToaster();
@@ -64,31 +63,30 @@ export default function ConfirmAddRemoveLoginFlowModal(props: ConfirmAddRemoveLo
 
     const onSuccess = (): void => {
         onModalClose();
-        fetchAllIdPs().finally();
     };
 
     const onIdpAddToLoginFlow = (response: boolean): void => {
         if (response) {
             onSuccess();
-            successTypeDialog(toaster, "Success", "Identity Provider Add to the Login Flow Successfully.");
+            successTypeDialog(toaster, "Success", "MFA added to the Login Flow Successfully.");
         } else {
-            errorTypeDialog(toaster, "Error Occured", "Error occured while adding the the identity provider.");
+            errorTypeDialog(toaster, "Error Occured", "Error occured while adding the MFA.");
         }
     };
 
     const onIdpRemovefromLoginFlow = (response: boolean): void => {
         if (response) {
             onSuccess();
-            successTypeDialog(toaster, "Success", "Identity Provider Remove from the Login Flow Successfully.");
+            successTypeDialog(toaster, "Success", "MFA removed from the Login Flow Successfully.");
         } else {
-            errorTypeDialog(toaster, "Error Occured", "Error occured while removing the identity provider. Try again.");
+            errorTypeDialog(toaster, "Error Occured", "Error occured while removing the MFA.");
         }
     };
 
     const onSubmit = async (patchApplicationAuthMethod): Promise<void> => {
         setLoadingDisplay(LOADING_DISPLAY_BLOCK);
 
-        controllerDecodePatchApplicationAuthSteps(session, applicationDetail, idpDetails,
+        controllerDecodePatchApplicationAuthStepsWithAuthenticator(session, applicationDetail, authenticator,
             patchApplicationAuthMethod)
             .then((response) => idpIsinAuthSequence
                 ? onIdpRemovefromLoginFlow(response)
@@ -112,8 +110,8 @@ export default function ConfirmAddRemoveLoginFlowModal(props: ConfirmAddRemoveLo
                 <Modal.Title><b>
                     {
                         idpIsinAuthSequence
-                            ? "Remove Identity Provider from the Login Flow"
-                            : "Add Identity Provider to the Login Flow"
+                            ? "Remove MFA from the Login Flow"
+                            : "Add MFA to the Login Flow"
                     }
                 </b></Modal.Title>
             </Modal.Header>
@@ -139,7 +137,7 @@ export default function ConfirmAddRemoveLoginFlowModal(props: ConfirmAddRemoveLo
             </Modal.Footer>
 
             <div style={ loadingDisplay }>
-                <Loader size="lg" backdrop content="Idp is adding to the login flow" vertical />
+                <Loader size="lg" backdrop content="MFA is adding to the login flow" vertical />
             </div>
 
         </Modal >
@@ -157,7 +155,7 @@ function EmptySelectApplicationBody() {
         <div >
             <p>No Application Available</p>
             <div style={ { marginLeft: "5px" } }>
-                <div>Create an application from the WSO2 IS or Asgardeo Console app to add authentication.</div>
+                <div>Create an application from WSO2 IS app to add authentication.</div>
                 <p>For more details check out the following links</p>
                 <ul>
                     <li>
@@ -187,15 +185,19 @@ function ApplicationListAvailable(props: ApplicationListAvailableProps) {
         <div>
             {
                 idpIsinAuthSequence
-                    ? (<p>This will remove the Idp as an authentication step from the following
+                    ? (<p>This will remove the MFA as an authentication step to the authentication flow of the following
                     applicaiton</p>)
-                    : (<p>This will add the Idp as an authentication step to the authentication flow of the following
+                    : (<p>This will add the MFA as an authentication step to the authentication flow of the following
                         applicaiton</p>)
             }
 
-<ApplicationListItem applicationDetail={ applicationDetail } />
+            {
+                idpIsinAuthSequence
+                    ? <ApplicationListItem applicationDetail={ applicationDetail } />
+                    : <ApplicationListItem applicationDetail={ applicationDetail } />
+            }
 
-            <p>Please confirm your action to procced</p>
+            <p>Please confirm your action to proceed</p>
 
         </div>
     );

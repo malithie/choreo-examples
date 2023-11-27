@@ -77,7 +77,7 @@ export default function BookingDetails() {
                 .then(async (res) => {
                     if (res.data) {
                         setPet(res.data);
-                        const response = await getThumbnail(accessToken, res.data.id);
+                        const response = await getThumbnail(accessToken, res.data.id, "", "");
 
                         if (response.data.size > 0) {
                             const imageUrl = URL.createObjectURL(response.data);

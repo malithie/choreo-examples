@@ -34,7 +34,12 @@ export interface Role extends ControllerCallParam, ControllerCallReturn, Control
     id?: string,
     users?: RoleUsers[],
     groups?: RoleGroups[],
-    permissions?: string[]
+    permissions?: string[],
+    audience?: {
+        display: string,
+        type: string,
+        value: string
+    }
 }
 
 export default Role;

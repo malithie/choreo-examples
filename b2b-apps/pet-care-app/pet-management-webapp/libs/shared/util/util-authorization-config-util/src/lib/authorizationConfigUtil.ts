@@ -49,7 +49,7 @@ function orgSignin(adminApp: boolean, orgId?: string): void {
 
     if (adminApp) {
         if (orgId) {
-            signIn("wso2isAdmin", { orgId: orgId });
+            signIn("wso2isAdmin", undefined, { orgId: orgId });
         } else {
             signIn("wso2isAdmin");
         }

@@ -48,7 +48,7 @@ export default function Permission(props: PermissionProps) {
     const { fetchData, session, roleDetails } = props;
 
     const [ loadingDisplay, setLoadingDisplay ] = useState(LOADING_DISPLAY_NONE);
-    const [ selectedPermissions, setSelectedPermissions ] = useState<string[]>([]);
+    const [ selectedPermissions, setSelectedPermissions ] = useState<any[]>([]);
 
     const toaster: Toaster = useToaster();
 

@@ -27,3 +27,13 @@ function updatePersonalization(string org, Personalization personalization) retu
     });
     return personalization;
 }
+
+function deletePersonalization(string org) returns string|()|error {
+
+    Personalization? oldPersonalizationRecord = personalizationRecords[org];
+    if oldPersonalizationRecord !is () {
+        _ = personalizationRecords.remove(org);
+    }
+
+    return "Deleted successfully";
+}

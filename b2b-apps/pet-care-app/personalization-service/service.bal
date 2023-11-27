@@ -35,4 +35,20 @@ service / on new http:Listener(9093) {
         return personalization;
     }
 
+    @http:ResourceConfig {
+        auth: {
+            scopes: "update_personalization"
+        }
+    }
+    resource function delete org/[string orgId]/personalization(http:Headers headers) returns http:NoContent|http:NotFound|error? {
+
+        string|()|error result = deletePersonalization(orgId);
+        if result is () {
+            return http:NOT_FOUND;
+        } else if result is error {
+            return result;
+        }
+        return http:NO_CONTENT;
+    }
+
 }

@@ -16,17 +16,14 @@
  * under the License.
  */
 
-import { AxiosResponse } from "axios";
-import { Doctor, DoctorInfo } from "../../../business-admin-app/types/doctor";
 import createHeaders from "../createHeaders";
-import { getDoctorInstance } from "../getDoctors/doctorInstance";
+import { getPersonalizationInstance } from "../GetPersonalization/personalizationInstance";
 
-export async function postDoctor(accessToken: string, payload?: DoctorInfo) {
+export async function deletePersonalization(accessToken: string, orgId: string) {
     const headers = createHeaders(accessToken);
-    const response = await getDoctorInstance().post("/doctors", payload, {
+    const response = await getPersonalizationInstance().delete(`org/${orgId}/personalization` , {
         headers: headers
     });
 
-    return response as AxiosResponse<Doctor>;
-
+    return response;
 }

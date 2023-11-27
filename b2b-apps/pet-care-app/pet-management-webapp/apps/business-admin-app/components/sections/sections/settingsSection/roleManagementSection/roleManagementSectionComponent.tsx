@@ -17,8 +17,9 @@
  */
 
 import { Role } from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
-import { controllerDecodeListAllRoles } 
+import { controllerDecodeListAllRoles }
     from "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
+import { getConfig } from "@pet-management-webapp/business-admin-app/util/util-application-config-util";
 import { EmptySettingsComponent, SettingsTitleComponent } from "@pet-management-webapp/shared/ui/ui-components";
 import PeoplesIcon from "@rsuite/icons/Peoples";
 import { Session } from "next-auth";
@@ -27,7 +28,7 @@ import { Container } from "rsuite";
 import RolesList from "./otherComponents/rolesList";
 
 interface RoleManagementSectionComponentProps {
-    session : Session
+    session: Session
 }
 
 /**
@@ -47,7 +48,10 @@ export default function RoleManagementSectionComponent(props: RoleManagementSect
         const res = await controllerDecodeListAllRoles(session);
 
         if (res) {
-            setRolesList(res);
+            setRolesList(res.filter((role) => 
+                role?.audience.type == "application" && 
+                role?.audience.display === getConfig().BusinessAdminAppConfig.ManagementAPIConfig.SharedApplicationName
+            ));
         } else {
             setRolesList([]);
         }
@@ -62,7 +66,7 @@ export default function RoleManagementSectionComponent(props: RoleManagementSect
         <Container>
 
             <SettingsTitleComponent
-                title="Role Management"
+                title="Manage Roles"
                 subtitle="Manage organization roles here." />
 
             {
