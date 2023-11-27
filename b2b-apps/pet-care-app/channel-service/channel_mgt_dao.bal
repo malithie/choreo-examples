@@ -130,7 +130,12 @@ function dbAddDoctor(Doctor doctor) returns Doctor|error {
         specialty, emailAddress, dateOfBirth, address) VALUES (${doctor.id}, ${doctor.org}, ${doctor.createdAt}, 
         ${doctor.name}, ${doctor.gender}, ${doctor.registrationNumber}, ${doctor.specialty}, ${doctor.emailAddress}, 
         ${doctor.dateOfBirth}, ${doctor.address});`;
-        _ = check dbClient->execute(query);
+
+        sql:ExecutionResult|sql:Error insertResult = check dbClient->execute(query);
+
+        if insertResult is sql:Error {
+            handleError(batchResult)
+        }
 
         Availability[]? availabilitySlots = doctor.availability;
         sql:ExecutionResult[]|sql:Error batchResult = [];
