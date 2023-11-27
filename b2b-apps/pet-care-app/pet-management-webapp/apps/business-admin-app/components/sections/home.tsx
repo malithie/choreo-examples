@@ -79,10 +79,10 @@ export default function Home(props: HomeProps): JSX.Element {
     }, [ fetchData ]);
 
     const fetchBrandingPreference = async () => {
-        getPersonalization(session.accessToken, session.orgId)
-            .then((response) => {
-                personalize(response.data);
-            });
+        // getPersonalization(session.accessToken, session.orgId)
+        //     .then((response) => {
+        //         personalize(response.data);
+        //     });
     };
 
     

@@ -1,8 +1,8 @@
 type DoctorItem record {|
     string name;
-    string gender?;
+    string gender;
     string registrationNumber;
-    string specialty?;
+    string specialty;
     string emailAddress;
     string dateOfBirth?;
     string address?;
@@ -57,7 +57,6 @@ type BookingItem record {|
     string petName;
     string petType;
     string petDoB;
-    string email;
     *AppointmentItem;
 |};
 
@@ -114,7 +113,7 @@ type EmailContent record {|
 
 type Property record {|
     string name;
-    string value?;
+    string value;
 |};
 
 enum EmailType {
