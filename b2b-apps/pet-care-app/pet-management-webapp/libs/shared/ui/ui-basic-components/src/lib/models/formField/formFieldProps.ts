@@ -21,5 +21,6 @@ export interface FormFieldProps {
     label: string,
     children: JSX.Element,
     helperText?: string,
-    needErrorMessage?: boolean
+    needErrorMessage?: boolean,
+    subscription?: any
 }

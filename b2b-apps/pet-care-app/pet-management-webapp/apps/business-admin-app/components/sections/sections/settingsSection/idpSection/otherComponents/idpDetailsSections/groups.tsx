@@ -19,10 +19,12 @@
 import { 
     IdentityProvider, 
     IdentityProviderGroupMappings, 
-    IdpGroup 
+    IdpGroup, 
+    Role
 } from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
 import { 
     controllerDecodeGetIdentityProviderGroupMappings, 
+    controllerDecodeListAllRoles, 
     controllerDecodePatchIdpClaims, 
     controllerDecodePatchIdpGroups 
 } from
@@ -35,10 +37,11 @@ import { LOADING_DISPLAY_BLOCK, LOADING_DISPLAY_NONE, fieldValidate }
 import { id } from "date-fns/locale";
 import { Session } from "next-auth";
 import { useCallback, useEffect, useState } from "react";
-import { Form } from "react-final-form";
-import { Loader, TagInput, Toaster, useToaster } from "rsuite";
+import { Field, Form, FormSpy } from "react-final-form";
+import { Checkbox, CheckboxGroup, Loader, Panel, PanelGroup, TagInput, Toaster, useToaster } from "rsuite";
 import FormSuite from "rsuite/Form";
 import styles from "../../../../../../../styles/Settings.module.css";
+import { getConfig } from "@pet-management-webapp/business-admin-app/util/util-application-config-util";
 
 interface GeneralProps {
     fetchData: () => Promise<void>
@@ -61,6 +64,7 @@ export default function Groups(props: GeneralProps) {
     const toaster: Toaster = useToaster();
 
     const [ idpGroupMappings, setIdpGroupMappings ] = useState<IdentityProviderGroupMappings>(null);
+    const [ rolesList, setRolesList ] = useState<Role[]>([]);
 
     const fetchGroupMappingData = useCallback(async () => {
         const res: IdentityProviderGroupMappings = 
@@ -141,6 +145,25 @@ export default function Groups(props: GeneralProps) {
         
     };
 
+    const fetchAllRoles = useCallback(async () => {
+
+        const res = await controllerDecodeListAllRoles(session);
+
+        if (res) {
+            setRolesList(res.filter((role) => 
+                role?.audience.type == "application" && 
+                role?.audience.display === getConfig().BusinessAdminAppConfig.ManagementAPIConfig.SharedApplicationName
+            ));
+        } else {
+            setRolesList([]);
+        }
+
+    }, [ session ]);
+
+    useEffect(() => {
+        fetchAllRoles();
+    }, [ fetchAllRoles ]);
+
     return (
         <div className={ styles.addUserMainDiv }>
 
@@ -173,7 +196,7 @@ export default function Groups(props: GeneralProps) {
 
                             <FormField
                                 name="groups"
-                                label="Groups"
+                                label="External Groups"
                                 helperText={ "This should correspond to the name of the groups" + 
                                     " that will be returned from your connection." 
                                 }
@@ -185,7 +208,7 @@ export default function Groups(props: GeneralProps) {
                                     style={ { width: '100%', display: 'block' } }
                                 />
                             </FormField>
-
+                            
                             <FormButtonToolbar
                                 submitButtonText="Update"
                                 submitButtonDisabled={ submitting || pristine || !checkIfJSONisEmpty(errors) }

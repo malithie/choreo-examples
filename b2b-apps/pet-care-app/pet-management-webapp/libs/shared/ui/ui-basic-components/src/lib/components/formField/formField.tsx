@@ -24,7 +24,7 @@ import { FormFieldProps } from "../../models/formField/formFieldProps";
 
 export function FormField(props: FormFieldProps) {
 
-    const { name, label, helperText, needErrorMessage, children } = props;
+    const { name, label, helperText, needErrorMessage, children, subscription } = props;
 
     return (
         <Field
@@ -49,6 +49,7 @@ export function FormField(props: FormFieldProps) {
 
                 </FormSuite.Group>
             ) }
+            subscription={ subscription }
         />
     );
 }

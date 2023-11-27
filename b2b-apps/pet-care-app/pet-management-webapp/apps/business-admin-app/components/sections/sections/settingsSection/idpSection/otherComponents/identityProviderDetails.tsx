@@ -29,6 +29,7 @@ import ButtonGroupIdentityProviderDetails from "./buttonGroupIdentityProviderDet
 import General from "./idpDetailsSections/general";
 import Settings from "./idpDetailsSections/settings";
 import Groups from "./idpDetailsSections/groups";
+import Roles from "./idpDetailsSections/roles";
 
 interface IdentityProviderDetailsProps {
     session: Session
@@ -63,8 +64,6 @@ export default function IdentityProviderDetails(props: IdentityProviderDetailsPr
         setActiveKeyNav(eventKey);
     };
 
-    console.log("idpDetails", idpDetails);
-
     const idpDetailsComponent = (activeKey): JSX.Element => {
         switch (activeKey) {
             case "1":
@@ -79,6 +78,9 @@ export default function IdentityProviderDetails(props: IdentityProviderDetailsPr
             case "4":
 
                 return <Groups session={ session } idpDetails={ idpDetails } fetchData={ fetchData } />;
+            case "5":
+
+                return <Roles session={ session } idpDetails={ idpDetails } fetchData={ fetchData } />;
         }
     };
 
@@ -160,6 +162,11 @@ function IdentityProviderDetailsNav(prop) {
                     eventKey="4"
                     onSelect={ (eventKey) => activeKeyNavSelect(eventKey) }>
                     Groups
+                </Nav.Item>
+                <Nav.Item
+                    eventKey="5"
+                    onSelect={ (eventKey) => activeKeyNavSelect(eventKey) }>
+                    Roles
                 </Nav.Item>
 
                 <div style={ { flexGrow: "1" } }></div>
