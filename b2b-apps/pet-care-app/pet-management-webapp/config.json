@@ -29,6 +29,7 @@
                 "email",
                 "profile",
                 "groups",
+                "roles",
                 "internal_login",
                 "internal_org_user_mgt_view",
                 "internal_org_user_mgt_list",

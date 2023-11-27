@@ -65,6 +65,21 @@ const wso2ISProvider = (req: NextApiRequest, res: NextApiResponse) => NextAuth(r
                 session.user = getLoggedUserFromProfile(profile);
                 session.orgId = getOrgId(session.orginalIdToken as unknown as JWT);
                 session.orgName = getOrgName(session.orginalIdToken as unknown as JWT);
+                
+                let rolesList: string[]|string = token.user[ "roles" ];
+                
+                if (typeof rolesList === "string") {
+                    rolesList = [ rolesList ];
+                }
+                if (rolesList == null || rolesList.length === 0) {
+                    session.group = "petOwner";
+                } else if (rolesList.some(x => x === "pet-care-doctor")) {
+                    session.group = "doctor";
+                } else if (rolesList.some(x => x === "petcare-admin")) {
+                    session.group = "admin";
+                } else {
+                    session.group = "petOwner";
+                }
             }
 
             return session;
