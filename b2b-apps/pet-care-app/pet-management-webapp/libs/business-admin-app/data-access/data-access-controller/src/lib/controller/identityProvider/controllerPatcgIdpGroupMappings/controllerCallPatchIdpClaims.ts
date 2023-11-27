@@ -16,11 +16,17 @@
  * under the License.
  */
 
-export interface FormFieldProps {
-    name: string,
-    label: string,
-    children: JSX.Element,
-    helperText?: string,
-    needErrorMessage?: boolean,
-    subscription?: any
+import { 
+    IdentityProviderGroupMappings, 
+} from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
+import { commonControllerCall } from "@pet-management-webapp/shared/data-access/data-access-common-api-util";
+import { Session } from "next-auth";
+
+export async function controllerCallPatchIdpClaims(session: Session, idpId: string,
+    body: IdentityProviderGroupMappings): Promise<IdentityProviderGroupMappings | null> {
+
+    const data = (await commonControllerCall(`/api/settings/identityProvider/patchIdpClaims/${idpId}`,
+        session, body) as IdentityProviderGroupMappings | null);
+
+    return data;
 }

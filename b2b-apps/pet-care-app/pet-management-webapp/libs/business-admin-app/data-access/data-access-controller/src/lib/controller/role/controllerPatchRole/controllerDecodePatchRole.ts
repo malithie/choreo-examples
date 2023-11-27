@@ -24,18 +24,23 @@ import { Session } from "next-auth";
 import { controllerCallPatchRole } from "./controllerCallPatchRole";
 
 export function getAddReplaceBody(patchMethod: PatchMethod, path: string, values: string[] | string): PatchBody {
-    return {
+    
+    const valuesList = Array.isArray(values) 
+        ? values.map((val) => { return { "value": val }; })
+        : [ { "value": values } ];
+
+    const patchBody: any = {
         "Operations": [
             {
                 "op": patchMethod,
-                "value": {
-                    "users": Array.isArray(values) 
-                        ? values.map((val) => { return { "value": val }; })
-                        : [ { "value": values } ]
-                }
+                "value": {}
             }
         ]
     };
+    
+    patchBody["Operations"][0]["value"][path] = valuesList;
+
+    return patchBody as PatchBody;
 }
 
 export function getRemoveBody(patchMethod: PatchMethod, path: string, value: string[] | string): PatchBody {
@@ -83,6 +88,7 @@ export async function controllerDecodePatchRole(
     : Promise<Role | null> {
 
     const patchBody: PatchBody = (getPatchBody(patchMethod, path, value) as PatchBody);
+    console.log(patchBody);
 
     const res = (
         await commonControllerDecode(() => controllerCallPatchRole(session, roleId, patchBody), null) as Role | null);

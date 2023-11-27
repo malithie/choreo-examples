@@ -37,6 +37,12 @@ export * from
 export * from
 "./lib/controller/identityProvider/controllerGetDetailedIdentityProvider/controllerDecodeGetDetailedIdentityProvider";
 export * from
+"./lib/controller/identityProvider/controllerGetDetailedIdentityProvider/controllerDecodeGetIdentityProviderGroupMapping";
+export * from
+"./lib/controller/identityProvider/controllerPatcgIdpGroupMappings/controllerDecodePatchIdpGroups";
+export * from
+"./lib/controller/identityProvider/controllerPatcgIdpGroupMappings/controllerDecodePatchIdpClaims";
+export * from
 "./lib/controller/identityProvider/controllerGetFederatedAuthenticators/controllerDecodeGetFederatedAuthenticators";
 export * from
 "./lib/controller/identityProvider/controllerPatchGeneralSettingsIdp/controllerDecodePatchGeneralSettingsIdp";

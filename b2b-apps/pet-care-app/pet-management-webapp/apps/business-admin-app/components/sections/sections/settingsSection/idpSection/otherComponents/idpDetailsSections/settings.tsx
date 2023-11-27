@@ -57,7 +57,7 @@ export default function Settings(props: SettingsProps) {
     const fetchData = useCallback(async () => {
         const res = await controllerDecodeGetFederatedAuthenticators(
             session, idpDetails.id, idpDetails.federatedAuthenticators.defaultAuthenticatorId);
-
+        
         await setFederatedAuthenticators(res);
     }, [ session, idpDetails ]);
 

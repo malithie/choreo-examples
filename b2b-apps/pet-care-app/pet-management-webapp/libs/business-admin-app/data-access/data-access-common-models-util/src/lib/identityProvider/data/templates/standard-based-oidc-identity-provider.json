@@ -115,7 +115,7 @@
                             "options": [],
                             "defaultValue": "",
                             "subProperties": [],
-                            "readOnly": true
+                            "readOnly": false
                         }
                     ]
                 }

@@ -18,6 +18,7 @@
 import { getConfig } from "@pet-management-webapp/business-admin-app/util/util-application-config-util";
 import { getLoggedUserFromProfile, getLoggedUserId, getOrgId, getOrgName } from
     "@pet-management-webapp/shared/util/util-authorization-config-util";
+import { getDoctor } from "apps/business-admin-app/APICalls/getDoctors/get-doctor";
 import { jwtDecode } from "jwt-decode";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { Profile } from "next-auth";

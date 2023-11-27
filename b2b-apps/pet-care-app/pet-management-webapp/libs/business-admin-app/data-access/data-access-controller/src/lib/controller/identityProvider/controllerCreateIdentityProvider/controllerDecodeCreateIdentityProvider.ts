@@ -80,6 +80,8 @@ export async function controllerDecodeCreateIdentityProvider(session: Session, t
         }
     }
 
+    console.log("model", model);
+
     const res = (await commonControllerDecode(() => controllerCallCreateIdentityProvider(session, model),
         null) as IdentityProvider | null);
 

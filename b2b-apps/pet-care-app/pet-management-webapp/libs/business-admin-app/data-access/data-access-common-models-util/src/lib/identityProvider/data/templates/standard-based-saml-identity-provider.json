@@ -135,7 +135,15 @@
         },
         "homeRealmIdentifier": "",
         "isFederationHub": false,
-        "templateId": "enterprise-saml-idp"
+        "templateId": "enterprise-saml-idp",
+        "provisioning": {
+            "jit": {
+                "isEnabled": true,
+                "scheme": "PROVISION_SILENTLY",
+                "userstore": "PRIMARY",
+                "associateLocalUser": true
+            }
+        }
     },
     "image": "enterprise",
     "name": "SAML 2.0",
