@@ -54,7 +54,7 @@ export default function DoctorProfileSection(props: DoctorProfileSectionProps) {
     async function getProfileInfo() {
         const accessToken = session.accessToken;
 
-        getProfile(accessToken, session.orgId, session.user.emails[0])
+        getProfile(accessToken)
             .then(async (res) => {
                 if (res.data) {
                     setDoctor(res.data);
@@ -63,7 +63,7 @@ export default function DoctorProfileSection(props: DoctorProfileSectionProps) {
 
                     setStringDate(stringDate);
                 }
-                const response = await getDocThumbnail(accessToken, session.orgId, res.data.id);
+                const response = await getDocThumbnail(accessToken, res.data.id);
 
                 if (response.data.size > 0) {
                     const imageUrl = URL.createObjectURL(response.data);

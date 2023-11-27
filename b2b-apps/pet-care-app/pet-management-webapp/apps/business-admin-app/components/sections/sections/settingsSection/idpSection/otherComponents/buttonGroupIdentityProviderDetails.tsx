@@ -115,8 +115,8 @@ export default function ButtonGroupIdentityProviderDetails(props : ButtonGroupId
                 idpIsinAuthSequence === null
                     ? null
                     : idpIsinAuthSequence
-                        ? <Button onClick={ onAddToLoginFlowClick }>Remove from Login Flow</Button>
-                        : <Button onClick={ onAddToLoginFlowClick }>Add to the Login Flow</Button>
+                        ? <Button appearance="ghost" onClick={ onAddToLoginFlowClick }>Remove from Login Flow</Button>
+                        : <Button appearance="primary" onClick={ onAddToLoginFlowClick }>Add to the Login Flow</Button>
             }
 
             <ConfirmAddRemoveLoginFlowModal

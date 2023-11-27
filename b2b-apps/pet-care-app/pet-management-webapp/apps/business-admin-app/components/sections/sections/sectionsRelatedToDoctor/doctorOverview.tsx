@@ -65,7 +65,7 @@ export default function DoctorOverview(props: DoctorOverviewProps) {
         const accessToken = session.accessToken;
 
         if (doctor) {
-            getDocThumbnail(accessToken, session.orgId, doctor.id)
+            getDocThumbnail(accessToken, doctor.id)
                 .then((res) => {
                     if (res.data.size > 0) {
                         const imageUrl = URL.createObjectURL(res.data);

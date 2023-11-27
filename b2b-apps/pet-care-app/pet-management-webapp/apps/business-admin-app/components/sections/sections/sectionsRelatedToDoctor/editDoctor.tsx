@@ -155,7 +155,7 @@ export default function EditDoctor(props: EditDoctorProps) {
                 specialty: docSpecialty
             };
 
-            putDoctor(accessToken, session.orgId, doctor.id, payload);
+            putDoctor(accessToken, doctor.id, payload);
         }
         updateDoctor();
         setAvailabilityInfo([]);
@@ -341,9 +341,21 @@ export default function EditDoctor(props: EditDoctorProps) {
                             value={ bookingCount }
                         />
 
-                        <button 
-                            className={ styles.availabilityPlusButtonStyle } 
-                            onClick={ (e) => { e.preventDefault(); handleOnAdd(); } }>+</button>
+                        <Button 
+                            style={ {
+                                border: "none",
+                                borderRadius: "1vh",
+                                color: "white",
+                                fontSize: "2vh",
+                                fontWeight: "bolder",
+                                height: "5vh",
+                                padding: "5px",
+                                width: "5vh"
+                            } }
+                            appearance="primary"
+                            onClick={ (e) => { e.preventDefault(); handleOnAdd(); } }>
+                                +
+                        </Button>
                     </div>
                     <br/>
                     { availabilityInfo.length > 0 && (
@@ -415,7 +427,7 @@ export default function EditDoctor(props: EditDoctorProps) {
                     <br />
                     { isLoading ? (
                         <div className={ styles.docImageStyle }>
-                            <TailSpin color="var(--primary-color)" height={ 100 } width={ 100 } />
+                            <TailSpin color="black" height={ 100 } width={ 100 } />
                         </div>
                     ) : (
                         <div className={ styles.docImageStyle }>
@@ -439,7 +451,20 @@ export default function EditDoctor(props: EditDoctorProps) {
                             ) } 
                         </div> 
                     ) }
-                    <div className={ styles.updateDocImageDiv }>
+                    <div 
+                        style={ {
+                            color: "rgb(105, 105, 105)",
+                            fontFamily: "Arial, Helvetica, sans-serif",
+                            fontSize: "2vh",
+                            fontWeight: "bold",
+                            height: "5vh",
+                            left: "4vw",
+                            objectFit: "contain",
+                            position: "absolute",
+                            textAlign: "left",
+                            top: "35vh",
+                            width: "15vw",
+                        } }>
                         Update Doctor Image
                     </div>
                     <FileUploadSingle  

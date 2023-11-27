@@ -60,7 +60,7 @@ export default function DeleteUserComponent(prop: DeleteUserComponentProps) {
 
     const onSubmit = (): void => { 
 
-        deleteDoctor(session.accessToken, session.orgId, user.email)
+        deleteDoctor(session.accessToken, user.email)
             .catch((e) => {
                 //
             })

@@ -59,7 +59,7 @@ export default function GetStartedSectionComponentForAdmin(props: GetStartedSect
     async function getDoctorList() {
         const accessToken = session.accessToken;
 
-        getDoctors(accessToken, session.orgId)
+        getDoctors(accessToken)
             .then((res) => {
                 if (res.data instanceof Array) {
                     setDoctorList(res.data);

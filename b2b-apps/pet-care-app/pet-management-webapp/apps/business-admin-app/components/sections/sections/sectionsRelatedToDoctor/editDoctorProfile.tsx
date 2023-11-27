@@ -132,7 +132,7 @@ export default function EditDoctorProfile(props: EditDoctorProfileProps) {
                 specialty: docSpecialty
             };
 
-            putDoctor(accessToken, session.orgId, doctor.id, payload);
+            putDoctor(accessToken, doctor.id, payload);
         }
         updateDoctor();
         setAvailabilityInfo([]);
@@ -318,9 +318,22 @@ export default function EditDoctorProfile(props: EditDoctorProfileProps) {
                             value={ bookingCount }
                         />
 
-                        <button 
-                            className={ styles.availabilityPlusButtonStyle } 
-                            onClick={ (e) => { e.preventDefault(); handleOnAdd(); } }>+</button>
+                        <Button 
+                            style={ {
+                                border: "none",
+                                borderRadius: "1vh",
+                                color: "white",
+                                fontSize: "2vh",
+                                fontWeight: "bolder",
+                                height: "5vh",
+                                padding: "5px",
+                                width: "5vh"
+                            } }
+                            appearance="primary"
+                            onClick={ (e) => { e.preventDefault(); handleOnAdd(); } }>
+                                +
+                        </Button>
+
                     </div>
                     <br/>
                     { availabilityInfo?.length > 0 && (

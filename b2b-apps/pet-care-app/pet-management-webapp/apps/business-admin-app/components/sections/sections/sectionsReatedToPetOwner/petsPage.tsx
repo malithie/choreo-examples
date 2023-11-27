@@ -51,7 +51,7 @@ export default function PetsSection(props: PetsSectionProps) {
     async function getPetList() {
         const accessToken = session.accessToken;
 
-        getPets(accessToken, session.orgId, session.user?.id)
+        getPets(accessToken)
             .then((res) => {
                 if (res.data instanceof Array) {
                     setPetList(res.data);

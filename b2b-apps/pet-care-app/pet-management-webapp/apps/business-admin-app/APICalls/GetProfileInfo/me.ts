@@ -20,9 +20,9 @@ import { AxiosResponse } from "axios";
 import createHeaders from "../createHeaders";
 import { getDoctorInstance } from "../getDoctors/doctorInstance";
 
-export async function getProfile(accessToken: string, orgId: string, email: string) {
+export async function getProfile(accessToken: string) {
     const headers = createHeaders(accessToken);
-    const response = await getDoctorInstance().get(`/org/${orgId}/me/${encodeURIComponent(email)}`, {
+    const response = await getDoctorInstance().get("/me", {
         headers: headers
     });
 

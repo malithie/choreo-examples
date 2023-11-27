@@ -58,7 +58,6 @@ export interface BookingResult {
 export interface BookingInfo {
     date: string;
     doctorId: string;
-    email: string;
     mobileNumber: string;
     petDoB: string;
     petId: string;

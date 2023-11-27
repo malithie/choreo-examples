@@ -17,13 +17,13 @@
  */
 import { getDoctorInstance } from "../getDoctors/doctorInstance";
 
-export async function getDocThumbnail(accessToken: string, orgId:string, doctorId: string) {
+export async function getDocThumbnail(accessToken: string, doctorId: string) {
     const headers = {
         "Authorization": `Bearer ${accessToken}`,
         "accept": "*/*"
     };
 
-    const response = await getDoctorInstance().get(`org/${orgId}/doctors/` + doctorId + "/thumbnail" , {
+    const response = await getDoctorInstance().get(`doctors/${encodeURIComponent(doctorId)}/thumbnail` , {
         headers: headers,
         responseType: "blob"
     });

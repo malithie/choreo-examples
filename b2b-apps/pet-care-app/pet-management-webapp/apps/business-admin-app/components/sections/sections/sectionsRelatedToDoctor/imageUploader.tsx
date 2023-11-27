@@ -21,6 +21,7 @@ import { updateDocThumbnail } from "apps/business-admin-app/APICalls/UploadDocTh
 import { Session } from "next-auth";
 import { ChangeEvent, useRef, useState } from "react";
 import styles from "../../../../styles/doctor.module.css";
+import { Button } from "rsuite";
 
 
 interface FileUploadProps {
@@ -53,11 +54,11 @@ function FileUploadSingle(props: FileUploadProps) {
                 "file",
                 file
             );
-            const response = await updateDocThumbnail(accessToken, session.orgId, doctorId, formData);
+            const response = await updateDocThumbnail(accessToken, doctorId, formData);
 
             if (response.status === 200) {
                 const accessToken = await session.accessToken;
-                const response = await getDocThumbnail(accessToken, session.orgId, doctorId);
+                const response = await getDocThumbnail(accessToken, doctorId);
 
                 if (response.data.size > 0) {
                     const imageUrl = URL.createObjectURL(response.data);
@@ -77,9 +78,25 @@ function FileUploadSingle(props: FileUploadProps) {
 
     return (
         <><div className={ styles.docUploadBtnDiv }>
-            <button onClick={ handleClick } className={ styles.docUploadBtnStyleSec }>
+            <Button 
+                appearance="primary"
+                style={ {
+                    border: "none",
+                    borderRadius: "5px",
+                    boxShadow: "7px 6px 28px 1px rgba(0, 0, 0, 0.24)",
+                    color: "#fff",
+                    cursor: "pointer",
+                    fontSize: "2vh",
+                    marginRight: "1vw",
+                    outline: "none",
+                    padding: "1vh 2vh",
+                    textDecoration: "none",
+                    transition: "0.2s all"
+                } }
+                onClick={ handleClick }
+            >
                 Choose a file
-            </button>
+            </Button>
             <input
                 type="file"
                 ref={ hiddenFileInput }
@@ -88,11 +105,27 @@ function FileUploadSingle(props: FileUploadProps) {
             <label className={ styles.fileNameLabel }>{ file && `${file.name} - ${file.type}` }</label>    
         </div>
         <div className={ styles.docUploadBtnDivSec }>
-            <button
-                className={ styles.docUploadBtnStyleSec }
+            <Button 
+                appearance="primary"
+                style={ {
+                    border: "none",
+                    borderRadius: "5px",
+                    boxShadow: "7px 6px 28px 1px rgba(0, 0, 0, 0.24)",
+                    color: "#fff",
+                    cursor: "pointer",
+                    fontSize: "2vh",
+                    marginRight: "1vw",
+                    outline: "none",
+                    padding: "1vh 2vh",
+                    textDecoration: "none",
+                    transition: "0.2s all"
+                } }
                 onClick={ () => {
                     handleUploadClick();
-                } }>Upload</button>
+                } }
+            >
+                Upload
+            </Button>
         </div></>
     );
 }
