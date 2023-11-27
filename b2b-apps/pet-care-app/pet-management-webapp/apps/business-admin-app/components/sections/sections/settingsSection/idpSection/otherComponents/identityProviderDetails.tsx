@@ -28,6 +28,7 @@ import { Nav, Panel, Stack } from "rsuite";
 import ButtonGroupIdentityProviderDetails from "./buttonGroupIdentityProviderDetails";
 import General from "./idpDetailsSections/general";
 import Settings from "./idpDetailsSections/settings";
+import Groups from "./idpDetailsSections/groups";
 
 interface IdentityProviderDetailsProps {
     session: Session
@@ -62,6 +63,8 @@ export default function IdentityProviderDetails(props: IdentityProviderDetailsPr
         setActiveKeyNav(eventKey);
     };
 
+    console.log("idpDetails", idpDetails);
+
     const idpDetailsComponent = (activeKey): JSX.Element => {
         switch (activeKey) {
             case "1":
@@ -73,6 +76,9 @@ export default function IdentityProviderDetails(props: IdentityProviderDetailsPr
             case "3":
 
                 return <JsonDisplayComponent jsonObject={ idpDetails } />;
+            case "4":
+
+                return <Groups session={ session } idpDetails={ idpDetails } fetchData={ fetchData } />;
         }
     };
 
@@ -149,6 +155,12 @@ function IdentityProviderDetailsNav(prop) {
                         </Nav.Item>)
                         : null
                 }
+
+                <Nav.Item
+                    eventKey="4"
+                    onSelect={ (eventKey) => activeKeyNavSelect(eventKey) }>
+                    Groups
+                </Nav.Item>
 
                 <div style={ { flexGrow: "1" } }></div>
 

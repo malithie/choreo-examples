@@ -180,8 +180,8 @@ function enterpriseSAMLIdpTemplate(
     // errors = fieldValidate("sso_url", values.authorization_endpoint, errors);
     // errors = fieldValidate("entity_id", values.token_endpoint, errors);
 
-    model.image = "https://console.asgardeo.io/app/libs/themes/default/assets/images/" 
-        + "identity-providers/enterprise-idp-illustration.svg";
+    model.image = "https://localhost:9443/console/libs/themes/default/assets/images/" + 
+        "identity-providers/enterprise-idp-illustration.svg";
 
     if (formValues["meta_data_saml"]) {
         model.federatedAuthenticators.authenticators[0].properties = [

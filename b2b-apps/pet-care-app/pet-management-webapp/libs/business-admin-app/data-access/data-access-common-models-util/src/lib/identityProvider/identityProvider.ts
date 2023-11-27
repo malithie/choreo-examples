@@ -25,14 +25,40 @@ interface FederatedAuthenticatorForIdentityProvider {
     [key: string]: unknown,
 }
 
-export interface IdentityProvider extends ControllerCallReturn, ControllerDecodeReturn{
+export interface IdentityProvider extends ControllerCallReturn, ControllerDecodeReturn {
     id: string,
     name: string,
     image : string,
     description : string,
     federatedAuthenticators?: FederatedAuthenticatorForIdentityProvider,
     templateId: string,
+    groups?: IdpGroup[],
     [key: string]: unknown,
+}
+
+export interface IdentityProviderGroupMappings extends ControllerCallReturn, ControllerDecodeReturn {
+    userIdClaim: {
+        uri: string
+    },
+    roleClaim: {
+        uri: string
+    },
+    provisioningClaims: string[],
+    mappings: ClaimMapping[]
+}
+
+export interface IdpGroup extends ControllerCallReturn, ControllerDecodeReturn {
+    id: string,
+    name: string
+}
+
+interface ClaimMapping {
+    idpClaim: string,
+    localClaim: {
+        id?: string,
+        uri: string,
+        displayName?: string
+    }
 }
 
 export default IdentityProvider;

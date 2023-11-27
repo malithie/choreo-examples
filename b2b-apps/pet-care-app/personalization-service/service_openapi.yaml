@@ -12,8 +12,8 @@ servers:
 paths:
   /doctors:
     get:
-      summary: Get all doctors
-      operationId: getDoctors
+      summary: Get branding preferences
+      operationId: getPersonalization
       responses:
         "200":
           description: Ok
@@ -22,7 +22,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Doctor'
+                  $ref: '#/components/schemas/Personalization'
         "500":
           description: Internal server error
           content:
@@ -30,21 +30,21 @@ paths:
               schema:
                 type: string
     post:
-      summary: Create a new doctor
-      operationId: postDoctors
+      summary: Update branding preferences
+      operationId: updatePersonalization
       requestBody:
-        description: basic doctor details
+        description: branding preferences
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DoctorItem'
+              $ref: '#/components/schemas/Personalization'
       responses:
         "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Doctor'
+                $ref: '#/components/schemas/Personalization'
         "500":
           description: Internal server error
           content:
