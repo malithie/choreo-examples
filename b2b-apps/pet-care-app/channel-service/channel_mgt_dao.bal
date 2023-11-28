@@ -120,8 +120,10 @@ function dbDeleteDoctorById(string org, string doctorId) returns string|()|error
 
 function dbAddDoctor(Doctor doctor) returns Doctor|error {
 
+    log:printInfo("Adding doctor from DB");
     jdbc:Client|error dbClient = getConnection();
     if dbClient is error {
+        log:printInfo("DB client error");
         return handleError(dbClient);
     }
 

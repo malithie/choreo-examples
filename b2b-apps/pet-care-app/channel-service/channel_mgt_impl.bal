@@ -181,6 +181,7 @@ function deleteDoctorById(string org, string doctorId) returns string|()|error {
 
 function addDoctor(DoctorItem doctorItem, string org) returns Doctor|error {
 
+    log:printInfo("Reached add doctor endpoint");
     string docId = doctorItem.emailAddress;
     time:Utc currentUtc = time:utcNow();
     time:Civil currentTime = time:utcToCivil(currentUtc);
