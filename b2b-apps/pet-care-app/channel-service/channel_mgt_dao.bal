@@ -142,6 +142,9 @@ function dbAddDoctor(Doctor doctor) returns Doctor|error {
             log:printError("Error while inserting the doctor", insertResult);
         }
 
+        log:printInfo("Doctor added");
+        log:printInfo("Adding timeslots");
+
         Availability[]? availabilitySlots = doctor.availability;
         sql:ExecutionResult[]|sql:Error batchResult = [];
 

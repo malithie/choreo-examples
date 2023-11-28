@@ -18,11 +18,13 @@ service / on new http:Listener(9090) {
     # + return - List of doctors or error
     resource function get doctors(http:Headers headers) returns Doctor[]|error? {
 
+        log:printInfo("Reached get doctor endpoint");
         choreoUserInfo:UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
         if userInfo is error {
             return userInfo;
         }
 
+        log:printInfo("Getting doctor");
         return getDoctors(userInfo.organization);
     }
 
