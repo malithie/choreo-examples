@@ -31,11 +31,13 @@ service / on new http:Listener(9090) {
     # + return - created doctor record or error
     resource function post doctors(http:Headers headers, @http:Payload DoctorItem newDoctor) returns Doctor|error? {
 
+        log:printInfo("1 Reached add doctor endpoint");
         choreoUserInfo:UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
         if userInfo is error {
             return userInfo;
         }
 
+        log:printInfo("Adding doctor");
         Doctor|error doctor = addDoctor(newDoctor, userInfo.organization);
         return doctor;
     }

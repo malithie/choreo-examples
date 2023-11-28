@@ -166,6 +166,7 @@ function dbAddDoctor(Doctor doctor) returns Doctor|error {
             return addedDoctor;
         }
     } on fail error e {
+        log:printInfo("On fail error", e);
         return handleError(e);
     }
 }
