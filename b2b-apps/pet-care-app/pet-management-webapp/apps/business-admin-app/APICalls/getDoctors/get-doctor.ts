@@ -24,7 +24,7 @@ import createHeaders from "../createHeaders";
 
 export async function getDoctor(accessToken: string, doctorId: string) {
     const headers = createHeaders(accessToken);
-    const response = await getDoctorInstance().get(`doctors/${doctorId}`, {
+    const response = await getDoctorInstance().get(`doctors/${encodeURI(doctorId)}`, {
         headers: headers
     });
 

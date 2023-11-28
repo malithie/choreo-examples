@@ -37,6 +37,8 @@ export * from
 export * from
 "./lib/controller/identityProvider/controllerGetDetailedIdentityProvider/controllerDecodeGetDetailedIdentityProvider";
 export * from
+"./lib/controller/identityProvider/controllerGetDetailedIdentityProvider/controllerDecodeGetLocalClaims";
+export * from
 "./lib/controller/identityProvider/controllerGetDetailedIdentityProvider/controllerDecodeGetIdentityProviderGroupMapping";
 export * from
 "./lib/controller/identityProvider/controllerPatcgIdpGroupMappings/controllerDecodePatchIdpGroups";

@@ -21,15 +21,17 @@ import { IdentityProvider, getImageForTheIdentityProvider, selectedTemplateBaese
 import { controllerDecodeGetDetailedIdentityProvider } from
     "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
 import { AccordianItemHeaderComponent, JsonDisplayComponent } from "@pet-management-webapp/shared/ui/ui-components";
+import { SAML_IDP } from "@pet-management-webapp/shared/util/util-common";
 import CodeIcon from "@rsuite/icons/Code";
 import { Session } from "next-auth";
 import React, { useCallback, useEffect, useState } from "react";
 import { Nav, Panel, Stack } from "rsuite";
 import ButtonGroupIdentityProviderDetails from "./buttonGroupIdentityProviderDetails";
+import Attributes from "./idpDetailsSections/attributes";
 import General from "./idpDetailsSections/general";
-import Settings from "./idpDetailsSections/settings";
 import Groups from "./idpDetailsSections/groups";
 import Roles from "./idpDetailsSections/roles";
+import Settings from "./idpDetailsSections/settings";
 
 interface IdentityProviderDetailsProps {
     session: Session
@@ -81,6 +83,9 @@ export default function IdentityProviderDetails(props: IdentityProviderDetailsPr
             case "5":
 
                 return <Roles session={ session } idpDetails={ idpDetails } fetchData={ fetchData } />;
+            case "6":
+
+                return <Attributes session={ session } idpDetails={ idpDetails } fetchData={ fetchData } />;
         }
     };
 
@@ -168,6 +173,16 @@ function IdentityProviderDetailsNav(prop) {
                     onSelect={ (eventKey) => activeKeyNavSelect(eventKey) }>
                     Roles
                 </Nav.Item>
+
+                {
+                    idpDetails?.templateId === SAML_IDP && (
+                        <Nav.Item
+                            eventKey="6"
+                            onSelect={ (eventKey) => activeKeyNavSelect(eventKey) }>
+                            Attributes
+                        </Nav.Item>
+                    )
+                }
 
                 <div style={ { flexGrow: "1" } }></div>
 

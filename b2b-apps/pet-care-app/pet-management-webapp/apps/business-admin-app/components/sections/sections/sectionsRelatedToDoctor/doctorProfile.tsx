@@ -73,7 +73,7 @@ export default function DoctorProfileSection(props: DoctorProfileSectionProps) {
             })
             .catch((e) => {
                 // eslint-disable-next-line no-console
-                console.log(e);
+                // TODO: handle error
             });
     }
 

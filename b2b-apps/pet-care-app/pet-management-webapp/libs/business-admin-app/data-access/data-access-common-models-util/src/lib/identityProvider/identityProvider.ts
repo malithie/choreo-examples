@@ -61,4 +61,8 @@ interface ClaimMapping {
     }
 }
 
+export interface LocalClaim extends ControllerCallReturn, ControllerDecodeReturn {
+    [key: string]: unknown
+}
+
 export default IdentityProvider;

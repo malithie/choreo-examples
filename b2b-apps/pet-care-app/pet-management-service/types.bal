@@ -5,26 +5,6 @@ type PetItem record {|
     Vaccination[] vaccinations?;
 |};
 
-type PetCreateItem record {|
-    string userId;
-    string orgId;
-    string email;
-    string name;
-    string breed;
-    string dateOfBirth;
-    Vaccination[] vaccinations?;
-|};
-
-type PetUpdateItem record {|
-    string userId;
-    string orgId;
-    string email;
-    string name;
-    string breed;
-    string dateOfBirth;
-    Vaccination[] vaccinations?;
-|};
-
 type Pet record {|
     *PetItem;
     readonly string id;

@@ -541,7 +541,7 @@ function sendEmail(Booking booking, Doctor doctor) returns error? {
         addProperty("petType", booking.petType),
         addProperty("petDoB", booking.petDoB),
         addProperty("doctorName", doctor.name),
-        addProperty("doctorSpecialty", doctor?.specialty),
+        addProperty("doctorSpecialty", doctor.specialty),
         addProperty("hospitalName", "Hospital Name"),
         addProperty("hospitalAddress", "Hospital Address"),
         addProperty("hospitalTelephone", "Hospital Telephone")
@@ -566,7 +566,7 @@ function sendEmail(Booking booking, Doctor doctor) returns error? {
     }
 }
 
-function addProperty(string name, string? value) returns Property {
+function addProperty(string name, string value) returns Property {
     Property prop = {name: name, value: value};
     return prop;
 }

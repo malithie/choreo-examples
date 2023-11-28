@@ -21,6 +21,9 @@ import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 import { useEffect } from "react";
 import Home from "../../components/sections/home";
+import { getDoctor } from "apps/business-admin-app/APICalls/getDoctors/get-doctor";
+import { postDoctor } from "apps/business-admin-app/APICalls/CreateDoctor/post-doc";
+import { DoctorInfo } from "apps/business-admin-app/types/doctor";
 
 export async function getServerSideProps(context) {
 
@@ -69,6 +72,26 @@ export default function Org(props : OrgProps) {
             return;
         }
     }, [ routerQuery ]);
+
+    useEffect(() => {
+        getDoctor(session.accessToken, session.user.emails[0])
+            .catch((err) => {
+                if (err.response.status === 404 && session.group === "doctor") {
+                    const payload: DoctorInfo = {
+                        address: "",
+                        availability: [],
+                        dateOfBirth: "",
+                        emailAddress: session.user.emails[0],
+                        gender: "",
+                        name: session.user.name.givenName + " " + session.user.name.familyName,
+                        registrationNumber: Math.floor(100000 + Math.random() * 900000).toString(),
+                        specialty: "N/A"
+                    };
+                    
+                    postDoctor(session.accessToken, payload);
+                }
+            });
+    }, [ session ]);
 
     return (
         session
