@@ -101,7 +101,7 @@ export default function Org(props : OrgProps) {
                 }
             });
         
-        getPersonalization(session.accessToken, session.orgId)
+        getPersonalization(session.orgId)
             .then((response) => {
                 personalize(response.data);
             })

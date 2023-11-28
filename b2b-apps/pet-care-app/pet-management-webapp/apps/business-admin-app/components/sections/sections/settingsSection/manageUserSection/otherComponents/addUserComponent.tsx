@@ -70,15 +70,17 @@ export default function AddUserComponent(props: AddUserComponentProps) {
         errors = fieldValidate("firstName", values.firstName, errors);
         errors = fieldValidate("familyName", values.familyName, errors);
         errors = fieldValidate("email", values.email, errors);
-        errors = fieldValidate("password", values.password, errors);
-        errors = fieldValidate("repassword", values.repassword, errors);
-
-        if (userTypeSelect === "DOCTOR") {
-            errors = fieldValidate("DateOfBirth", values.DateOfBirth, errors);
-            errors = fieldValidate("Gender", values.Gender, errors);
-            errors = fieldValidate("Specialty", values.Specialty, errors);
-            errors = fieldValidate("Address", values.Address, errors);
+        if (inviteSelect === InviteConst.PWD) {
+            errors = fieldValidate("password", values.password, errors);
         }
+        
+
+        // if (userTypeSelect === "DOCTOR") {
+        //     errors = fieldValidate("DateOfBirth", values.DateOfBirth, errors);
+        //     errors = fieldValidate("Gender", values.Gender, errors);
+        //     errors = fieldValidate("Specialty", values.Specialty, errors);
+        //     errors = fieldValidate("Address", values.Address, errors);
+        // }
 
         return errors;
     };
@@ -138,29 +140,29 @@ export default function AddUserComponent(props: AddUserComponentProps) {
 
     const onUserSubmit = (response: boolean | User, form): void => {
         if (response) {
-            successTypeDialog(toaster, "Changes Saved Successfully", "User added to the organization successfully.");
+            // successTypeDialog(toaster, "Changes Saved Successfully", "User added to the organization successfully.");
             form.restart();
             onClose();
         } else {
-            errorTypeDialog(toaster, "Error Occured", "Error occured while adding the user. Try again.");
+            // errorTypeDialog(toaster, "Error Occured", "Error occured while adding the user. Try again.");
         }
     };
 
     const onDoctorSubmit = (response: AxiosResponse<Doctor>, form): void => {
         if (response) {
-            successTypeDialog(toaster, "Changes Saved Successfully", "Doctor add to the organization successfully.");
+            // successTypeDialog(toaster, "Changes Saved Successfully", "Doctor add to the organization successfully.");
             form.restart();
             onClose();
         } else {
-            errorTypeDialog(toaster, "Error Occured", "Error occured while adding the doctor. Try again.");
+            // errorTypeDialog(toaster, "Error Occured", "Error occured while adding the doctor. Try again.");
         }
     };
 
     const onRoleSubmit = (response) => {
         if (response) {
-            successTypeDialog(toaster, "Changes Saved Successfully", "Role updated successfully.");
+            successTypeDialog(toaster, "Changes Saved Successfully", "User added to the organization successfully.");
         } else {
-            errorTypeDialog(toaster, "Error Occured", "Error occured while updating the role. Try again.");
+            errorTypeDialog(toaster, "Error Occured", "Error occured while adding the user. Try again.");
         }
     };
 
@@ -207,6 +209,10 @@ export default function AddUserComponent(props: AddUserComponentProps) {
                     controllerDecodePatchRole(session, roleDetails.id, PatchMethod.ADD, "users", response1.id)
                         .then((response) => onRoleSubmit(response))
                         .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
+                }
+
+                if (inviteSelect === InviteConst.INVITE) {
+                    // TODO: sendInvite(session.accessToken, values.email)
                 }
             })
             .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
@@ -384,14 +390,14 @@ export default function AddUserComponent(props: AddUserComponentProps) {
                                             <FormSuite.Control name="input" type="password" autoComplete="off" />
                                         </FormField>
 
-                                        <FormField
+                                        {/* <FormField
                                             name="repassword"
                                             label="Re enter password"
                                             helperText="Re enter the password of the user."
                                             needErrorMessage={ true }
                                         >
                                             <FormSuite.Control name="input" type="password" autoComplete="off" />
-                                        </FormField>
+                                        </FormField> */}
 
                                     </div>
 
@@ -400,7 +406,7 @@ export default function AddUserComponent(props: AddUserComponentProps) {
 
                                 <FormButtonToolbar
                                     submitButtonText="Submit"
-                                    submitButtonDisabled={ submitting || pristine || !checkIfJSONisEmpty(errors) }
+                                    submitButtonDisabled={ submitting || !checkIfJSONisEmpty(errors) }
                                     onCancel={ onClose }
                                 />
 

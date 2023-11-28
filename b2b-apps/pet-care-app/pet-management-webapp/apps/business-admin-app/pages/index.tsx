@@ -17,9 +17,13 @@
  */
 import dynamic from "next/dynamic";
 import { NextRouter, useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import "rsuite/dist/rsuite.min.css";
 import homeImage from "../../../libs/business-admin-app/ui/ui-assets/src/lib/images/businessAdminHome.jpeg";
+import { fetchData } from "next-auth/client/_utils";
+import { getPersonalization } from "../APICalls/GetPersonalization/get-personalization";
+import personalize from "../components/sections/sections/settingsSection/personalizationSection/personalize";
+import { Personalization } from "../types/personalization";
 
 /**
  * 
@@ -52,6 +56,34 @@ export default function Home() {
             router.push("/signin");
         }
     };
+
+    useEffect(() => {
+        if (getOrgIdFromUrl()) {
+            getPersonalization(getOrgIdFromUrl())
+                .then((response) => {
+                    personalize(response.data);
+                })
+                .catch(async (err) => {
+                    if (err.response.status === 404) {
+                        const defaultPersonalization: Personalization = {
+                            faviconUrl: "https://user-images.githubusercontent.com/1329596/" + 
+                                "242288450-b511d3dd-5e02-434f-9924-3399990fa011.png",
+                            logoAltText: "Pet Care App Logo",
+                            logoUrl: "https://user-images.githubusercontent.com/" + 
+                                "35829027/241967420-9358bd5c-636e-48a1-a2d8-27b2aa310ebf.png",
+                            primaryColor: "#4F40EE",
+                            secondaryColor: "#E0E1E2",
+                            org: ""
+                        };
+        
+                        personalize(defaultPersonalization);
+                        
+                    }
+                });
+        }
+        
+        
+    }, [ ]);
 
     return (
         <DynamicIndexHomeComponent

@@ -19,10 +19,10 @@
 import { getPersonalizationInstance } from "./personalizationInstance";
 import createHeaders from "../createHeaders";
 
-export async function getPersonalization(accessToken: string, orgId: string) {
-    const headers = createHeaders(accessToken);
+export async function getPersonalization(orgId: string) {
+    // const headers = createHeaders(accessToken);
     const response = await getPersonalizationInstance().get(`org/${orgId}/personalization`, {
-        headers: headers
+        headers: {}
     });
 
     return response;

@@ -33,7 +33,7 @@ export function SigninRedirectComponent(prop: SigninRedirectComponentProps) {
     return (
         <div className={ styles["signinOuter"] }>
             <div className={ styles["signinInner"] }>
-                { logoComponent }
+                {/* { logoComponent } */}
                 <Loader size="lg" content={ loaderContent } vertical />
             </div>
         </div>

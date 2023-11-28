@@ -132,7 +132,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
             .then(() => {
                 deletePersonalization(session.accessToken, session.orgId)
                     .then(() => {
-                        getPersonalization(session.accessToken, session.orgId)
+                        getPersonalization(session.orgId)
                             .then((response) => {
                                 personalize(response.data);
                             });
