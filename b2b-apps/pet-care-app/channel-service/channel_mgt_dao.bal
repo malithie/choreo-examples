@@ -148,14 +148,18 @@ function dbAddDoctor(Doctor doctor) returns Doctor|error {
         Availability[]? availabilitySlots = doctor.availability;
         sql:ExecutionResult[]|sql:Error batchResult = [];
 
-        if availabilitySlots != null {
+        log:printInfo("Defined timeslot variables");
 
-            sql:ParameterizedQuery[] insertQueries = from Availability availability in availabilitySlots
+        if availabilitySlots != null {
+            log:printInfo("availabilitySlots != null");
+            sql:ParameterizedQuery[] batchResultinsertQueries = from Availability availability in availabilitySlots
                 from TimeSlot timeSlot in availability.timeSlots
                 select `INSERT INTO Availability (doctorId, date, startTime, endTime, availableBookingCount)
                     VALUES (${doctor.id}, ${availability.date}, ${timeSlot.startTime}, ${timeSlot.endTime},
                      ${timeSlot.availableBookingCount})`;
-            batchResult = dbClient->batchExecute(insertQueries);
+            log:printInfo("insertQueries" + batchResultinsertQueries.toString());
+            batchResult = dbClient->batchExecute(batchResultinsertQueries);
+            log:printInfo("got batchResult");
         }
 
         if batchResult is sql:Error {
