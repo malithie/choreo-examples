@@ -133,10 +133,6 @@ function dbAddDoctor(Doctor doctor) returns Doctor|error {
 
         sql:ExecutionResult|sql:Error insertResult = check dbClient->execute(query);
 
-        if insertResult is sql:Error {
-            handleError(batchResult)
-        }
-
         Availability[]? availabilitySlots = doctor.availability;
         sql:ExecutionResult[]|sql:Error batchResult = [];
 
