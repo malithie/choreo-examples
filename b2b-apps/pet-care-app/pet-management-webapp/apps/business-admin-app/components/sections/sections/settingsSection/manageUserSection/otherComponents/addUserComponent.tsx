@@ -73,7 +73,6 @@ export default function AddUserComponent(props: AddUserComponentProps) {
         if (inviteSelect === InviteConst.PWD) {
             errors = fieldValidate("password", values.password, errors);
         }
-        
 
         // if (userTypeSelect === "DOCTOR") {
         //     errors = fieldValidate("DateOfBirth", values.DateOfBirth, errors);
@@ -209,10 +208,6 @@ export default function AddUserComponent(props: AddUserComponentProps) {
                     controllerDecodePatchRole(session, roleDetails.id, PatchMethod.ADD, "users", response1.id)
                         .then((response) => onRoleSubmit(response))
                         .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
-                }
-
-                if (inviteSelect === InviteConst.INVITE) {
-                    // TODO: sendInvite(session.accessToken, values.email)
                 }
             })
             .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
