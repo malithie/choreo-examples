@@ -19,7 +19,7 @@ service / on new http:Listener(9093) {
             scopes: "view_personalization"
         }
     }
-    resource function get org/[string orgId]/personalization(http:Headers headers) returns Personalization|error? {
+    resource function get org/[string orgId]/personalization(http:Headers headers) returns Personalization|http:NotFound|error? {
 
         return getPersonalization(orgId);
     }
