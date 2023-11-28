@@ -128,10 +128,13 @@ function dbAddDoctor(Doctor doctor) returns Doctor|error {
     }
 
     transaction {
+        log:printInfo("Starting transaction");
         sql:ParameterizedQuery query = `INSERT INTO Doctor (id, org, createdAt, name, gender, registrationNumber, 
         specialty, emailAddress, dateOfBirth, address) VALUES (${doctor.id}, ${doctor.org}, ${doctor.createdAt}, 
         ${doctor.name}, ${doctor.gender}, ${doctor.registrationNumber}, ${doctor.specialty}, ${doctor.emailAddress}, 
         ${doctor.dateOfBirth}, ${doctor.address});`;
+
+        log:printInfo("executing query");
 
         sql:ExecutionResult|sql:Error insertResult = check dbClient->execute(query);
 

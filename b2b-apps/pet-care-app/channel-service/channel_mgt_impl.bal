@@ -67,6 +67,7 @@ function getConnection() returns jdbc:Client|error {
 function getDoctors(string org) returns Doctor[]|error {
 
     if (useDB) {
+        log:printInfo("Getting doctor from DB");
         return dbGetDoctorsByOrg(org);
     } else {
         Doctor[] doctorList = [];
