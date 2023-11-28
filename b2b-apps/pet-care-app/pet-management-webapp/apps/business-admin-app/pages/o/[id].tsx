@@ -28,7 +28,6 @@ import { getPersonalization } from "apps/business-admin-app/APICalls/GetPersonal
 import { controllerDecodeGetBrandingPrefrence } from "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
 import { BrandingPreference } from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
 import controllerDecodeGetBrandingPreference from "libs/business-admin-app/data-access/data-access-controller/src/lib/controller/branding/controllerDecodeGetBrandingPreference";
-import BrandingPreference from "libs/business-admin-app/data-access/data-access-common-models-util/src/lib/branding/brandingPreference";
 import { postPersonalization } from "apps/business-admin-app/APICalls/UpdatePersonalization/post-personalization";
 import { Personalization } from "apps/business-admin-app/types/personalization";
 import personalize from "apps/business-admin-app/components/sections/sections/settingsSection/personalizationSection/personalize";
