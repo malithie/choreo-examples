@@ -163,7 +163,7 @@ function dbAddDoctor(Doctor doctor) returns Doctor|error {
         }
 
         if batchResult is sql:Error {
-            log:printInfo("batchResult is sql:Error");
+            log:printInfo("batchResult is sql:Error" + batchResult.toString());
             rollback;
             return handleError(batchResult);
         } else {

@@ -16,21 +16,23 @@
  * under the License.
  */
 
+import { 
+    BrandingPreference 
+} from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
 import { orgSignin, redirect } from "@pet-management-webapp/shared/util/util-authorization-config-util";
+import { postDoctor } from "apps/business-admin-app/APICalls/CreateDoctor/post-doc";
+import { getDoctor } from "apps/business-admin-app/APICalls/getDoctors/get-doctor";
+import { getPersonalization } from "apps/business-admin-app/APICalls/GetPersonalization/get-personalization";
+import { postPersonalization } from "apps/business-admin-app/APICalls/UpdatePersonalization/post-personalization";
+import personalize from "apps/business-admin-app/components/sections/sections/settingsSection/personalizationSection/personalize";
+import { DoctorInfo } from "apps/business-admin-app/types/doctor";
+import { Personalization } from "apps/business-admin-app/types/personalization";
+import controllerDecodeGetBrandingPreference 
+    from "libs/business-admin-app/data-access/data-access-controller/src/lib/controller/branding/controllerDecodeGetBrandingPreference";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 import { useEffect } from "react";
 import Home from "../../components/sections/home";
-import { getDoctor } from "apps/business-admin-app/APICalls/getDoctors/get-doctor";
-import { postDoctor } from "apps/business-admin-app/APICalls/CreateDoctor/post-doc";
-import { DoctorInfo } from "apps/business-admin-app/types/doctor";
-import { getPersonalization } from "apps/business-admin-app/APICalls/GetPersonalization/get-personalization";
-import { controllerDecodeGetBrandingPrefrence } from "@pet-management-webapp/business-admin-app/data-access/data-access-controller";
-import { BrandingPreference } from "@pet-management-webapp/business-admin-app/data-access/data-access-common-models-util";
-import controllerDecodeGetBrandingPreference from "libs/business-admin-app/data-access/data-access-controller/src/lib/controller/branding/controllerDecodeGetBrandingPreference";
-import { postPersonalization } from "apps/business-admin-app/APICalls/UpdatePersonalization/post-personalization";
-import { Personalization } from "apps/business-admin-app/types/personalization";
-import personalize from "apps/business-admin-app/components/sections/sections/settingsSection/personalizationSection/personalize";
 
 export async function getServerSideProps(context) {
 
