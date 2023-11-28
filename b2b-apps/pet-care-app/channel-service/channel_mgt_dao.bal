@@ -163,12 +163,15 @@ function dbAddDoctor(Doctor doctor) returns Doctor|error {
         }
 
         if batchResult is sql:Error {
+            log:printInfo("batchResult is sql:Error");
             rollback;
             return handleError(batchResult);
         } else {
+            log:printInfo("batchResult is not error");
             check commit;
 
             Doctor|()|error addedDoctor = dbGetDoctorByDoctorId(doctor.id);
+            log:printInfo("added doctor: " + doctor.toString());
             if addedDoctor is () {
                 return error("Error while adding the doctor");
             }
