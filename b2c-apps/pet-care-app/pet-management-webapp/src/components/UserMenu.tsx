@@ -50,10 +50,6 @@ export default function MenuListComposition(props: {
         signout();
     };
 
-    const gotoMyAccount = () => {
-        window.open(getConfig().baseUrl + '/myaccount', '_blank');
-    };
-
     const handleClose = () => {
         setUserMenuOpen(false);
     };
