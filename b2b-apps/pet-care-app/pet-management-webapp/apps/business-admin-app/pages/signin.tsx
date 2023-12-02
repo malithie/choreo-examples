@@ -58,7 +58,7 @@ export default function Signin() {
     return (
         <SigninRedirectComponent
             logoComponent={ <LogoComponent imageSize="medium" /> }
-            loaderContent="Redirecting to the organization login."
+            loaderContent="Redirecting to the organization login"
         />
     );
 }

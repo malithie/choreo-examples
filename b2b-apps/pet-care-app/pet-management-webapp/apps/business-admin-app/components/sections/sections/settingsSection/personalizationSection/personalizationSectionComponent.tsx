@@ -38,11 +38,12 @@ import controllerDecodeUpdateBrandingPreference
     from "libs/business-admin-app/data-access/data-access-controller/src/lib/controller/branding/controllerDecodeUpdateBrandingPreference";
 import { Session } from "next-auth";
 import React, { useCallback, useEffect, useState } from "react";
-import { Form } from "react-final-form";
+import { Field, Form } from "react-final-form";
 import { Button, Container, Divider, Toaster, useToaster } from "rsuite";
 import FormSuite from "rsuite/Form";
 import personalize from "./personalize";
 import styles from "../../../../../styles/Settings.module.css";
+import { ChromePicker } from 'react-color';
 
 interface PersonalizationSectionComponentProps {
     session: Session
@@ -66,6 +67,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
     const [ logoAltText, setLogoAltText ] = useState<string>("");
     const [ favicon, setFavicon ] = useState<string>("");
     const [ primaryColor, setPrimaryColor ] = useState<string>("");
+    const [ secondaryColor, setSecondaryColor ] = useState<string>("");
 
     const fetchData = useCallback(async () => {
         fetchBrandingPreference();
@@ -84,11 +86,13 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         setLogoAltText(res["preference"]["theme"][activeTheme]["images"]["logo"]["altText"]);
         setFavicon(res["preference"]["theme"][activeTheme]["images"]["favicon"]["imgURL"]);
         setPrimaryColor(res["preference"]["theme"][activeTheme]["colors"]["primary"]["main"]);
+        setSecondaryColor(res["preference"]["theme"][activeTheme]["colors"]["secondary"]["main"]);
 
         setBrandingPreference(res);
     };
 
     const onUpdate = async (values: Record<string, string>, form): Promise<void> => {
+
         setLoadingDisplay(LOADING_DISPLAY_BLOCK);
         const activeTheme: string = brandingPreference["preference"]["theme"]["activeTheme"];
 
@@ -96,6 +100,8 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         brandingPreference["preference"]["theme"][activeTheme]["images"]["logo"]["altText"] = values["logo_alt_text"];
         brandingPreference["preference"]["theme"][activeTheme]["images"]["favicon"]["imgURL"] = values["favicon_url"];
         brandingPreference["preference"]["theme"][activeTheme]["colors"]["primary"]["main"] = values["primary_color"];
+        brandingPreference["preference"]["theme"][activeTheme]["colors"]["secondary"]["main"] = 
+            values["secondary_color"];
 
         controllerDecodeUpdateBrandingPreference(session, brandingPreference)
             .then(() => {
@@ -104,10 +110,11 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                     logoAltText: values["logo_alt_text"],
                     logoUrl: values["logo_url"],
                     org: session.orgId,
-                    primaryColor: values["primary_color"]
+                    primaryColor: values["primary_color"],
+                    secondaryColor: values["secondary_color"]
                 };
 
-                postPersonalization(session.accessToken, session.orgId, newPersonalization)
+                postPersonalization(session.accessToken, newPersonalization)
                     .then(() => {
                         personalize(newPersonalization);
                     })
@@ -122,9 +129,9 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         setLoadingDisplay(LOADING_DISPLAY_BLOCK);
         controllerDecodeRevertBrandingPreference(session)
             .then(() => {
-                deletePersonalization(session.accessToken, session.orgId)
+                deletePersonalization(session.accessToken)
                     .then(() => {
-                        getPersonalization(session.accessToken, session.orgId)
+                        getPersonalization(session.orgId)
                             .then((response) => {
                                 personalize(response.data);
                             });
@@ -133,6 +140,17 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
             })
             .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
     };
+
+    const ColorPickerField = ({ input, meta, label, helperText }) => (
+        <FormSuite.Group>
+          <b>{label}</b>
+          <ChromePicker
+            color={input.value || '#000000'}
+            onChange={(color) => input.onChange(color.hex)}
+          />
+          <small>{meta.touched && meta.error ? meta.error : helperText}</small>
+        </FormSuite.Group>
+      );
 
     return (
         <Container>
@@ -145,13 +163,14 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
             <div style={ { margin: "50px" } }>
                 <Form
                     onSubmit={ onUpdate }
-                    initialValues={{
+                    initialValues={ {
                         favicon_url: favicon,
                         logo_alt_text: logoAltText,
                         logo_url: logoUrl,
-                        primary_color: primaryColor
-                    }}
-                    render={({ handleSubmit, form, submitting, pristine, errors }) => (
+                        primary_color: primaryColor,
+                        secondary_color: secondaryColor
+                    } }
+                    render={ ({ handleSubmit, form, submitting, pristine, errors }) => (
                         <FormSuite
                             layout="vertical"
                             className={ styles.addUserForm }
@@ -194,7 +213,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                                 <FormSuite.Control name="input" type="url" />
                             </FormField>
 
-                            <FormField
+                            {/* <FormField
                                 name="primary_color"
                                 label="Primary Colour"
                                 helperText={
@@ -204,10 +223,37 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                             >
                                 <FormSuite.Control 
                                     name="input" 
+                                    accepter={({ value, onChange }) => (
+                                        <ChromePicker
+                                            color={ value } // Default color black if value is undefined
+                                            onChange={(color, event) => onChange(color.hex, event)}
+                                        />
+                                    ) }/>
+                            </FormField> */}
+
+                            {/* <FormField
+                                name="secondary_color"
+                                label="Secondary Colour"
+                                helperText={
+                                    "The color that is shown in secondary action buttons like cancel buttons, etc."
+                                }
+                                needErrorMessage={ true }
+                            >
+                                <FormSuite.Control 
+                                    name="input" 
                                     type="color" 
                                     style={ { height: 40, padding: 3, width: 100 } }
                                 />
-                            </FormField>
+                            </FormField> */}
+
+                            <Field 
+                                name="primary_color" 
+                                component={ColorPickerField} 
+                                label="Primary Colour" />
+                            <Field 
+                                name="secondary_color" 
+                                component={ColorPickerField} 
+                                label="Secondary Colour"  />
 
                             <FormButtonToolbar
                                 submitButtonText="Update"

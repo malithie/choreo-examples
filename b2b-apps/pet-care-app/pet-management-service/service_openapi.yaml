@@ -8,7 +8,7 @@ servers:
     server:
       default: http://localhost
     port:
-      default: "9090"
+      default: "9092"
 paths:
   /pets:
     get:

@@ -56,15 +56,15 @@ const wso2ISProvider = (req: NextApiRequest, res: NextApiResponse) => NextAuth(r
                 session.error = true;
             } else {
                 session.accessToken = token.accessToken as string;
-                session.orginalIdToken = token.idToken;
+                // session.orginalIdToken = token.idToken;
                 session.scope = token?.scope;
-                const profile: Profile = jwtDecode(session.orginalIdToken);
+                const profile: Profile = jwtDecode(token.idToken);
                 
                 session.expires = false;
-                session.userId = getLoggedUserId(session.orginalIdToken as unknown as JWT);
+                session.userId = getLoggedUserId(token.idToken as unknown as JWT);
                 session.user = getLoggedUserFromProfile(profile);
-                session.orgId = getOrgId(session.orginalIdToken as unknown as JWT);
-                session.orgName = getOrgName(session.orginalIdToken as unknown as JWT);
+                session.orgId = getOrgId(token.idToken as unknown as JWT);
+                session.orgName = getOrgName(token.idToken as unknown as JWT);
                 
                 let rolesList: string[]|string = token.user[ "roles" ];
                 
@@ -75,7 +75,7 @@ const wso2ISProvider = (req: NextApiRequest, res: NextApiResponse) => NextAuth(r
                     session.group = "petOwner";
                 } else if (rolesList.some(x => x === "pet-care-doctor")) {
                     session.group = "doctor";
-                } else if (rolesList.some(x => x === "petcare-admin")) {
+                } else if (rolesList.some(x => x === "pet-care-admin")) {
                     session.group = "admin";
                 } else {
                     session.group = "petOwner";

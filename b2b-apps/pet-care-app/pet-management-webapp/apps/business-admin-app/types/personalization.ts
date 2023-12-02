@@ -22,4 +22,5 @@ export interface Personalization {
     logoAltText: string;
     faviconUrl: string;
     primaryColor: string;
+    secondaryColor: string;
 }

@@ -1,39 +1,97 @@
+import ballerina/http;
+import ballerinax/mysql;
+import ballerina/sql;
+import ballerina/log;
+import ballerinax/java.jdbc;
+import ballerinax/mysql.driver as _;
+
+configurable string dbHost = "localhost";
+configurable string dbUsername = "admin";
+configurable string dbPassword = "admin";
+configurable string dbDatabase = "CHANNEL_DB";
+configurable int dbPort = 3306;
+
 table<Personalization> key(org) personalizationRecords = table [];
 
-function getPersonalization(string org) returns Personalization|error {
+final mysql:Client|error dbClient;
+boolean useDB = false;
 
-    Personalization? personalization = personalizationRecords[org];
-    if personalization is () {
-        Personalization defaultPersonalization = {
-            org: "",
-            logoUrl: "https://user-images.githubusercontent.com/35829027/241967420-9358bd5c-636e-48a1-a2d8-27b2aa310ebf.png",
-            logoAltText: "Pet Care App Logo",
-            faviconUrl: "https://user-images.githubusercontent.com/1329596/242288450-b511d3dd-5e02-434f-9924-3399990fa011.png",
-            primaryColor: "#4F40EE"
-        };
-        return defaultPersonalization;
+function init() returns error? {
+
+    if dbHost != "localhost" && dbHost != "" {
+        useDB = true;
     }
-    return personalization;
+
+    sql:ConnectionPool connPool = {
+        maxOpenConnections: 20,
+        minIdleConnections: 20,
+        maxConnectionLifeTime: 300
+    };
+
+    mysql:Options mysqlOptions = {
+        connectTimeout: 10
+    };
+
+    dbClient = new (dbHost, dbUsername, dbPassword, dbDatabase, dbPort, options = mysqlOptions, connectionPool = connPool);
+
+    if dbClient is sql:Error {
+        if (!useDB) {
+            log:printInfo("DB configurations are not given. Hence storing the data locally");
+        } else {
+            log:printError("DB configuraitons are not correct. Please check the configuration", 'error = <sql:Error>dbClient);
+            return error("DB configuraitons are not correct. Please check the configuration");
+        }
+    }
+
+    if useDB {
+        log:printInfo("DB configurations are given. Hence storing the data in DB");
+    }
+
+}
+
+function getConnection() returns jdbc:Client|error {
+    return dbClient;
+}
+
+function getPersonalization(string org) returns Personalization|error|http:NotFound {
+
+    if (useDB) {
+        return dbGetPersonalization(org);
+    } else {
+        Personalization? personalization = personalizationRecords[org];
+        if personalization is () {
+            return http:NOT_FOUND;
+        }
+        return personalization;
+    }
 }
 
 function updatePersonalization(string org, Personalization personalization) returns Personalization|error {
 
-    Personalization? oldPersonalizationRecord = personalizationRecords[org];
-    if oldPersonalizationRecord !is () {
-        _ = personalizationRecords.remove(org);
+    if (useDB) {
+        return dbUpdatePersonalization(personalization);
+    } else {
+        Personalization? oldPersonalizationRecord = personalizationRecords[org];
+        if oldPersonalizationRecord !is () {
+            _ = personalizationRecords.remove(org);
+        }
+        personalizationRecords.put({
+            ...personalization
+        });
+        return personalization;
     }
-    personalizationRecords.put({
-        ...personalization
-    });
-    return personalization;
 }
 
 function deletePersonalization(string org) returns string|()|error {
 
-    Personalization? oldPersonalizationRecord = personalizationRecords[org];
+    if (useDB) {
+        return dbDeletePersonalization(org);
+    } else {
+        Personalization? oldPersonalizationRecord = personalizationRecords[org];
     if oldPersonalizationRecord !is () {
         _ = personalizationRecords.remove(org);
     }
 
-    return "Deleted successfully";
+    return "Branding deleted successfully";
+    }
 }

@@ -1,23 +1,22 @@
 import ballerina/http;
 import ballerina/mime;
-import pubudu538/choreo.user.info as choreoUserInfo;
 
-choreoUserInfo:UserInfoResolver userInfoResolver = new;
+UserInfoResolver userInfoResolver = new;
 
 # A service representing a network-accessible API
-# bound to port `9090`.
+# bound to port `9092`.
 @http:ServiceConfig {
     cors: {
         allowOrigins: ["*"]
     }
 }
-service / on new http:Listener(9090) {
+service / on new http:Listener(9092) {
 
     # Get all pets
     # + return - List of pets or error
     resource function get pets(http:Headers headers) returns Pet[]|error? {
 
-        choreoUserInfo:UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
+        UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
         if userInfo is error {
             return userInfo;
         }
@@ -33,7 +32,7 @@ service / on new http:Listener(9090) {
     # + return - Created pet record or error
     resource function post pets(http:Headers headers, @http:Payload PetItem newPet) returns Pet|error? {
 
-        choreoUserInfo:UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
+        UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
         if userInfo is error {
             return userInfo;
         }
@@ -64,7 +63,7 @@ service / on new http:Listener(9090) {
     # + return - Pet details or not found
     resource function put pets/[string petId](http:Headers headers, @http:Payload PetItem updatedPetItem) returns Pet|http:NotFound|error? {
 
-        choreoUserInfo:UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
+        UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
         if userInfo is error {
             return userInfo;
         }
@@ -85,7 +84,7 @@ service / on new http:Listener(9090) {
     # + return - No Content response or error
     resource function delete pets/[string petId](http:Headers headers) returns http:NoContent|http:NotFound|error? {
 
-        choreoUserInfo:UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
+        UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
         if userInfo is error {
             return userInfo;
         }
@@ -108,7 +107,7 @@ service / on new http:Listener(9090) {
     resource function put pets/[string petId]/thumbnail(http:Request request, http:Headers headers)
     returns http:Ok|http:NotFound|http:BadRequest|error {
 
-        choreoUserInfo:UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
+        UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
         if userInfo is error {
             return userInfo;
         }
@@ -144,7 +143,7 @@ service / on new http:Listener(9090) {
     # + return - Ok response or error
     resource function get pets/[string petId]/thumbnail(http:Headers headers) returns http:Response|http:NotFound|error {
 
-        choreoUserInfo:UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
+        UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
         if userInfo is error {
             return userInfo;
         }
@@ -251,7 +250,7 @@ service / on new http:Listener(9090) {
     # + return - Settings response or error
     resource function get settings(http:Headers headers) returns Settings|error {
 
-        choreoUserInfo:UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
+        UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
         if userInfo is error {
             return userInfo;
         }
@@ -274,7 +273,7 @@ service / on new http:Listener(9090) {
     # + return - OK response or error
     resource function put settings(http:Headers headers, @http:Payload Settings settings) returns http:Ok|error {
 
-        choreoUserInfo:UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
+        UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
         if userInfo is error {
             return userInfo;
         }

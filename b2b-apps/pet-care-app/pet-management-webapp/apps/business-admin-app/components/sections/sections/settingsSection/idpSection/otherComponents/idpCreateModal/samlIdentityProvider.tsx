@@ -153,7 +153,7 @@ export default function SAMLIdentityProvider(prop: SAMLIdentityProviderProps) {
                     .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
             })
             .finally(() => setLoadingDisplay(LOADING_DISPLAY_NONE));
-    }
+    };
 
     function fileToBase64(file: Blob): Promise<string> {
         return new Promise((resolve, reject) => {
@@ -162,7 +162,8 @@ export default function SAMLIdentityProvider(prop: SAMLIdentityProviderProps) {
             reader.readAsDataURL(file);
             reader.onload = () => {
                 const base64String = reader.result as string;
-                const base64Content = base64String.split(',')[1];
+                const base64Content = base64String.split(",")[1];
+                
                 resolve(base64Content);
             };
             reader.onerror = error => reject(error);

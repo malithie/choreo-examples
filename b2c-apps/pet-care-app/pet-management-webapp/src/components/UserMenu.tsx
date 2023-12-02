@@ -70,6 +70,10 @@ export default function MenuListComposition(props: {
         getNotifications();
     };
 
+    const gotoMyAccount = () => {
+        window.open(getConfig().baseUrl + '/myaccount', '_blank');
+    };
+
     return (
         <><div className="user-menu-div">
             <button className="menu-btn" onClick={handleToggle}>

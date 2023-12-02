@@ -20,3 +20,4 @@ endpoints:
   # This is only applicable to REST endpoint types.
   # The path should be relative to the docker context.
   schemaFilePath: service_openapi.yaml
+  

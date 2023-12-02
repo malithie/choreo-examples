@@ -38,8 +38,8 @@ function inviteAddUserBody(firstName: string, familyName: string, email: string)
             "familyName": familyName,
             "givenName": firstName
         },
-        "urn:scim:wso2:schema": {
-            "askPassword": "true"
+        "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+            "askPassword": true
         },
         "userName": setUsername(email)
     };

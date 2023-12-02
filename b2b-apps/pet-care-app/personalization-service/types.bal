@@ -4,4 +4,5 @@ type Personalization record {|
     string logoAltText;
     string faviconUrl;
     string primaryColor;
+    string secondaryColor;
 |};

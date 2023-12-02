@@ -20,9 +20,9 @@ import { Personalization } from "apps/business-admin-app/types/personalization";
 import createHeaders from "../createHeaders";
 import { getPersonalizationInstance } from "../GetPersonalization/personalizationInstance";
 
-export async function postPersonalization(accessToken: string, orgId: string, payload?: Personalization) {
+export async function postPersonalization(accessToken: string, payload?: Personalization) {
     const headers = createHeaders(accessToken);
-    const response = await getPersonalizationInstance().post(`org/${orgId}/personalization` , payload, {
+    const response = await getPersonalizationInstance().post("personalization" , payload, {
         headers: headers
     });
 

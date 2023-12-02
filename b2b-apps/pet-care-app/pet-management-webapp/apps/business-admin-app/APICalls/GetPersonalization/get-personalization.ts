@@ -17,12 +17,11 @@
  */
 
 import { getPersonalizationInstance } from "./personalizationInstance";
-import createHeaders from "../createHeaders";
 
-export async function getPersonalization(accessToken: string, orgId: string) {
-    const headers = createHeaders(accessToken);
-    const response = await getPersonalizationInstance().get(`org/${orgId}/personalization`, {
-        headers: headers
+export async function getPersonalization(orgId: string) {
+    // const headers = createHeaders(accessToken);
+    const response = await getPersonalizationInstance().get(`personalization/org/${orgId}`, {
+        headers: {}
     });
 
     return response;

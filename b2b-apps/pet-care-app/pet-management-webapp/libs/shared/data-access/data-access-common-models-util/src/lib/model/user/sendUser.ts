@@ -25,13 +25,14 @@ export interface Email {
 }
 
 interface UrnSchema {
-    askPassword : string
+    askPassword : boolean
 }
 
 export interface SendUser extends ControllerCallParam{
     emails: [Email],
     name : Name,
     "urn:scim:wso2:schema"? : UrnSchema,
+    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"? : UrnSchema,
     userName : string,
     schemas? : [],
     password? : string

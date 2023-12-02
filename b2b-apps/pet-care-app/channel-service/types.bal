@@ -127,7 +127,7 @@ type OrgInfo record {|
 
 type OrgInfoItem record {|
     string name;
-    string address;
-    string telephoneNumber;
+    string address?;
+    string telephoneNumber?;
     string registrationNumber?;
 |};
