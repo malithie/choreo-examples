@@ -175,14 +175,14 @@ export default function AddUserComponent(props: AddUserComponentProps) {
                 
                 if (userTypeSelect === "DOCTOR") {
                     const payload: DoctorInfo = {
-                        address: values.Address,
+                        address: values.Address ? values.Address : "",
                         availability: [],
-                        dateOfBirth: values.DateOfBirth,
+                        dateOfBirth: values.DateOfBirth ? values.DateOfBirth : "",
                         emailAddress: values.email,
-                        gender: values.Gender,
+                        gender: values.Gender ? values.Gender : "",
                         name: values.firstName + " " + values.familyName,
                         registrationNumber: values.RegistrationNumber,
-                        specialty: values.Specialty
+                        specialty: values.Specialty ? values.Specialty : "N/A"
                     };
                     
                     postDoctor(session.accessToken, payload)

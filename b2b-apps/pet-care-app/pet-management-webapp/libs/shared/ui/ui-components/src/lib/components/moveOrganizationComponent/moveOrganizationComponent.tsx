@@ -16,12 +16,8 @@
  * under the License.
  */
 
-import { LogoComponent } from "@pet-management-webapp/business-admin-app/ui/ui-components";
-import Image from "next/image";
-import { Panel, Stack } from "rsuite";
+import { Loader, Panel, Stack } from "rsuite";
 import styles from "./moveOrganizationComponent.module.css";
-import getStartedWelcomeImage 
-    from "../../../../../../../../libs/business-admin-app/ui/ui-assets/src/lib/images/getStartedWelcome.svg";
 
 /* eslint-disable-next-line */
 export interface MoveOrganizationComponentProps {
@@ -38,14 +34,7 @@ export function MoveOrganizationComponent(prop: MoveOrganizationComponentProps) 
 
                 <Stack direction="column" spacing={ 50 } justifyContent="center">
 
-                    <Image src={ getStartedWelcomeImage } alt="profile image" width={ 150 } />
-
-                    <Stack direction="column" spacing={ 10 } justifyContent="center">
-                        <p><strong>Welcome to</strong></p>
-                        <LogoComponent imageSize="medium" />
-                    </Stack>
-
-                    <h2 className={ styles["h2Wording"] }>Please wait while we redirect you to { orgName }</h2>
+                    <Loader size="lg" content={ "" } vertical />
                     
                 </Stack>
 

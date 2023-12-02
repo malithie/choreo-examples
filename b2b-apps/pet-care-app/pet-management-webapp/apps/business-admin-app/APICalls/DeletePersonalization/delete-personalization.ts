@@ -19,9 +19,9 @@
 import createHeaders from "../createHeaders";
 import { getPersonalizationInstance } from "../GetPersonalization/personalizationInstance";
 
-export async function deletePersonalization(accessToken: string, orgId: string) {
+export async function deletePersonalization(accessToken: string) {
     const headers = createHeaders(accessToken);
-    const response = await getPersonalizationInstance().delete(`org/${orgId}/personalization` , {
+    const response = await getPersonalizationInstance().delete("personalization" , {
         headers: headers
     });
 

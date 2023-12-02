@@ -1,8 +1,8 @@
 {
     "CommonConfig": {
         "AuthorizationConfig": {
-            "BaseOrganizationUrl": "https://is.wso2isdemo.com",
-            "BaseUrl": "https://is.wso2isdemo.com"
+            "BaseOrganizationUrl": "<PARENT ORGANIZATION URL> ex: https://api.asgardeo.io/t/guardio",
+            "BaseUrl": "https://localhost:9443"
         },
         "ApplicationConfig": {
             "SampleOrganization": [
@@ -15,12 +15,12 @@
     },
     "BusinessAdminAppConfig": {
         "AuthorizationConfig": {
-            "ClientId": "swNG8ful23ZOthXWHJE0UjkckZka",
-            "ClientSecret": "Wj6hDCAfkLDk6qkGUDJlfzU78wkNAXgNjSpXYML6ZT8a"
+            "ClientId": "<CLIENT ID OF THE BUSINESS APP>",
+            "ClientSecret": "<CLIENT SECRET OF THE BUSINESS APP>"
         },
         "ManagementAuthorizationConfig": {
-            "ClientId": "swNG8ful23ZOthXWHJE0UjkckZka",
-            "ClientSecret": "Wj6hDCAfkLDk6qkGUDJlfzU78wkNAXgNjSpXYML6ZT8a"
+            "ClientId": "<CLIENT ID OF THE MANAGEMENT APP>",
+            "ClientSecret": "<CLIENT SECRET OF THE MANAGEMENT APP>"
         },
         "ApplicationConfig": {
             "HostedUrl": "http://localhost:3002",
@@ -71,8 +71,9 @@
                 "update_pet",
                 "view_user_settings",
                 "update_user_settings",
-                "view_personalization",
-                "update_personalization",
+                "create_branding",
+                "update_branding",
+                "delete_branding",
                 "internal_org_claim_meta_create", 
                 "internal_org_claim_meta_view", 
                 "internal_org_claim_meta_update", 

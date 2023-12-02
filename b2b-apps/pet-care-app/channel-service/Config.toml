@@ -1,0 +1,6 @@
+dbHost = "localhost"
+dbUsername = "admin"
+dbPassword = "admin"
+dbDatabase = "CHANNEL_DB"
+dbPort = 3306
+emailService = "localhost:9090"

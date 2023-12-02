@@ -1,0 +1,5 @@
+dbHost = "localhost"
+dbUsername = "admin"
+dbPassword = "admin"
+dbDatabase = "PET_DB"
+dbPort = 3306

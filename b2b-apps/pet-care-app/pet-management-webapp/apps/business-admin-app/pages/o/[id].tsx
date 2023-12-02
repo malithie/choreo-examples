@@ -120,8 +120,7 @@ export default function Org(props : OrgProps) {
                         secondaryColor: res["preference"]["theme"][activeTheme]["colors"]["secondary"]["main"]
                     };
     
-                    postPersonalization(session.accessToken, session.orgId, newPersonalization);
-                    
+                    postPersonalization(session.accessToken, newPersonalization);
                 }
             });
     }, [ session ]);

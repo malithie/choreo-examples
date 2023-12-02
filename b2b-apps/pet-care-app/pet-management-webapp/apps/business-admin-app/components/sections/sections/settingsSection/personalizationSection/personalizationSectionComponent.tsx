@@ -92,7 +92,6 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
     };
 
     const onUpdate = async (values: Record<string, string>, form): Promise<void> => {
-        console.log(values);
 
         setLoadingDisplay(LOADING_DISPLAY_BLOCK);
         const activeTheme: string = brandingPreference["preference"]["theme"]["activeTheme"];
@@ -115,7 +114,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
                     secondaryColor: values["secondary_color"]
                 };
 
-                postPersonalization(session.accessToken, session.orgId, newPersonalization)
+                postPersonalization(session.accessToken, newPersonalization)
                     .then(() => {
                         personalize(newPersonalization);
                     })
@@ -130,7 +129,7 @@ export default function PersonalizationSectionComponent(props: PersonalizationSe
         setLoadingDisplay(LOADING_DISPLAY_BLOCK);
         controllerDecodeRevertBrandingPreference(session)
             .then(() => {
-                deletePersonalization(session.accessToken, session.orgId)
+                deletePersonalization(session.accessToken)
                     .then(() => {
                         getPersonalization(session.orgId)
                             .then((response) => {

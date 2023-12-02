@@ -1,11 +1,7 @@
+import ballerina/log;
 import ballerina/http;
 
-public type UserInfo record {|
-    string organization;
-    string userId;
-    string emailAddress?;
-    string[] groups?;
-|};
+UserInfoResolver userInfoResolver = new;
 
 @http:ServiceConfig {
     cors: {
@@ -14,35 +10,41 @@ public type UserInfo record {|
 }
 service / on new http:Listener(9093) {
 
-    @http:ResourceConfig {
-        auth: {
-            scopes: "view_personalization"
-        }
-    }
-    resource function get org/[string orgId]/personalization(http:Headers headers) returns Personalization|http:NotFound|error? {
+    resource function get personalization/org/[string orgId](http:Headers headers) returns Personalization|http:NotFound|error? {
 
         return getPersonalization(orgId);
     }
 
     @http:ResourceConfig {
         auth: {
-            scopes: "update_personalization"
+            scopes: "create_branding"
         }
     }
-    resource function post org/[string orgId]/personalization(http:Headers headers, @http:Payload Personalization newPersonalization) returns Personalization|error? {
+    resource function post personalization(http:Headers headers, @http:Payload Personalization newPersonalization) returns Personalization|error? {
 
-        Personalization|error personalization = updatePersonalization(orgId, newPersonalization);
+        UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
+        if userInfo is error {
+            return userInfo;
+        }
+
+        Personalization|error personalization = updatePersonalization(userInfo.organization, newPersonalization);
         return personalization;
     }
 
     @http:ResourceConfig {
         auth: {
-            scopes: "update_personalization"
+            scopes: "delete_branding"
         }
     }
-    resource function delete org/[string orgId]/personalization(http:Headers headers) returns http:NoContent|http:NotFound|error? {
+    resource function delete personalization(http:Headers headers) returns http:NoContent|http:NotFound|error? {
 
-        string|()|error result = deletePersonalization(orgId);
+        UserInfo|error userInfo = userInfoResolver.retrieveUserInfo(headers);
+        if userInfo is error {
+            return userInfo;
+        }
+
+        string|()|error result = deletePersonalization(userInfo.organization);
+
         if result is () {
             return http:NOT_FOUND;
         } else if result is error {
@@ -50,5 +52,4 @@ service / on new http:Listener(9093) {
         }
         return http:NO_CONTENT;
     }
-
 }
