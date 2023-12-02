@@ -22,9 +22,11 @@ import getSettingsView from "../pages/settings";
 import GetSettings from "../pages/settings";
 import SETTINGS_ICON from "../images/settings.png";
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { BasicUserInfo, useAuthContext } from "@asgardeo/auth-react";
 import { getNotification } from "./Notifications/get-notification";
+import { getConfig } from "../util/getConfig";
 
 export default function MenuListComposition(props: {
     user: BasicUserInfo;
@@ -64,11 +66,15 @@ export default function MenuListComposition(props: {
         getNotifications();
     };
 
+    const gotoMyAccount = () => {
+        window.open(getConfig().baseUrl + '/myaccount', '_blank');
+    };
+
     return (
         <><div className="user-menu-div">
             <button className="menu-btn" onClick={handleToggle}>
                 <label className="usename-label">
-                    {user.name}
+                    {user.displayName || user.name}
                 </label>
                 <i className="arrow-down"></i>
             </button>
@@ -96,6 +102,21 @@ export default function MenuListComposition(props: {
                         <ListItemText
                             disableTypography
                             primary={<Typography variant="body2" style={{ color: 'black', fontSize: "2.5vh" }}>Settings</Typography>}
+                        />
+                    </ListItem>
+                    <ListItem
+                        button
+                        component="nav"
+                        disableGutters
+                        onClick={() => { setSettingsOpen(true); setUserMenuOpen(false); getSettings();}}
+                        data-testid="header-user-profile-settings"
+                    >
+                        <ListItemIcon>
+                            <AccountCircleIcon style={{width: "4vh", height: "4vh", padding: "2vh"}}/>
+                        </ListItemIcon>
+                        <ListItemText
+                            disableTypography
+                            primary={<Typography variant="body2" style={{ color: 'black', fontSize: "2.5vh" }}>My Account</Typography>}
                         />
                     </ListItem>
                     <ListItem

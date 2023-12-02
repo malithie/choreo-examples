@@ -1,8 +1,8 @@
 {
     "CommonConfig": {
         "AuthorizationConfig": {
-            "BaseOrganizationUrl": "<PARENT ORGANIZATION URL> ex: https://api.asgardeo.io/t/guardio",
-            "BaseUrl": "https://localhost:9443"
+            "BaseOrganizationUrl": "https://is.wso2isdemo.com",
+            "BaseUrl": "https://is.wso2isdemo.com"
         },
         "ApplicationConfig": {
             "SampleOrganization": [
@@ -15,12 +15,12 @@
     },
     "BusinessAdminAppConfig": {
         "AuthorizationConfig": {
-            "ClientId": "<CLIENT ID OF THE BUSINESS APP>",
-            "ClientSecret": "<CLIENT SECRET OF THE BUSINESS APP>"
+            "ClientId": "swNG8ful23ZOthXWHJE0UjkckZka",
+            "ClientSecret": "Wj6hDCAfkLDk6qkGUDJlfzU78wkNAXgNjSpXYML6ZT8a"
         },
         "ManagementAuthorizationConfig": {
-            "ClientId": "<CLIENT ID OF THE MANAGEMENT APP>",
-            "ClientSecret": "<CLIENT SECRET OF THE MANAGEMENT APP>"
+            "ClientId": "swNG8ful23ZOthXWHJE0UjkckZka",
+            "ClientSecret": "Wj6hDCAfkLDk6qkGUDJlfzU78wkNAXgNjSpXYML6ZT8a"
         },
         "ApplicationConfig": {
             "HostedUrl": "http://localhost:3002",
